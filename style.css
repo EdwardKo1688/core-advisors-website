@@ -488,35 +488,120 @@ h1, h2, h3, h4 {
 /* === Four Steps Path (homepage) === */
 .four-steps {
     padding: 100px 0;
-    background: var(--gray-50);
+    background: var(--navy-dark);
+}
+
+.four-steps .section-title {
+    color: var(--white);
 }
 
 .four-steps-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 12px;
+    align-items: start;
 }
 
 .four-step-card {
     text-align: center;
-    padding: 28px 20px;
+    padding: 32px 20px 28px;
     position: relative;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
 }
 
-.four-step-card .step-num {
-    margin: 0 auto 16px;
+.four-step-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.step-icon-wrap {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, rgba(0, 212, 170, 0.1), rgba(0, 212, 170, 0.05));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--teal);
+}
+
+.step-number {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 24px;
+    height: 24px;
+    background: var(--navy-dark);
+    color: var(--white);
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .four-step-card h3 {
-    font-size: 1rem;
+    font-size: 1.05rem;
+    font-weight: 600;
     margin-bottom: 8px;
-    color: var(--text-dark);
+    color: var(--white);
 }
 
 .four-step-card p {
     font-size: 0.88rem;
-    color: var(--text-body);
+    color: rgba(255, 255, 255, 0.65);
     line-height: 1.6;
+}
+
+.step-arrow {
+    display: none;
+}
+
+@media (min-width: 769px) {
+    .step-arrow {
+        display: block;
+        position: absolute;
+        right: -18px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
+        z-index: 1;
+    }
+    .step-arrow::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 14px;
+        height: 2px;
+        background: var(--teal);
+        transform: translateY(-50%);
+    }
+    .step-arrow::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: 8px;
+        height: 8px;
+        border-top: 2px solid var(--teal);
+        border-right: 2px solid var(--teal);
+        transform: translateY(-50%) rotate(45deg);
+    }
 }
 
 /* === Comparison === */
