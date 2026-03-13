@@ -92,24 +92,33 @@
             </div>
         </div>
 
-        <!-- 總分與成熟度 -->
-        <div class="result-score-overview">
-            <div class="result-score-card">
+        <!-- Executive Summary -->
+        <div class="result-section result-executive-summary">
+            <div class="result-executive-content">
+                <h2 class="result-executive-title">Executive Summary</h2>
+                <p class="result-executive-text" id="executiveSummary">載入中...</p>
+            </div>
+            <div class="result-executive-badge">
                 <div class="result-score-circle" style="--score: 0">
                     <div class="result-score-value">—<span></span></div>
                 </div>
                 <div class="result-stage-name">計算中</div>
-                <div class="result-stage-desc">正在根據您的診斷回答計算 AI 成熟度...</div>
+                <div class="result-stage-badge-label">成熟度</div>
             </div>
+        </div>
 
-            <!-- 雷達圖 -->
-            <div class="result-radar-card">
-                <h3>AI 成熟度雷達圖</h3>
-                <p class="result-radar-subtitle">六大構面成熟度分析（0–100 分）</p>
+        <!-- 雷達圖 + 維度分數卡 -->
+        <div class="result-section">
+            <div class="result-section-title">
+                <span class="result-section-icon">📊</span>
+                AI 成熟度雷達圖
+            </div>
+            <p class="result-radar-subtitle">六大構面成熟度分析（0–100 分）</p>
+            <div class="result-radar-layout">
                 <div class="radar-chart-container">
                     <canvas id="radarChart" width="280" height="280"></canvas>
                 </div>
-                <div class="result-dims">
+                <div class="result-dim-cards">
                     <!-- Dynamically populated by result.js -->
                 </div>
             </div>
@@ -121,29 +130,18 @@
                 <span class="result-section-icon">🔍</span>
                 AI 自動診斷分析
             </div>
-            <div class="result-analysis-text">
+            <div class="result-analysis-box">
                 <!-- Dynamically populated by result.js -->
             </div>
         </div>
 
-        <!-- 優先改善項目 -->
+        <!-- 優先改善事項 -->
         <div class="result-section">
             <div class="result-section-title">
                 <span class="result-section-icon">🎯</span>
-                優先改善項目
+                優先改善事項
             </div>
             <div class="result-priority-list">
-                <!-- Dynamically populated by result.js -->
-            </div>
-        </div>
-
-        <!-- 產業專屬 AI 落地場景 -->
-        <div class="result-section">
-            <div class="result-section-title">
-                <span class="result-section-icon">💡</span>
-                產業專屬 AI 落地場景
-            </div>
-            <div class="result-scenarios">
                 <!-- Dynamically populated by result.js -->
             </div>
         </div>
@@ -151,10 +149,44 @@
         <!-- 建議判斷邏輯說明 -->
         <div class="result-section">
             <div class="result-section-title">
-                <span class="result-section-icon">📊</span>
+                <span class="result-section-icon">⚙️</span>
                 建議判斷邏輯說明
+                <span class="result-section-tag">AI 分析依據</span>
             </div>
-            <div class="result-analysis-text">
+            <div class="result-logic-cards" id="logicCards">
+                <!-- Dynamically populated by result.js -->
+            </div>
+            <div class="result-key-answers" id="keyAnswers">
+                <!-- Dynamically populated by result.js -->
+            </div>
+            <div class="result-priority-logic" id="priorityLogic">
+                <!-- Dynamically populated by result.js -->
+            </div>
+        </div>
+
+        <!-- 產業專屬 AI 落地場景 -->
+        <div class="result-section">
+            <div class="result-section-title">
+                <span class="result-section-icon">📈</span>
+                產業專屬 AI 落地場景
+            </div>
+            <div class="result-scenarios">
+                <!-- Dynamically populated by result.js -->
+            </div>
+        </div>
+
+        <!-- 顧問追問問題 -->
+        <div class="result-section result-followup-section">
+            <div class="result-section-title">
+                <span class="result-section-icon">⚠️</span>
+                顧問追問問題
+                <button class="result-followup-toggle" id="followupToggle">
+                    <span>展開回答</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+            </div>
+            <p class="result-followup-desc">這些是根據您的填答內容，顧問希望進一步了解的問題。回答將幫助顧問為您制定更精準的建議方案。</p>
+            <div class="result-followup-list" id="followupList">
                 <!-- Dynamically populated by result.js -->
             </div>
         </div>
@@ -181,16 +213,36 @@
             </div>
         </div>
 
+        <!-- 寄送報告至信箱 -->
+        <div class="result-section result-email-section">
+            <div class="result-email-header">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
+                <div>
+                    <h3>將診斷報告寄送至信箱</h3>
+                    <p>顧問將在 1 個工作日內與您聯繫，並附上完整診斷報告</p>
+                </div>
+            </div>
+            <div class="result-email-form">
+                <input type="text" class="result-email-input" id="emailName" placeholder="您的姓名">
+                <input type="email" class="result-email-input" id="emailAddr" placeholder="您的信箱地址">
+                <button class="btn btn-primary result-email-btn" id="emailSendBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
+                    寄送報告
+                </button>
+            </div>
+            <div class="result-email-status" id="emailStatus" style="display:none;"></div>
+        </div>
+
         <!-- CTA -->
         <div class="result-cta">
             <h2>準備好下一步了嗎？</h2>
-            <p>根據診斷結果，建議您預約顧問免費諮詢，讓我們協助您制定最適合的 AI 導入策略。</p>
+            <p>根據您的診斷結果，以下是建議的下一步行動。</p>
             <div class="result-cta-actions">
                 <a href="services.html" class="btn btn-outline-light">查看顧問服務</a>
-                <a href="tools.html" class="btn btn-outline-light">查看工具方案</a>
+                <a href="tools.html" class="btn btn-outline-light">查看工具方案總覽</a>
                 <a href="booking.html" class="btn btn-primary">預約顧問諮詢 →</a>
-                <a href="navigator.html" class="btn btn-outline-light">返回 AI 診斷中心</a>
             </div>
+            <a href="navigator.html" class="result-back-link">← 返回 AI 診斷中心</a>
         </div>
     </div>
 

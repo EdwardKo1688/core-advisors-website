@@ -108,7 +108,10 @@
     setText('resultIndustry', data.industry || '未填寫');
     setText('resultDate', formatDate(data.timestamp));
 
-    // ====== 5. Score overview ======
+    // ====== 4b. Executive Summary ======
+    populateExecutiveSummary(data, dimScores, totalScore, stage);
+
+    // ====== 5. Score overview (badge inside executive summary) ======
     const scoreCircle = document.querySelector('.result-score-circle');
     const scoreValue = document.querySelector('.result-score-value');
     const stageName = document.querySelector('.result-stage-name');
@@ -119,17 +122,17 @@
     if (stageName) stageName.textContent = stage.name;
     if (stageDesc) stageDesc.textContent = stage.desc;
 
-    // ====== 6. Dimension bars ======
-    const dimContainer = document.querySelector('.result-dims');
-    if (dimContainer) {
-        dimContainer.innerHTML = dimScores.map(d => `
-            <div class="result-dim-item">
-                <div class="result-dim-score">${d.score}</div>
-                <div class="result-dim-info">
-                    <h4>${d.name}</h4>
-                    <div class="result-dim-bar"><div class="result-dim-bar-fill ${getDimBarClass(d.score)}" style="width:${d.score}%"></div></div>
-                    <span class="result-dim-level">${getDimLevel(d.score)}</span>
+    // ====== 6. Dimension cards (2x3 grid) ======
+    const dimCardContainer = document.querySelector('.result-dim-cards');
+    if (dimCardContainer) {
+        dimCardContainer.innerHTML = dimScores.map(d => `
+            <div class="result-dim-card">
+                <div class="result-dim-card-header">
+                    <span class="result-dim-card-name">${d.name}</span>
+                    <span class="result-dim-card-score">${d.score}</span>
                 </div>
+                <div class="result-dim-bar"><div class="result-dim-bar-fill ${getDimBarClass(d.score)}" style="width:${d.score}%"></div></div>
+                <span class="result-dim-level">${getDimLevel(d.score)}</span>
             </div>
         `).join('');
     }
@@ -137,13 +140,13 @@
     // ====== 7. Radar chart ======
     drawRadarChart(dimScores.map(d => d.score));
 
-    // ====== 8. AI Analysis ======
-    const analysisEl = document.querySelector('.result-analysis-text');
+    // ====== 8. AI Analysis (blue border box) ======
+    const analysisEl = document.querySelector('.result-analysis-box');
     if (analysisEl) {
         analysisEl.innerHTML = generateAnalysis(data, dimScores, totalScore, stage);
     }
 
-    // ====== 9. Priority improvements ======
+    // ====== 9. Priority improvements (numbered circles) ======
     const priorityList = document.querySelector('.result-priority-list');
     if (priorityList) {
         priorityList.innerHTML = generatePriorities(data, dimScores, answers);
@@ -155,14 +158,8 @@
         scenarioContainer.innerHTML = generateScenarios(data, answers);
     }
 
-    // ====== 11. Analysis logic explanation ======
-    const logicSection = document.querySelectorAll('.result-section')[3]; // 4th section
-    if (logicSection) {
-        const logicText = logicSection.querySelector('.result-analysis-text');
-        if (logicText) {
-            logicText.innerHTML = generateLogicExplanation(data, dimScores, answers, totalScore);
-        }
-    }
+    // ====== 11. Analysis logic explanation (split into cards + numbered list) ======
+    populateLogicExplanation(data, dimScores, answers, totalScore);
 
     // ====== 12. Recommended consulting plans ======
     const solutionsContainer = document.querySelector('.result-solutions');
@@ -175,6 +172,15 @@
     if (roadmapContainer) {
         roadmapContainer.innerHTML = generateRoadmap(totalScore, dimScores, data);
     }
+
+    // ====== 14. Consultant Follow-up Questions (NEW) ======
+    generateFollowupQuestions(data, dimScores, answers);
+
+    // ====== 15. Follow-up toggle behavior ======
+    setupFollowupToggle();
+
+    // ====== 16. Email section behavior ======
+    setupEmailSection(data);
 
     // ========================================
     // Helper Functions
@@ -223,6 +229,33 @@
         `;
     }
 
+    // ====== Executive Summary (NEW) ======
+    function populateExecutiveSummary(data, dims, total, stage) {
+        const summaryEl = document.getElementById('executiveSummary');
+        if (!summaryEl) return;
+
+        const sorted = [...dims].sort((a, b) => b.score - a.score);
+        const best = sorted[0];
+        const worst = sorted[sorted.length - 1];
+        const industry = data.industry || '未知';
+
+        let summaryText = `${data.companyName || '貴公司'}（${industry}）目前處於 AI 導入的「${stage.name}」階段，整體成熟度 ${total} 分。`;
+        summaryText += `在${best.name}方面表現最佳（${best.score} 分），`;
+        summaryText += `而${worst.name}是最需優先強化的領域（${worst.score} 分）。`;
+
+        if (total < 40) {
+            summaryText += '建議從基礎數位化與資料盤點開始，為 AI 導入打好地基，先選擇 1-2 個低風險場景快速驗證價值。';
+        } else if (total < 60) {
+            summaryText += '建議聚焦弱項構面的基礎建設，同時挑選 1-2 個具體場景進行 POC 驗證，建立內部信心。';
+        } else if (total < 80) {
+            summaryText += '企業已具備一定基礎，建議加速推動 AI POC 並建立治理機制，為規模化導入做準備。';
+        } else {
+            summaryText += '企業 AI 能力已相當成熟，建議聚焦規模化擴展與持續優化，同時建立完善的治理架構。';
+        }
+
+        summaryEl.textContent = summaryText;
+    }
+
     // ====== Radar Chart ======
     function drawRadarChart(scores) {
         const canvas = document.getElementById('radarChart');
@@ -230,6 +263,8 @@
         const ctx = canvas.getContext('2d');
         const w = 280, h = 280;
         canvas.width = w * 2; canvas.height = h * 2;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
         ctx.scale(2, 2);
         const cx = w / 2, cy = h / 2, r = 100;
         const n = scores.length;
@@ -347,7 +382,7 @@
         return map[val] || val;
     }
 
-    // ====== Priority Improvements ======
+    // ====== Priority Improvements (numbered circles) ======
     function generatePriorities(data, dims, ans) {
         const priorities = [];
         const sorted = [...dims].sort((a, b) => a.score - b.score);
@@ -370,9 +405,12 @@
 
         return priorities.map(p => `
             <div class="result-priority-item">
-                <h4>${p.rank}. ${p.title}</h4>
-                <p>${p.desc}</p>
-                <div class="result-priority-basis">判斷依據：${p.basis}</div>
+                <div class="result-priority-num">${p.rank}</div>
+                <div class="result-priority-content">
+                    <h4>${p.title}</h4>
+                    <p>${p.desc}</p>
+                    <div class="result-priority-basis">判斷依據：<span class="basis-links">${p.basis}</span></div>
+                </div>
             </div>
         `).join('');
     }
@@ -421,15 +459,15 @@
                 const label = getQuestionShortLabel(q);
                 if (typeof val === 'string' && !isNaN(val)) {
                     const level = parseInt(val) <= 2 ? '偏低' : parseInt(val) <= 3 ? '中等' : '較高';
-                    parts.push(`${label}${level}（Q${q}）`);
+                    parts.push(`<span class="basis-tag">${label}${level}（Q${q}）</span>`);
                 } else if (Array.isArray(val)) {
-                    parts.push(`${label}：${val.slice(0, 2).join('、')}（Q${q}）`);
+                    parts.push(`<span class="basis-tag">${label}：${val.slice(0, 2).join('、')}（Q${q}）</span>`);
                 } else {
-                    parts.push(`${label}：${val}（Q${q}）`);
+                    parts.push(`<span class="basis-tag">${label}：${val}（Q${q}）</span>`);
                 }
             }
         });
-        return parts.join('、') || `${dim.name}構面得分 ${dim.score} 分，低於平均水準`;
+        return parts.join(' ') || `<span class="basis-tag">${dim.name}構面得分 ${dim.score} 分，低於平均水準</span>`;
     }
 
     function getQuestionShortLabel(q) {
@@ -451,32 +489,32 @@
             '提升營運效率': {
                 title: '導入流程自動化以提升營運效率',
                 desc: '針對最耗費人力的重複性工作，導入 RPA 或 AI 自動化工具，快速產生可量化的效率提升成果。',
-                basis: '最希望 AI 解決的場景為「提升營運效率」（Q5）'
+                basis: '<span class="basis-tag">最希望 AI 解決的場景為「提升營運效率」（Q5）</span>'
             },
             '強化客戶經營': {
                 title: '優化客戶開發與銷售流程',
                 desc: '針對客戶經營瓶頸，導入 AI 輔助的客戶分析、智能推薦與自動化溝通機制，提升業務團隊的精準度與效率。',
-                basis: '最希望 AI 解決的場景為「強化客戶經營」（Q5）'
+                basis: '<span class="basis-tag">最希望 AI 解決的場景為「強化客戶經營」（Q5）</span>'
             },
             '優化供應鏈': {
                 title: '建立智慧供應鏈管理',
                 desc: '運用 AI 進行需求預測、智慧排程與庫存優化，降低供應鏈風險與成本。',
-                basis: '最希望 AI 解決的場景為「優化供應鏈」（Q5）'
+                basis: '<span class="basis-tag">最希望 AI 解決的場景為「優化供應鏈」（Q5）</span>'
             },
             '輔助決策分析': {
                 title: '建立數據驅動決策體系',
                 desc: '建置 AI 驅動的商業智慧儀表板與異常偵測系統，讓管理層能即時掌握關鍵指標並做出精準決策。',
-                basis: '最希望 AI 解決的場景為「輔助決策分析」（Q5）'
+                basis: '<span class="basis-tag">最希望 AI 解決的場景為「輔助決策分析」（Q5）</span>'
             },
             '知識管理': {
                 title: '建立企業 AI 知識庫系統',
                 desc: '導入 AI 智能文件檢索與知識管理系統，讓員工透過自然語言快速找到所需資訊，加速經驗傳承。',
-                basis: '最希望 AI 解決的場景為「知識管理」（Q5）'
+                basis: '<span class="basis-tag">最希望 AI 解決的場景為「知識管理」（Q5）</span>'
             },
             '品質管控': {
                 title: '導入 AI 智慧品質檢測',
                 desc: '運用 AI 視覺辨識或數據分析技術，建立智能品質檢測系統，提升良率並降低人工檢測成本。',
-                basis: '最希望 AI 解決的場景為「品質管控」（Q5）'
+                basis: '<span class="basis-tag">最希望 AI 解決的場景為「品質管控」（Q5）</span>'
             }
         };
         return scenarios[q5] || null;
@@ -557,72 +595,153 @@
         return [...specific, ...universal];
     }
 
-    // ====== Logic Explanation ======
-    function generateLogicExplanation(data, dims, ans, total) {
+    // ====== Logic Explanation (split into cards + numbered list) ======
+    function populateLogicExplanation(data, dims, ans, total) {
         const sizeLabel = data.companySize || '未知';
         const industry = data.industry || '未知';
-        let html = '';
 
-        html += `<p><strong>AI 分析依據</strong></p>`;
-        html += `<p>• <strong>產業適配性：</strong>${industry}產業的 AI 應用正處於快速發展階段，`;
-        html += getIndustryInsight(industry);
-        html += `</p>`;
-        html += `<p>• <strong>規模適配性：</strong>${sizeLabel} 人的企業，`;
-        html += getSizeInsight(sizeLabel);
-        html += `</p><br>`;
+        // a) Logic cards — industry + size insights
+        const logicCardsEl = document.getElementById('logicCards');
+        if (logicCardsEl) {
+            const industryInsight = industry + '產業的 AI 應用正處於快速發展階段，' + getIndustryInsight(industry);
+            const sizeInsight = sizeLabel + ' 人的企業，' + getSizeInsight(sizeLabel);
 
-        html += `<p><strong>關鍵答案影響分析</strong></p>`;
-
-        // Q3 challenges
-        const q3 = ans.q3;
-        if (q3) {
-            const challenges = Array.isArray(q3) ? q3 : [q3];
-            html += `<p>• 最大營運挑戰為「${challenges.join('」與「')}」→ 優先推薦相關場景解決方案</p>`;
+            logicCardsEl.innerHTML = `
+                <div class="result-logic-card">
+                    <h4 class="result-logic-card-label">產業適配性</h4>
+                    <p>${industryInsight}</p>
+                </div>
+                <div class="result-logic-card">
+                    <h4 class="result-logic-card-label">規模適配性</h4>
+                    <p>${sizeInsight}</p>
+                </div>
+            `;
         }
 
-        // Q5 desired scenario
-        if (ans.q5) {
-            html += `<p>• 最希望 AI 解決的問題為「${ans.q5}」→ 聚焦相關領域的 AI 應用方案</p>`;
+        // b) Key answers — numbered list of key answer impacts
+        const keyAnswersEl = document.getElementById('keyAnswers');
+        if (keyAnswersEl) {
+            const keyItems = [];
+            let keyNum = 0;
+
+            // Q3 challenges
+            const q3 = ans.q3;
+            if (q3) {
+                keyNum++;
+                const challenges = Array.isArray(q3) ? q3 : [q3];
+                keyItems.push({
+                    num: keyNum,
+                    label: '最大營運挑戰',
+                    value: challenges.join('、'),
+                    insight: '優先推薦相關場景解決方案，聚焦企業最迫切的痛點'
+                });
+            }
+
+            // Q5 desired scenario
+            if (ans.q5) {
+                keyNum++;
+                keyItems.push({
+                    num: keyNum,
+                    label: '最希望 AI 解決的問題',
+                    value: ans.q5,
+                    insight: '聚焦相關領域的 AI 應用方案，確保導入方向符合企業期望'
+                });
+            }
+
+            // Q10 obstacle
+            if (ans.q10) {
+                keyNum++;
+                keyItems.push({
+                    num: keyNum,
+                    label: '流程改善最大阻力',
+                    value: getQ10Label(ans.q10),
+                    insight: '建議在導入策略中納入變革管理，降低推動阻力'
+                });
+            }
+
+            // Q11 data storage
+            if (ans.q11) {
+                keyNum++;
+                const dataLevel = parseInt(ans.q11);
+                let dataInsight = '資料管理基礎良好，可直接進入 AI 應用階段';
+                if (dataLevel <= 3) dataInsight = '業務資料分散且未整合，資料治理為前置必要工作';
+                else if (dataLevel <= 4) dataInsight = '資料管理有一定基礎，建議加強整合與品質管控';
+                keyItems.push({
+                    num: keyNum,
+                    label: '業務資料儲存與管理現況',
+                    value: dataLevel + '/5',
+                    insight: dataInsight
+                });
+            }
+
+            // Q12 data quality
+            if (ans.q12) {
+                keyNum++;
+                const dataQuality = parseInt(ans.q12);
+                let qualityInsight = '資料品質滿意度較高，具備良好的 AI 應用資料基礎';
+                if (dataQuality <= 4) qualityInsight = '資料品質滿意度偏低，需優先投入資料清洗與標準化';
+                else if (dataQuality <= 6) qualityInsight = '資料品質中等，建議持續改善以提升 AI 模型效果';
+                keyItems.push({
+                    num: keyNum,
+                    label: '資料品質滿意度',
+                    value: dataQuality + '/10',
+                    insight: qualityInsight
+                });
+            }
+
+            // Q23 readiness
+            if (ans.q23) {
+                keyNum++;
+                const readiness = parseInt(ans.q23);
+                let readyInsight = '具備較高信心，可直接推動 POC 驗證';
+                if (readiness <= 3) readyInsight = '建議先進行策略診斷與教育訓練，建立基礎信心';
+                else if (readiness <= 6) readyInsight = '建議分階段推進，由低風險場景開始建立成功經驗';
+                keyItems.push({
+                    num: keyNum,
+                    label: 'AI 導入準備度自評',
+                    value: readiness + '/10',
+                    insight: readyInsight
+                });
+            }
+
+            let keyHtml = '<h4 class="result-key-answers-title">關鍵答案影響分析</h4>';
+            keyHtml += keyItems.map(item => `
+                <div class="result-key-answer-item">
+                    <span class="result-key-num">${item.num}</span>
+                    <div class="result-key-content">
+                        <strong>${item.label}</strong> → <span class="result-key-value">${item.value}</span>
+                        <p class="result-key-insight">${item.insight}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Supplementary notes
+            if (notes.q5_note) {
+                keyHtml += `<div class="result-key-answer-item"><span class="result-key-num">+</span><div class="result-key-content"><strong>使用者補充期望</strong><p class="result-key-insight">${notes.q5_note}</p></div></div>`;
+            }
+            if (notes.q30_note) {
+                keyHtml += `<div class="result-key-answer-item"><span class="result-key-num">+</span><div class="result-key-content"><strong>使用者額外回饋</strong><p class="result-key-insight">${notes.q30_note}</p></div></div>`;
+            }
+
+            keyAnswersEl.innerHTML = keyHtml;
         }
 
-        // Q10 obstacle
-        if (ans.q10) {
-            html += `<p>• 流程改善最大阻力為「${getQ10Label(ans.q10)}」→ 建議在導入策略中納入變革管理</p>`;
+        // c) Priority logic box
+        const priorityLogicEl = document.getElementById('priorityLogic');
+        if (priorityLogicEl) {
+            const sortedDims = [...dims].sort((a, b) => a.score - b.score);
+            let logicText = `根據「影響範圍 × 改善空間 × 實施難度」三維評估，`;
+            logicText += `${sortedDims[0].name}為最優先強化項目（得分最低 ${sortedDims[0].score} 分），`;
+            logicText += `其次為${sortedDims[1].name}（${sortedDims[1].score} 分），`;
+            logicText += `建議從影響範圍最大、實施難度最低的場景切入，快速產生可見成果後再擴展。`;
+
+            priorityLogicEl.innerHTML = `
+                <div class="result-priority-logic-box">
+                    <h4>優先順序判斷邏輯</h4>
+                    <p>${logicText}</p>
+                </div>
+            `;
         }
-
-        // Q23 readiness
-        if (ans.q23) {
-            const readiness = parseInt(ans.q23);
-            html += `<p>• AI 導入準備度自評 ${readiness}/10 → `;
-            if (readiness <= 3) html += '建議先進行策略診斷與教育訓練，建立基礎信心';
-            else if (readiness <= 6) html += '建議分階段推進，由低風險場景開始建立成功經驗';
-            else html += '具備較高信心，可直接推動 POC 驗證';
-            html += `</p>`;
-        }
-
-        // Q11 data storage
-        if (ans.q11) {
-            const dataLevel = parseInt(ans.q11);
-            if (dataLevel <= 3) html += `<p>• 業務資料儲存於多個系統但未整合 → 資料治理為前置必要工作</p>`;
-        }
-
-        // Supplementary notes
-        if (notes.q5_note) {
-            html += `<p>• 使用者補充期望：${notes.q5_note}</p>`;
-        }
-        if (notes.q30_note) {
-            html += `<p>• 使用者額外回饋：${notes.q30_note}</p>`;
-        }
-
-        html += `<br><p><strong>優先順序判斷邏輯</strong></p>`;
-        html += `<p>根據「影響範圍 × 改善空間 × 實施難度」三維評估，`;
-
-        const sortedDims = [...dims].sort((a, b) => a.score - b.score);
-        html += `${sortedDims[0].name}為最優先強化項目（得分最低 ${sortedDims[0].score} 分），`;
-        html += `其次為${sortedDims[1].name}（${sortedDims[1].score} 分），`;
-        html += `建議從影響範圍最大、實施難度最低的場景切入，快速產生可見成果後再擴展。</p>`;
-
-        return html;
     }
 
     function getIndustryInsight(industry) {
@@ -647,22 +766,22 @@
         return '建議根據企業規模與資源，選擇適合的導入節奏與範圍。';
     }
 
-    // ====== Consulting Solutions ======
+    // ====== Consulting Solutions (shorter, reference-style) ======
     function generateSolutions(total, stage) {
         const solutions = [
             {
                 name: 'AI Strategy Sprint',
-                desc: '2-4 週內找到最有價值的 AI 導入場景，交付 AI 導入路線圖與優先順序建議。適合目前處於探索與整合期的企業。',
+                desc: '找出最值得導入 AI 的場景，2–4 週交付 AI 導入路線圖',
                 fit: total < 65
             },
             {
                 name: 'AI POC Sprint',
-                desc: '6-8 週完成概念驗證，交付 POC 系統與驗證報告，確認 AI 的實際業務效益。適合已有明確場景的企業。',
+                desc: '驗證 AI 商業價值，6–8 週交付 POC 系統 + 驗證報告',
                 fit: total >= 40 && total < 80
             },
             {
                 name: 'AI Governance & Scale',
-                desc: '3-12 個月建立企業 AI 治理架構與規模化導入機制，交付治理框架與擴展策略。適合已驗證場景的企業。',
+                desc: '建立 AI 治理與規模化，3–12 個月交付 AI 治理架構',
                 fit: total >= 60
             }
         ];
@@ -738,6 +857,212 @@
                 </div>
             </div>
         `;
+    }
+
+    // ====== Consultant Follow-up Questions (NEW) ======
+    function generateFollowupQuestions(data, dims, ans) {
+        const followupListEl = document.getElementById('followupList');
+        if (!followupListEl) return;
+
+        const sorted = [...dims].sort((a, b) => a.score - b.score);
+        const questions = [];
+
+        // Generate up to 5 targeted follow-up questions based on weakest dims and answers
+        sorted.forEach(dim => {
+            if (questions.length >= 5) return;
+
+            if (dim.key === 'governance' && dim.score < 70) {
+                questions.push({
+                    dim: dim.name,
+                    question: '目前公司內部是否有任何正式的 AI 使用規範、數據隱私政策或倫理準則？若有，是由哪個部門負責制定與推動？',
+                    why: '了解 AI 治理的具體現況，評估其完整性與執行力，以提供更精確的治理建議。'
+                });
+            }
+
+            if (dim.key === 'data' && dim.score < 70) {
+                const q12Val = ans.q12 ? parseInt(ans.q12) : 5;
+                questions.push({
+                    dim: dim.name,
+                    question: `您提到業務資料分散各處且品質滿意度為 ${q12Val}/10，能否舉例說明目前最主要的資料分散來源以及資料品質問題的具體表現？`,
+                    why: '釐清資料現況的具體痛點，有助於規劃資料整合與清洗策略。'
+                });
+            }
+
+            if (dim.key === 'culture' && dim.score < 70) {
+                const q26Val = ans.q26 ? parseInt(ans.q26) : 5;
+                let cultureQ = '團隊對於導入 AI 工具，目前最主要的擔憂或疑慮是什麼？是擔心取代工作、學習成本高、還是對 AI 的可靠性有疑慮？';
+                if (q26Val >= 7) {
+                    cultureQ = `團隊對新技術的接受度為 ${q26Val}/10，算是相當正面。能否分享過去成功推動新技術或新流程的經驗？這些經驗如何複製到 AI 導入？`;
+                } else if (q26Val <= 4) {
+                    cultureQ = `團隊對新技術的接受度偏低（${q26Val}/10），能否描述過去推動變革時遇到的最大阻力來源？是基層員工、中階主管、還是組織慣性？`;
+                }
+                questions.push({
+                    dim: dim.name,
+                    question: cultureQ,
+                    why: '了解組織文化的具體阻力來源，有助於設計更有效的變革管理與溝通策略。'
+                });
+            }
+
+            if (dim.key === 'tech' && dim.score < 70) {
+                const q16Val = ans.q16;
+                const systems = Array.isArray(q16Val) ? q16Val.join('、') : (q16Val || '未填寫');
+                const q17Val = ans.q17 ? parseInt(ans.q17) : 3;
+                questions.push({
+                    dim: dim.name,
+                    question: `目前使用的核心系統包括「${systems}」，系統串接程度為 ${q17Val}/5。能否說明哪些系統之間的資料串接最為關鍵但目前斷裂最嚴重？`,
+                    why: '了解系統整合的具體斷點，有助於規劃技術架構升級與 AI 工具部署路徑。'
+                });
+            }
+
+            if (dim.key === 'strategy' && dim.score < 70) {
+                const q1Val = ans.q1 ? parseInt(ans.q1) : 3;
+                let stratQ = '高層對 AI 的關注程度有限，能否說明目前高層最關心的業務議題是什麼？AI 在這些議題中可能扮演什麼角色？';
+                if (q1Val >= 4) {
+                    stratQ = '高層對 AI 已有一定關注，能否具體說明高層期望 AI 為企業帶來的具體成果或 KPI？是否已有初步的預算規劃？';
+                }
+                questions.push({
+                    dim: dim.name,
+                    question: stratQ,
+                    why: '了解高層的具體期望與資源投入意願，有助於制定符合企業戰略方向的 AI 導入計畫。'
+                });
+            }
+
+            if (dim.key === 'process' && dim.score < 70 && questions.length < 5) {
+                const q10Val = ans.q10 || '未知';
+                questions.push({
+                    dim: dim.name,
+                    question: `您提到流程改善最大阻力為「${getQ10Label(q10Val)}」，能否舉例說明目前最耗費人力且重複性最高的業務流程是什麼？預估每月花費多少人時？`,
+                    why: '量化流程痛點有助於精準評估 AI 自動化的 ROI，並優先選擇最具效益的導入場景。'
+                });
+            }
+        });
+
+        // Ensure we have exactly 5 questions
+        // If fewer than 5 from weak dims, add generic insightful questions
+        const genericQuestions = [
+            {
+                dim: '整體規劃',
+                question: '如果 AI 導入能在 3 個月內解決一個最困擾您的業務問題，那個問題會是什麼？目前這個問題造成的量化損失大約是多少？',
+                why: '聚焦最具價值的切入點，確保 AI 導入的第一步就能產生可見成效。'
+            },
+            {
+                dim: '資源配置',
+                question: '目前企業是否有 IT 部門或外部技術合作夥伴？如果要推動 AI 專案，您預期由內部團隊主導還是委託外部顧問？',
+                why: '了解執行資源的配置方式，有助於規劃合適的顧問介入深度與專案執行模式。'
+            },
+            {
+                dim: '成功定義',
+                question: '在您的認知中，AI 導入「成功」的具體標準是什麼？是成本下降、營收成長、效率提升、還是客戶滿意度改善？',
+                why: '明確成功指標有助於設定合理的期望值並建立可追蹤的 KPI 體系。'
+            }
+        ];
+
+        let gIdx = 0;
+        while (questions.length < 5 && gIdx < genericQuestions.length) {
+            questions.push(genericQuestions[gIdx]);
+            gIdx++;
+        }
+
+        followupListEl.innerHTML = questions.slice(0, 5).map((q, i) => `
+            <div class="result-followup-item">
+                <div class="result-followup-num">${i + 1}</div>
+                <div class="result-followup-content">
+                    <span class="result-followup-dim">${q.dim}</span>
+                    <h4 class="result-followup-question">${q.question}</h4>
+                    <p class="result-followup-why">${q.why}</p>
+                    <textarea class="result-followup-textarea" placeholder="請輸入您的回答（可略過）..."></textarea>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // ====== Follow-up Toggle Behavior ======
+    function setupFollowupToggle() {
+        const toggleBtn = document.getElementById('followupToggle');
+        const followupList = document.querySelector('.result-followup-list');
+        if (!toggleBtn || !followupList) return;
+
+        toggleBtn.addEventListener('click', function () {
+            const isExpanded = followupList.classList.toggle('expanded');
+            toggleBtn.textContent = isExpanded ? '收合' : '展開回答';
+        });
+    }
+
+    // ====== Email Section Behavior ======
+    function setupEmailSection(data) {
+        const emailName = document.getElementById('emailName');
+        const emailAddr = document.getElementById('emailAddr');
+        const emailSendBtn = document.getElementById('emailSendBtn');
+
+        // Pre-fill from assessment data
+        if (emailName && data.userName) emailName.value = data.userName;
+        if (emailAddr && data.email) emailAddr.value = data.email;
+
+        if (!emailSendBtn) return;
+
+        emailSendBtn.addEventListener('click', function () {
+            const name = emailName ? emailName.value.trim() : '';
+            const email = emailAddr ? emailAddr.value.trim() : '';
+
+            if (!email) {
+                showEmailStatus('請輸入有效的 Email 地址', 'error');
+                return;
+            }
+
+            // Validate email format
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showEmailStatus('Email 格式不正確，請重新輸入', 'error');
+                return;
+            }
+
+            // Check if API is enabled
+            if (typeof GAS_API_URL !== 'undefined' && typeof API_ENABLED !== 'undefined' && API_ENABLED) {
+                emailSendBtn.disabled = true;
+                emailSendBtn.textContent = '傳送中...';
+
+                fetch(GAS_API_URL + '?action=sendReport', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        companyName: data.companyName || '',
+                        industry: data.industry || '',
+                        totalScore: totalScore,
+                        stage: stage.name,
+                        dimScores: dimScores.map(d => ({ name: d.name, score: d.score })),
+                        timestamp: data.timestamp
+                    })
+                })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        showEmailStatus('報告已成功寄送至 ' + email, 'success');
+                    } else {
+                        showEmailStatus('寄送失敗，請稍後再試', 'error');
+                    }
+                })
+                .catch(() => {
+                    showEmailStatus('寄送失敗，請確認網路連線後再試', 'error');
+                })
+                .finally(() => {
+                    emailSendBtn.disabled = false;
+                    emailSendBtn.textContent = '寄送報告';
+                });
+            } else {
+                // Demo mode — show success message
+                showEmailStatus('報告已成功寄送至 ' + email + '（展示模式）', 'success');
+            }
+        });
+    }
+
+    function showEmailStatus(message, type) {
+        const statusEl = document.getElementById('emailStatus');
+        if (!statusEl) return;
+        statusEl.textContent = message;
+        statusEl.className = 'result-email-status ' + (type === 'success' ? 'status-success' : 'status-error');
+        statusEl.style.display = 'block';
+        setTimeout(() => { statusEl.style.display = 'none'; }, 5000);
     }
 
 })();
