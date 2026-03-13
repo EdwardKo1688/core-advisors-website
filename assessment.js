@@ -236,13 +236,37 @@
                 userName: document.getElementById('userName')?.value || '',
                 jobTitle: document.getElementById('jobTitle')?.value || '',
                 userEmail: document.getElementById('userEmail')?.value || '',
+                userPhone: document.getElementById('userPhone')?.value || '',
                 answers: answers,
                 answeredCount: countAnsweredQuestions(),
                 totalQuestions: TOTAL_QUESTIONS,
                 timestamp: new Date().toISOString()
             };
+
+            // Save to sessionStorage first (always works)
             sessionStorage.setItem('assessmentData', JSON.stringify(formData));
-            window.location.href = 'result.html';
+
+            // POST to Google Apps Script if configured
+            if (typeof GAS_API_URL !== 'undefined' && typeof API_ENABLED !== 'undefined' && API_ENABLED) {
+                fetch(GAS_API_URL + '?action=submitAssessment', {
+                    method: 'POST',
+                    body: JSON.stringify(formData)
+                })
+                .then(r => r.json())
+                .then(result => {
+                    if (result.success) {
+                        formData.serverId = result.id;
+                        formData.serverScore = result.totalScore;
+                        sessionStorage.setItem('assessmentData', JSON.stringify(formData));
+                    }
+                })
+                .catch(() => { /* API failed, continue with local data */ })
+                .finally(() => {
+                    window.location.href = 'result.html';
+                });
+            } else {
+                window.location.href = 'result.html';
+            }
         });
     }
 

@@ -5,33 +5,270 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>後台管理 | 核心顧問有限公司</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
-    <div class="admin-login">
+    <!-- ===== Login Screen ===== -->
+    <div class="admin-login" id="loginScreen">
         <div class="login-card">
             <a href="index.html" class="logo">
                 <span class="logo-icon">C</span>
                 <span class="logo-text">核心顧問</span>
             </a>
             <h2>後台管理系統</h2>
-            <p class="login-subtitle">請輸入管理員帳號與密碼</p>
-            <form onsubmit="event.preventDefault(); alert('此為展示頁面，後台功能尚未啟用。');">
-                <div class="form-group">
-                    <label for="username">帳號</label>
-                    <input type="text" id="username" placeholder="請輸入帳號" required>
-                </div>
+            <p class="login-subtitle">請輸入管理員密碼</p>
+            <form id="loginForm">
                 <div class="form-group">
                     <label for="password">密碼</label>
                     <input type="password" id="password" placeholder="請輸入密碼" required>
                 </div>
-                <button type="submit" class="login-btn">登入</button>
+                <div class="login-error" id="loginError" style="display:none;"></div>
+                <button type="submit" class="login-btn" id="loginBtn">登入</button>
             </form>
             <div class="login-footer">
-                <a href="index.html">← 返回首頁</a>
+                <a href="index.html">&larr; 返回首頁</a>
             </div>
         </div>
     </div>
+
+    <!-- ===== Admin Dashboard (hidden until login) ===== -->
+    <div class="admin-app" id="adminApp" style="display:none;">
+        <!-- Top Bar -->
+        <header class="admin-topbar">
+            <div class="admin-topbar-left">
+                <button class="admin-menu-toggle" id="menuToggle">
+                    <span></span><span></span><span></span>
+                </button>
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">C</span>
+                    <span class="logo-text">核心顧問</span>
+                </a>
+                <span class="admin-label">後台管理</span>
+            </div>
+            <div class="admin-topbar-right">
+                <span class="admin-status" id="apiStatus">API 連線中...</span>
+                <button class="admin-logout-btn" id="logoutBtn">登出</button>
+            </div>
+        </header>
+
+        <div class="admin-layout">
+            <!-- Sidebar -->
+            <aside class="admin-sidebar" id="adminSidebar">
+                <nav class="admin-nav">
+                    <button class="admin-nav-item active" data-tab="dashboard">
+                        <span class="nav-icon">&#x1F4CA;</span>
+                        <span class="nav-label">儀表板</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="records">
+                        <span class="nav-icon">&#x1F4CB;</span>
+                        <span class="nav-label">診斷紀錄</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="bookings">
+                        <span class="nav-icon">&#x1F4C5;</span>
+                        <span class="nav-label">預約管理</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="cms">
+                        <span class="nav-icon">&#x1F4DD;</span>
+                        <span class="nav-label">內容管理</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="settings">
+                        <span class="nav-icon">&#x2699;</span>
+                        <span class="nav-label">設定</span>
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="admin-main">
+
+                <!-- Tab: Dashboard -->
+                <div class="admin-tab active" id="tab-dashboard">
+                    <h2 class="tab-title">儀表板</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="statTotal">--</div>
+                            <div class="stat-label">總診斷數</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statMonthly">--</div>
+                            <div class="stat-label">本月診斷</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statAvgScore">--</div>
+                            <div class="stat-label">平均分數</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statBookings">--</div>
+                            <div class="stat-label">待處理預約</div>
+                        </div>
+                    </div>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>診斷趨勢（近 6 個月）</h3>
+                            <canvas id="chartTrend"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3>產業分布</h3>
+                            <canvas id="chartIndustry"></canvas>
+                        </div>
+                    </div>
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>六大構面平均分數</h3>
+                            <canvas id="chartDimensions"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3>最近活動</h3>
+                            <div class="activity-list" id="activityList">
+                                <p class="empty-state">載入中...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Records -->
+                <div class="admin-tab" id="tab-records">
+                    <div class="tab-header">
+                        <h2 class="tab-title">診斷紀錄</h2>
+                        <button class="btn-export" id="btnExport">匯出 CSV</button>
+                    </div>
+                    <div class="filter-bar">
+                        <input type="text" class="filter-search" id="searchInput" placeholder="搜尋公司、姓名、Email...">
+                        <select class="filter-select" id="filterIndustry">
+                            <option value="all">所有產業</option>
+                        </select>
+                        <select class="filter-select" id="filterStatus">
+                            <option value="all">所有狀態</option>
+                            <option value="new">新提交</option>
+                            <option value="contacted">已聯繫</option>
+                            <option value="closed">已結案</option>
+                        </select>
+                    </div>
+                    <div class="records-table-wrap">
+                        <table class="records-table" id="recordsTable">
+                            <thead>
+                                <tr>
+                                    <th>日期</th>
+                                    <th>公司</th>
+                                    <th>聯絡人</th>
+                                    <th>產業</th>
+                                    <th>分數</th>
+                                    <th>等級</th>
+                                    <th>狀態</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recordsBody">
+                                <tr><td colspan="8" class="empty-state">載入中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination" id="pagination"></div>
+                    <!-- Detail Modal -->
+                    <div class="modal-overlay" id="detailModal" style="display:none;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 id="modalTitle">診斷詳情</h3>
+                                <button class="modal-close" id="modalClose">&times;</button>
+                            </div>
+                            <div class="modal-body" id="modalBody"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Bookings -->
+                <div class="admin-tab" id="tab-bookings">
+                    <h2 class="tab-title">預約管理</h2>
+                    <div class="booking-tabs">
+                        <button class="booking-tab-btn active" data-btab="list">預約列表</button>
+                        <button class="booking-tab-btn" data-btab="slots">時段管理</button>
+                    </div>
+                    <div class="booking-panel active" id="bpanel-list">
+                        <div class="records-table-wrap">
+                            <table class="records-table">
+                                <thead>
+                                    <tr>
+                                        <th>日期</th>
+                                        <th>時段</th>
+                                        <th>姓名</th>
+                                        <th>公司</th>
+                                        <th>主題</th>
+                                        <th>狀態</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bookingsBody">
+                                    <tr><td colspan="7" class="empty-state">載入中...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="booking-panel" id="bpanel-slots">
+                        <div class="slots-header">
+                            <h3>設定可預約時段</h3>
+                            <button class="btn-primary-sm" id="btnSaveSlots">儲存時段</button>
+                        </div>
+                        <div class="slots-grid" id="slotsGrid">
+                            <!-- Generated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: CMS -->
+                <div class="admin-tab" id="tab-cms">
+                    <h2 class="tab-title">內容管理</h2>
+                    <div class="cms-header">
+                        <select class="filter-select" id="cmsPageSelect">
+                            <option value="index">首頁</option>
+                            <option value="about">關於我們</option>
+                            <option value="services">顧問服務</option>
+                            <option value="solutions">解決方案</option>
+                            <option value="tools">工具方案</option>
+                            <option value="navigator">AI 導入診斷</option>
+                            <option value="resources">資源觀點</option>
+                        </select>
+                    </div>
+                    <div class="cms-fields" id="cmsFields">
+                        <p class="empty-state">選擇頁面後載入可編輯內容</p>
+                    </div>
+                </div>
+
+                <!-- Tab: Settings -->
+                <div class="admin-tab" id="tab-settings">
+                    <h2 class="tab-title">設定</h2>
+                    <div class="settings-section">
+                        <h3>變更密碼</h3>
+                        <div class="form-group">
+                            <label>目前密碼</label>
+                            <input type="password" id="currentPassword" placeholder="輸入目前密碼">
+                        </div>
+                        <div class="form-group">
+                            <label>新密碼</label>
+                            <input type="password" id="newPassword" placeholder="輸入新密碼">
+                        </div>
+                        <div class="form-group">
+                            <label>確認新密碼</label>
+                            <input type="password" id="confirmPassword" placeholder="再次輸入新密碼">
+                        </div>
+                        <button class="btn-primary-sm" id="btnChangePassword">變更密碼</button>
+                    </div>
+                    <div class="settings-section">
+                        <h3>API 連線狀態</h3>
+                        <div class="api-status-detail" id="apiStatusDetail">
+                            <p>Google Apps Script URL: <code id="gasUrlDisplay">未設定</code></p>
+                            <p>連線狀態: <span id="connectionStatus">檢查中...</span></p>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="api-config.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
