@@ -1,4 +1,4 @@
-// === AI Smart Assessment System ===
+// === AI Smart Assessment System (Enhanced) ===
 
 (function () {
     'use strict';
@@ -38,6 +38,27 @@
         updateUI();
     }
 
+    // Auto-advance: scroll to next question after answering
+    function autoAdvanceToNext(currentQuestionEl) {
+        const allQuestions = Array.from(
+            currentQuestionEl.closest('.assess-questions')?.querySelectorAll('.assess-question') || []
+        );
+        const idx = allQuestions.indexOf(currentQuestionEl);
+        if (idx >= 0 && idx < allQuestions.length - 1) {
+            const nextQ = allQuestions[idx + 1];
+            setTimeout(() => {
+                nextQ.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                nextQ.classList.add('highlight');
+                setTimeout(() => nextQ.classList.remove('highlight'), 800);
+            }, 300);
+        } else if (idx === allQuestions.length - 1) {
+            // Last question in section — pulse the Next button
+            const btn = btnNext.style.display !== 'none' ? btnNext : btnSubmit;
+            btn.classList.add('pulse');
+            setTimeout(() => btn.classList.remove('pulse'), 1500);
+        }
+    }
+
     // Rating button clicks
     function setupRatingButtons() {
         document.querySelectorAll('.q-rating').forEach(ratingGroup => {
@@ -47,8 +68,10 @@
                     ratingGroup.querySelectorAll('.q-rating-btn').forEach(b => b.classList.remove('selected'));
                     btn.classList.add('selected');
                     answers['q' + qNum] = btn.dataset.value;
+                    const qEl = document.querySelector(`.assess-question[data-q="${qNum}"]`);
                     markAnswered(qNum);
                     updateProgress();
+                    if (qEl) autoAdvanceToNext(qEl);
                 });
             });
         });
@@ -58,10 +81,13 @@
     function setupOptionTracking() {
         document.querySelectorAll('.assess-question input[type="radio"]').forEach(input => {
             input.addEventListener('change', () => {
-                const qNum = input.closest('.assess-question').dataset.q;
+                const qEl = input.closest('.assess-question');
+                const qNum = qEl.dataset.q;
                 answers['q' + qNum] = input.value;
                 markAnswered(qNum);
                 updateProgress();
+                // Auto-advance for single-select (radio)
+                autoAdvanceToNext(qEl);
             });
         });
 
@@ -78,6 +104,7 @@
                     qEl.classList.remove('answered');
                 }
                 updateProgress();
+                // No auto-advance for multi-select (user may want to select more)
             });
         });
     }
@@ -101,7 +128,7 @@
     function goToSection(index) {
         if (index < 0 || index >= sections.length) return;
 
-        // Validate current section before moving forward
+        // Validate basic info before moving forward
         if (index > currentSection && currentSection === 0) {
             if (!validateBasicInfo()) return;
         }
@@ -166,7 +193,6 @@
         ];
 
         let valid = true;
-        // Clear previous errors
         document.querySelectorAll('.assess-field.error').forEach(f => f.classList.remove('error'));
         document.querySelectorAll('.field-error-msg').forEach(m => m.remove());
 
@@ -202,7 +228,6 @@
     }
     if (btnSubmit) {
         btnSubmit.addEventListener('click', () => {
-            // Save form data to sessionStorage for result page
             const formData = {
                 companyName: document.getElementById('companyName')?.value || '',
                 industry: document.getElementById('industry')?.value || '',
@@ -212,6 +237,8 @@
                 jobTitle: document.getElementById('jobTitle')?.value || '',
                 userEmail: document.getElementById('userEmail')?.value || '',
                 answers: answers,
+                answeredCount: countAnsweredQuestions(),
+                totalQuestions: TOTAL_QUESTIONS,
                 timestamp: new Date().toISOString()
             };
             sessionStorage.setItem('assessmentData', JSON.stringify(formData));

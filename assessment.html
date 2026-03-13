@@ -42,7 +42,7 @@
                     <span class="logo-icon">C</span>
                     <span>AI 智慧導入診斷</span>
                 </div>
-                <p class="assess-subtitle">融合四大診斷構面 · 一次完成全面評估</p>
+                <p class="assess-subtitle">融合四大診斷構面 · 六維度全面評估</p>
             </div>
             <div class="assess-progress-bar">
                 <div class="assess-progress-fill" id="progressFill" style="width: 0%"></div>
@@ -107,7 +107,8 @@
 
         <!-- 右側問卷內容區 -->
         <main class="assess-main">
-            <!-- Section 0: 基本資料 -->
+
+            <!-- ==================== Section 0: 基本資料 ==================== -->
             <section class="assess-section active" data-section="0" id="section-0">
                 <div class="assess-section-header">
                     <span class="assess-section-badge">開始之前</span>
@@ -167,6 +168,17 @@
                         </select>
                     </div>
                     <div class="assess-field">
+                        <label class="assess-label">年營收規模</label>
+                        <select class="assess-select" id="revenue">
+                            <option value="">請選擇（選填）</option>
+                            <option value="<5000萬">5,000 萬以下</option>
+                            <option value="5000萬-2億">5,000 萬 – 2 億</option>
+                            <option value="2億-10億">2 億 – 10 億</option>
+                            <option value="10億-50億">10 億 – 50 億</option>
+                            <option value="50億+">50 億以上</option>
+                        </select>
+                    </div>
+                    <div class="assess-field">
                         <label class="assess-label">部門</label>
                         <input type="text" class="assess-input" id="department" placeholder="例如：資訊部、數位轉型辦公室">
                     </div>
@@ -186,486 +198,466 @@
                         <label class="assess-label">電話</label>
                         <input type="tel" class="assess-input" id="userPhone" placeholder="0912-345-678">
                     </div>
+                    <div class="assess-field">
+                        <label class="assess-label">公司成立年數</label>
+                        <select class="assess-select" id="companyAge">
+                            <option value="">請選擇（選填）</option>
+                            <option value="<3年">3 年以下</option>
+                            <option value="3-10年">3-10 年</option>
+                            <option value="10-30年">10-30 年</option>
+                            <option value="30年+">30 年以上</option>
+                        </select>
+                    </div>
                 </div>
             </section>
 
-            <!-- Section 1: 構面一 企業戰略與決策 -->
+            <!-- ==================== Section 1: 企業戰略與決策 (Q1-Q5) ==================== -->
             <section class="assess-section" data-section="1" id="section-1">
                 <div class="assess-section-header">
-                    <span class="assess-section-badge">構面一</span>
+                    <span class="assess-section-badge">構面一（共 5 題）</span>
                     <h2>企業戰略與決策</h2>
-                    <p>評估企業高層對 AI 導入的認知、決策力與資源配置。</p>
+                    <p>評估企業高層對 AI 導入的認知深度、決策力、資源配置與戰略整合程度。</p>
                 </div>
                 <div class="assess-questions">
-                    <!-- Q1 單選 -->
+
                     <div class="assess-question" data-q="1" data-dim="strategy">
-                        <div class="q-header">
-                            <span class="q-number">Q1</span>
-                            <span class="q-type-tag">單選</span>
-                        </div>
-                        <h3 class="q-title">貴公司高層（董事長/總經理）對 AI 導入的態度為何？</h3>
+                        <div class="q-header"><span class="q-number">Q1</span><span class="q-type-tag">單選</span></div>
+                        <h3 class="q-title">貴公司最高決策層（董事長/總經理）對 AI 導入的參與程度為何？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q1" value="1"><span class="q-option-text">尚未關注，沒有具體討論</span></label>
-                            <label class="q-option"><input type="radio" name="q1" value="2"><span class="q-option-text">有提到但沒有具體行動計畫</span></label>
-                            <label class="q-option"><input type="radio" name="q1" value="3"><span class="q-option-text">已開始研究並指派窗口負責</span></label>
-                            <label class="q-option"><input type="radio" name="q1" value="4"><span class="q-option-text">已投入資源並有明確推動時程</span></label>
-                            <label class="q-option"><input type="radio" name="q1" value="5"><span class="q-option-text">已將 AI 列為核心戰略，由高層親自推動</span></label>
+                            <label class="q-option"><input type="radio" name="q1" value="1"><span class="q-option-text">尚未關注，從未在經營會議中討論 AI 議題</span></label>
+                            <label class="q-option"><input type="radio" name="q1" value="2"><span class="q-option-text">偶爾提到 AI，但視為 IT 部門的事</span></label>
+                            <label class="q-option"><input type="radio" name="q1" value="3"><span class="q-option-text">已指派中階主管研究，但決策層未深度參與</span></label>
+                            <label class="q-option"><input type="radio" name="q1" value="4"><span class="q-option-text">決策層已參與 AI 策略討論，並撥出專案預算</span></label>
+                            <label class="q-option"><input type="radio" name="q1" value="5"><span class="q-option-text">AI 已列入年度經營方針，由最高層親自督導推動</span></label>
                         </div>
                     </div>
-                    <!-- Q2 單選 -->
+
                     <div class="assess-question" data-q="2" data-dim="strategy">
-                        <div class="q-header">
-                            <span class="q-number">Q2</span>
-                            <span class="q-type-tag">單選</span>
-                        </div>
-                        <h3 class="q-title">貴公司目前是否有制定數位轉型或 AI 導入的中長期策略？</h3>
+                        <div class="q-header"><span class="q-number">Q2</span><span class="q-type-tag">單選</span></div>
+                        <h3 class="q-title">貴公司是否已將 AI / 數位轉型納入中長期經營策略？</h3>
                         <div class="q-options">
                             <label class="q-option"><input type="radio" name="q2" value="1"><span class="q-option-text">完全沒有相關策略規劃</span></label>
-                            <label class="q-option"><input type="radio" name="q2" value="2"><span class="q-option-text">有概念但未形成書面策略</span></label>
-                            <label class="q-option"><input type="radio" name="q2" value="3"><span class="q-option-text">有初步策略文件但執行不明確</span></label>
-                            <label class="q-option"><input type="radio" name="q2" value="4"><span class="q-option-text">有完整策略並已開始執行</span></label>
-                            <label class="q-option"><input type="radio" name="q2" value="5"><span class="q-option-text">策略完善且定期檢視調整</span></label>
+                            <label class="q-option"><input type="radio" name="q2" value="2"><span class="q-option-text">有概念性討論，但未形成書面策略</span></label>
+                            <label class="q-option"><input type="radio" name="q2" value="3"><span class="q-option-text">有初步策略文件，但缺乏具體里程碑與負責人</span></label>
+                            <label class="q-option"><input type="radio" name="q2" value="4"><span class="q-option-text">有完整策略文件且已啟動執行，有 KPI 追蹤</span></label>
+                            <label class="q-option"><input type="radio" name="q2" value="5"><span class="q-option-text">策略完善、定期檢視調整，並與營運目標深度整合</span></label>
                         </div>
                     </div>
-                    <!-- Q3 複選 -->
+
                     <div class="assess-question" data-q="3" data-dim="strategy">
-                        <div class="q-header">
-                            <span class="q-number">Q3</span>
-                            <span class="q-type-tag tag-multi">複選</span>
-                        </div>
-                        <h3 class="q-title">貴公司目前面臨的最大營運挑戰是什麼？（可複選）</h3>
+                        <div class="q-header"><span class="q-number">Q3</span><span class="q-type-tag tag-multi">複選</span></div>
+                        <h3 class="q-title">貴公司目前面臨的最大營運挑戰是什麼？（可複選，最多選 3 項）</h3>
                         <div class="q-options">
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="人力成本上升"><span class="q-option-text">人力成本上升，需要降本增效</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="客戶開發效率低"><span class="q-option-text">客戶開發效率低，業務成長瓶頸</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="跨部門協作困難"><span class="q-option-text">跨部門協作困難，流程不夠順暢</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="數據散落"><span class="q-option-text">數據散落在不同系統，難以整合分析</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="缺乏創新動力"><span class="q-option-text">缺乏創新動力，競爭對手已在數位化</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="人才招募留任"><span class="q-option-text">關鍵人才招募與留任困難</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="人力成本上升"><span class="q-option-text">人力成本持續上升，急需降本增效</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="客戶開發效率低"><span class="q-option-text">客戶開發效率低，業務成長遇到瓶頸</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="跨部門協作困難"><span class="q-option-text">跨部門協作困難，流程斷裂造成效率損失</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="數據散落難整合"><span class="q-option-text">數據散落在不同系統，無法整合分析</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="競爭對手數位化"><span class="q-option-text">競爭對手已在數位化，自身缺乏創新動力</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="人才招募留任困難"><span class="q-option-text">關鍵人才招募與留任困難</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q3" value="供應鏈風險"><span class="q-option-text">供應鏈不穩定，缺乏風險預警能力</span></label>
                         </div>
                     </div>
-                    <!-- Q4 評分 -->
+
                     <div class="assess-question" data-q="4" data-dim="strategy">
-                        <div class="q-header">
-                            <span class="q-number">Q4</span>
-                            <span class="q-type-tag tag-rating">評分</span>
-                        </div>
-                        <h3 class="q-title">貴公司對 AI 導入的預算配置意願如何？</h3>
-                        <p class="q-hint">1 = 完全沒有預算概念，10 = 已有明確年度 AI 投資預算</p>
+                        <div class="q-header"><span class="q-number">Q4</span><span class="q-type-tag tag-rating">評分</span></div>
+                        <h3 class="q-title">貴公司對 AI 導入的預算配置意願與明確度如何？</h3>
+                        <p class="q-hint">1 = 完全沒有預算概念，10 = 已有明確年度 AI 專項預算且逐年增加</p>
                         <div class="q-rating" data-q="4">
-                            <button class="q-rating-btn" data-value="1">1</button>
-                            <button class="q-rating-btn" data-value="2">2</button>
-                            <button class="q-rating-btn" data-value="3">3</button>
-                            <button class="q-rating-btn" data-value="4">4</button>
-                            <button class="q-rating-btn" data-value="5">5</button>
-                            <button class="q-rating-btn" data-value="6">6</button>
-                            <button class="q-rating-btn" data-value="7">7</button>
-                            <button class="q-rating-btn" data-value="8">8</button>
-                            <button class="q-rating-btn" data-value="9">9</button>
-                            <button class="q-rating-btn" data-value="10">10</button>
+                            <button class="q-rating-btn" data-value="1">1</button><button class="q-rating-btn" data-value="2">2</button><button class="q-rating-btn" data-value="3">3</button><button class="q-rating-btn" data-value="4">4</button><button class="q-rating-btn" data-value="5">5</button><button class="q-rating-btn" data-value="6">6</button><button class="q-rating-btn" data-value="7">7</button><button class="q-rating-btn" data-value="8">8</button><button class="q-rating-btn" data-value="9">9</button><button class="q-rating-btn" data-value="10">10</button>
                         </div>
-                        <div class="q-rating-labels">
-                            <span>完全沒有</span>
-                            <span>明確預算</span>
-                        </div>
+                        <div class="q-rating-labels"><span>完全沒有</span><span>明確預算</span></div>
                     </div>
-                    <!-- Q5 單選+補充 -->
+
                     <div class="assess-question" data-q="5" data-dim="strategy">
-                        <div class="q-header">
-                            <span class="q-number">Q5</span>
-                            <span class="q-type-tag">單選</span>
-                        </div>
-                        <h3 class="q-title">貴公司最希望 AI 幫助解決的第一個問題是什麼？</h3>
+                        <div class="q-header"><span class="q-number">Q5</span><span class="q-type-tag">單選</span></div>
+                        <h3 class="q-title">貴公司最希望 AI 優先解決的業務場景是什麼？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q5" value="提升營運效率"><span class="q-option-text">提升營運效率（降低重複人力）</span></label>
-                            <label class="q-option"><input type="radio" name="q5" value="強化客戶經營"><span class="q-option-text">強化客戶經營（精準行銷/客服自動化）</span></label>
-                            <label class="q-option"><input type="radio" name="q5" value="優化供應鏈"><span class="q-option-text">優化供應鏈（預測/排程/庫存）</span></label>
-                            <label class="q-option"><input type="radio" name="q5" value="輔助決策分析"><span class="q-option-text">輔助決策分析（數據分析/報表自動化）</span></label>
-                            <label class="q-option"><input type="radio" name="q5" value="知識管理"><span class="q-option-text">知識管理（內部知識庫/文件搜尋）</span></label>
+                            <label class="q-option"><input type="radio" name="q5" value="提升營運效率"><span class="q-option-text">提升營運效率（降低重複人力、自動化流程）</span></label>
+                            <label class="q-option"><input type="radio" name="q5" value="強化客戶經營"><span class="q-option-text">強化客戶經營（精準行銷、客服自動化、客戶分析）</span></label>
+                            <label class="q-option"><input type="radio" name="q5" value="優化供應鏈"><span class="q-option-text">優化供應鏈（需求預測、智慧排程、庫存管理）</span></label>
+                            <label class="q-option"><input type="radio" name="q5" value="輔助決策分析"><span class="q-option-text">輔助決策分析（數據儀表板、異常偵測、報表自動化）</span></label>
+                            <label class="q-option"><input type="radio" name="q5" value="知識管理"><span class="q-option-text">知識管理（內部知識庫、文件智能搜尋、經驗傳承）</span></label>
+                            <label class="q-option"><input type="radio" name="q5" value="品質管控"><span class="q-option-text">品質管控（智能檢測、瑕疵辨識、良率預測）</span></label>
                         </div>
                         <div class="q-supplement">
                             <label class="assess-label">補充說明（選填）</label>
-                            <textarea class="assess-textarea" name="q5_note" rows="2" placeholder="請具體描述您希望 AI 解決的場景..."></textarea>
+                            <textarea class="assess-textarea" name="q5_note" rows="2" placeholder="請具體描述您希望 AI 解決的場景或痛點..."></textarea>
                         </div>
                     </div>
+
+
                 </div>
             </section>
 
-            <!-- Section 2: 構面二 營運流程成熟度 -->
+            <!-- ==================== Section 2: 營運流程成熟度 (Q6-Q10) ==================== -->
             <section class="assess-section" data-section="2" id="section-2">
                 <div class="assess-section-header">
-                    <span class="assess-section-badge">構面二</span>
+                    <span class="assess-section-badge">構面二（共 5 題）</span>
                     <h2>營運流程成熟度</h2>
-                    <p>評估企業現有流程的標準化程度、瓶頸與改善空間。</p>
+                    <p>評估企業現有流程的標準化程度、系統覆蓋率、瓶頸識別與持續改善能力。</p>
                 </div>
                 <div class="assess-questions">
+
                     <div class="assess-question" data-q="6" data-dim="process">
                         <div class="q-header"><span class="q-number">Q6</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司的核心業務流程是否已有標準作業程序（SOP）？</h3>
+                        <h3 class="q-title">貴公司核心業務流程的標準作業程序（SOP）建置程度如何？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q6" value="1"><span class="q-option-text">大部分流程靠經驗和口頭傳承</span></label>
-                            <label class="q-option"><input type="radio" name="q6" value="2"><span class="q-option-text">部分流程有文件化但未落實</span></label>
-                            <label class="q-option"><input type="radio" name="q6" value="3"><span class="q-option-text">主要流程已有 SOP 並有人負責</span></label>
-                            <label class="q-option"><input type="radio" name="q6" value="4"><span class="q-option-text">流程標準化程度高，有定期優化</span></label>
-                            <label class="q-option"><input type="radio" name="q6" value="5"><span class="q-option-text">流程已數位化並持續自動化改善</span></label>
+                            <label class="q-option"><input type="radio" name="q6" value="1"><span class="q-option-text">大部分流程靠經驗和口頭傳承，無正式文件</span></label>
+                            <label class="q-option"><input type="radio" name="q6" value="2"><span class="q-option-text">部分流程有文件化但未嚴格落實</span></label>
+                            <label class="q-option"><input type="radio" name="q6" value="3"><span class="q-option-text">主要流程已有 SOP 並有專人負責維護</span></label>
+                            <label class="q-option"><input type="radio" name="q6" value="4"><span class="q-option-text">SOP 標準化程度高，有 PDCA 持續優化機制</span></label>
+                            <label class="q-option"><input type="radio" name="q6" value="5"><span class="q-option-text">全面數位化 SOP，流程自動化且即時監控</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="7" data-dim="process">
                         <div class="q-header"><span class="q-number">Q7</span><span class="q-type-tag tag-rating">評分</span></div>
-                        <h3 class="q-title">貴公司的跨部門協作流程順暢程度如何？</h3>
-                        <p class="q-hint">1 = 部門間各自為政，10 = 跨部門協作高度流暢</p>
+                        <h3 class="q-title">貴公司跨部門協作的流暢程度如何？</h3>
+                        <p class="q-hint">1 = 部門間各自為政、資訊嚴重不對稱，10 = 跨部門協作高度流暢、資訊即時透明</p>
                         <div class="q-rating" data-q="7">
-                            <button class="q-rating-btn" data-value="1">1</button>
-                            <button class="q-rating-btn" data-value="2">2</button>
-                            <button class="q-rating-btn" data-value="3">3</button>
-                            <button class="q-rating-btn" data-value="4">4</button>
-                            <button class="q-rating-btn" data-value="5">5</button>
-                            <button class="q-rating-btn" data-value="6">6</button>
-                            <button class="q-rating-btn" data-value="7">7</button>
-                            <button class="q-rating-btn" data-value="8">8</button>
-                            <button class="q-rating-btn" data-value="9">9</button>
-                            <button class="q-rating-btn" data-value="10">10</button>
+                            <button class="q-rating-btn" data-value="1">1</button><button class="q-rating-btn" data-value="2">2</button><button class="q-rating-btn" data-value="3">3</button><button class="q-rating-btn" data-value="4">4</button><button class="q-rating-btn" data-value="5">5</button><button class="q-rating-btn" data-value="6">6</button><button class="q-rating-btn" data-value="7">7</button><button class="q-rating-btn" data-value="8">8</button><button class="q-rating-btn" data-value="9">9</button><button class="q-rating-btn" data-value="10">10</button>
                         </div>
                         <div class="q-rating-labels"><span>各自為政</span><span>高度流暢</span></div>
                     </div>
+
                     <div class="assess-question" data-q="8" data-dim="process">
                         <div class="q-header"><span class="q-number">Q8</span><span class="q-type-tag tag-multi">複選</span></div>
                         <h3 class="q-title">以下哪些流程最耗費人力或最容易出錯？（可複選）</h3>
                         <div class="q-options">
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="客戶報價與訂單處理"><span class="q-option-text">客戶報價與訂單處理</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="採購與供應商管理"><span class="q-option-text">採購與供應商管理</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="庫存管理與盤點"><span class="q-option-text">庫存管理與盤點</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="財務報表與對帳"><span class="q-option-text">財務報表與對帳</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="人資與考勤"><span class="q-option-text">人資與考勤</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="客戶服務與售後"><span class="q-option-text">客戶服務與售後</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="內部文件簽核"><span class="q-option-text">內部文件簽核與審批</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="客戶報價與訂單"><span class="q-option-text">客戶報價與訂單處理</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="採購與供應商"><span class="q-option-text">採購與供應商管理</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="庫存與盤點"><span class="q-option-text">庫存管理與盤點</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="財務對帳"><span class="q-option-text">財務報表與對帳</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="人資考勤"><span class="q-option-text">人資、薪資與考勤</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="客戶服務售後"><span class="q-option-text">客戶服務與售後支援</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="文件簽核"><span class="q-option-text">內部文件簽核與審批</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q8" value="生產排程品管"><span class="q-option-text">生產排程與品質管控</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="9" data-dim="process">
                         <div class="q-header"><span class="q-number">Q9</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司的業務流程中，有多少比例已使用資訊系統（ERP/CRM/WMS 等）管理？</h3>
+                        <h3 class="q-title">貴公司業務流程中，使用資訊系統（ERP/CRM/WMS 等）管理的比例大約是？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q9" value="1"><span class="q-option-text">不到 20%，主要靠 Excel 和紙本</span></label>
-                            <label class="q-option"><input type="radio" name="q9" value="2"><span class="q-option-text">約 20-40%，部分系統化</span></label>
-                            <label class="q-option"><input type="radio" name="q9" value="3"><span class="q-option-text">約 40-60%，核心流程已上系統</span></label>
-                            <label class="q-option"><input type="radio" name="q9" value="4"><span class="q-option-text">約 60-80%，大部分流程已系統化</span></label>
-                            <label class="q-option"><input type="radio" name="q9" value="5"><span class="q-option-text">80% 以上，高度系統化與整合</span></label>
+                            <label class="q-option"><input type="radio" name="q9" value="1"><span class="q-option-text">不到 20%，主要靠 Excel、紙本和人工</span></label>
+                            <label class="q-option"><input type="radio" name="q9" value="2"><span class="q-option-text">約 20-40%，僅核心財務或進銷存上系統</span></label>
+                            <label class="q-option"><input type="radio" name="q9" value="3"><span class="q-option-text">約 40-60%，主要流程已上系統但仍有手動環節</span></label>
+                            <label class="q-option"><input type="radio" name="q9" value="4"><span class="q-option-text">約 60-80%，大部分流程系統化且有報表產出</span></label>
+                            <label class="q-option"><input type="radio" name="q9" value="5"><span class="q-option-text">80% 以上，高度系統化且系統間資料自動串聯</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="10" data-dim="process">
                         <div class="q-header"><span class="q-number">Q10</span><span class="q-type-tag">單選</span></div>
                         <h3 class="q-title">您認為目前流程改善的最大阻力是什麼？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q10" value="習慣阻力"><span class="q-option-text">員工習慣原有做法，抗拒改變</span></label>
-                            <label class="q-option"><input type="radio" name="q10" value="缺乏工具"><span class="q-option-text">缺乏合適的數位工具支援</span></label>
-                            <label class="q-option"><input type="radio" name="q10" value="管理層不支持"><span class="q-option-text">管理層未給予足夠的支持</span></label>
-                            <label class="q-option"><input type="radio" name="q10" value="預算限制"><span class="q-option-text">預算有限，無法投入改善</span></label>
-                            <label class="q-option"><input type="radio" name="q10" value="不知從何開始"><span class="q-option-text">知道需要改善但不知從何開始</span></label>
+                            <label class="q-option"><input type="radio" name="q10" value="習慣阻力"><span class="q-option-text">員工習慣原有做法，組織慣性強</span></label>
+                            <label class="q-option"><input type="radio" name="q10" value="缺乏工具"><span class="q-option-text">缺乏合適的數位工具與系統支援</span></label>
+                            <label class="q-option"><input type="radio" name="q10" value="管理層不支持"><span class="q-option-text">管理層未給予足夠的優先級與資源</span></label>
+                            <label class="q-option"><input type="radio" name="q10" value="預算限制"><span class="q-option-text">預算有限，無法投入系統升級</span></label>
+                            <label class="q-option"><input type="radio" name="q10" value="不知從何開始"><span class="q-option-text">知道需要改善但缺乏方法論，不知從何下手</span></label>
                         </div>
                         <div class="q-supplement">
                             <label class="assess-label">補充說明（選填）</label>
-                            <textarea class="assess-textarea" name="q10_note" rows="2" placeholder="請描述您觀察到的具體阻力..."></textarea>
+                            <textarea class="assess-textarea" name="q10_note" rows="2" placeholder="請描述您觀察到的具體阻力或瓶頸..."></textarea>
                         </div>
                     </div>
+
                 </div>
             </section>
 
-            <!-- Section 3: 構面三 數據與資料能力 -->
+            <!-- ==================== Section 3: 數據與資料能力 (Q11-Q15) ==================== -->
             <section class="assess-section" data-section="3" id="section-3">
                 <div class="assess-section-header">
-                    <span class="assess-section-badge">構面三</span>
+                    <span class="assess-section-badge">構面三（共 5 題）</span>
                     <h2>數據與資料能力</h2>
-                    <p>評估企業的數據收集、儲存、品質與應用程度。</p>
+                    <p>評估企業的數據收集、儲存、品質、治理與應用分析的成熟程度。</p>
                 </div>
                 <div class="assess-questions">
+
                     <div class="assess-question" data-q="11" data-dim="data">
                         <div class="q-header"><span class="q-number">Q11</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司的核心業務資料主要儲存在哪裡？</h3>
+                        <h3 class="q-title">貴公司核心業務資料主要的儲存與管理方式為何？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q11" value="1"><span class="q-option-text">紙本文件、個人電腦各自保存</span></label>
-                            <label class="q-option"><input type="radio" name="q11" value="2"><span class="q-option-text">Excel/Google Sheet 為主</span></label>
-                            <label class="q-option"><input type="radio" name="q11" value="3"><span class="q-option-text">有 ERP/CRM 等系統，但資料分散</span></label>
-                            <label class="q-option"><input type="radio" name="q11" value="4"><span class="q-option-text">有集中式資料庫，部分整合</span></label>
-                            <label class="q-option"><input type="radio" name="q11" value="5"><span class="q-option-text">有完整資料平台/數據中台</span></label>
+                            <label class="q-option"><input type="radio" name="q11" value="1"><span class="q-option-text">紙本文件、個人電腦/隨身碟各自保存</span></label>
+                            <label class="q-option"><input type="radio" name="q11" value="2"><span class="q-option-text">以 Excel/Google Sheet 為主，存在共享硬碟</span></label>
+                            <label class="q-option"><input type="radio" name="q11" value="3"><span class="q-option-text">有 ERP/CRM 等系統，但資料分散於不同系統</span></label>
+                            <label class="q-option"><input type="radio" name="q11" value="4"><span class="q-option-text">有集中式資料庫/資料倉儲，已做部分整合</span></label>
+                            <label class="q-option"><input type="radio" name="q11" value="5"><span class="q-option-text">有完整資料平台/數據中台，資料治理制度完善</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="12" data-dim="data">
                         <div class="q-header"><span class="q-number">Q12</span><span class="q-type-tag tag-rating">評分</span></div>
                         <h3 class="q-title">您對公司目前業務資料的品質滿意度如何？</h3>
-                        <p class="q-hint">1 = 資料品質很差（缺漏/不一致），10 = 資料非常完整且可信賴</p>
+                        <p class="q-hint">1 = 資料大量缺漏/重複/不一致，10 = 資料完整、即時且高度可信賴</p>
                         <div class="q-rating" data-q="12">
-                            <button class="q-rating-btn" data-value="1">1</button>
-                            <button class="q-rating-btn" data-value="2">2</button>
-                            <button class="q-rating-btn" data-value="3">3</button>
-                            <button class="q-rating-btn" data-value="4">4</button>
-                            <button class="q-rating-btn" data-value="5">5</button>
-                            <button class="q-rating-btn" data-value="6">6</button>
-                            <button class="q-rating-btn" data-value="7">7</button>
-                            <button class="q-rating-btn" data-value="8">8</button>
-                            <button class="q-rating-btn" data-value="9">9</button>
-                            <button class="q-rating-btn" data-value="10">10</button>
+                            <button class="q-rating-btn" data-value="1">1</button><button class="q-rating-btn" data-value="2">2</button><button class="q-rating-btn" data-value="3">3</button><button class="q-rating-btn" data-value="4">4</button><button class="q-rating-btn" data-value="5">5</button><button class="q-rating-btn" data-value="6">6</button><button class="q-rating-btn" data-value="7">7</button><button class="q-rating-btn" data-value="8">8</button><button class="q-rating-btn" data-value="9">9</button><button class="q-rating-btn" data-value="10">10</button>
                         </div>
-                        <div class="q-rating-labels"><span>品質很差</span><span>非常完整</span></div>
+                        <div class="q-rating-labels"><span>嚴重缺漏</span><span>高度完整</span></div>
                     </div>
+
                     <div class="assess-question" data-q="13" data-dim="data">
                         <div class="q-header"><span class="q-number">Q13</span><span class="q-type-tag">單選</span></div>
                         <h3 class="q-title">貴公司是否有定期使用數據進行營運決策？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q13" value="1"><span class="q-option-text">幾乎不看數據，靠經驗決策</span></label>
-                            <label class="q-option"><input type="radio" name="q13" value="2"><span class="q-option-text">偶爾看報表，但不系統化</span></label>
-                            <label class="q-option"><input type="radio" name="q13" value="3"><span class="q-option-text">定期產出報表但分析深度不足</span></label>
-                            <label class="q-option"><input type="radio" name="q13" value="4"><span class="q-option-text">有 BI 工具或儀表板，定期分析</span></label>
-                            <label class="q-option"><input type="radio" name="q13" value="5"><span class="q-option-text">數據驅動決策文化成熟</span></label>
+                            <label class="q-option"><input type="radio" name="q13" value="1"><span class="q-option-text">幾乎不看數據，完全靠經驗與直覺決策</span></label>
+                            <label class="q-option"><input type="radio" name="q13" value="2"><span class="q-option-text">偶爾看月報/季報，但不系統化</span></label>
+                            <label class="q-option"><input type="radio" name="q13" value="3"><span class="q-option-text">定期產出報表，但深度分析不足</span></label>
+                            <label class="q-option"><input type="radio" name="q13" value="4"><span class="q-option-text">有 BI 工具或儀表板，管理層定期檢視關鍵指標</span></label>
+                            <label class="q-option"><input type="radio" name="q13" value="5"><span class="q-option-text">數據驅動決策文化成熟，有即時看板與預測模型</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="14" data-dim="data">
                         <div class="q-header"><span class="q-number">Q14</span><span class="q-type-tag tag-multi">複選</span></div>
                         <h3 class="q-title">貴公司目前面臨的數據管理挑戰有哪些？（可複選）</h3>
                         <div class="q-options">
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="資料散落"><span class="q-option-text">資料散落在不同系統或部門</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="格式不一致"><span class="q-option-text">資料格式不一致，難以整合</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="缺少歷史資料"><span class="q-option-text">缺少足夠的歷史資料累積</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="手動作業多"><span class="q-option-text">資料輸入仍有大量手動作業</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="缺乏分析人才"><span class="q-option-text">缺乏數據分析人才</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="資安疑慮"><span class="q-option-text">資料安全與隱私保護疑慮</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="資料散落"><span class="q-option-text">資料散落在不同系統或部門，形成資料孤島</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="格式不一致"><span class="q-option-text">資料格式不一致，欄位命名混亂</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="缺少歷史資料"><span class="q-option-text">缺少足夠的歷史資料累積（不到 2 年）</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="手動輸入多"><span class="q-option-text">資料輸入仍有大量手動作業，易出錯</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="缺乏分析人才"><span class="q-option-text">缺乏數據分析人才，有資料但不會用</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="資安隱私"><span class="q-option-text">資料安全與隱私保護疑慮</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q14" value="即時性不足"><span class="q-option-text">資料更新不即時，決策依據的是過時資料</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="15" data-dim="data">
                         <div class="q-header"><span class="q-number">Q15</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司是否有專人或團隊負責資料管理/治理？</h3>
+                        <h3 class="q-title">貴公司是否有專人或團隊負責資料管理/資料治理？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q15" value="1"><span class="q-option-text">沒有，各部門自行管理</span></label>
-                            <label class="q-option"><input type="radio" name="q15" value="2"><span class="q-option-text">IT 部門兼任，但不是主要職責</span></label>
-                            <label class="q-option"><input type="radio" name="q15" value="3"><span class="q-option-text">有指定人員但非專職</span></label>
-                            <label class="q-option"><input type="radio" name="q15" value="4"><span class="q-option-text">有專責資料管理團隊</span></label>
-                            <label class="q-option"><input type="radio" name="q15" value="5"><span class="q-option-text">有完整資料治理架構與專責團隊</span></label>
+                            <label class="q-option"><input type="radio" name="q15" value="1"><span class="q-option-text">沒有，各部門各自管理自己的資料</span></label>
+                            <label class="q-option"><input type="radio" name="q15" value="2"><span class="q-option-text">IT 部門兼任，但非主要職責</span></label>
+                            <label class="q-option"><input type="radio" name="q15" value="3"><span class="q-option-text">有指定窗口（Data Steward）但非專職</span></label>
+                            <label class="q-option"><input type="radio" name="q15" value="4"><span class="q-option-text">有專責資料管理團隊或 Data Engineer</span></label>
+                            <label class="q-option"><input type="radio" name="q15" value="5"><span class="q-option-text">有完整資料治理組織（含 CDO/資料長角色）</span></label>
                         </div>
                     </div>
+
+
                 </div>
             </section>
 
-            <!-- Section 4: 構面四 技術與系統基礎 -->
+            <!-- ==================== Section 4: 技術與系統基礎 (Q16-Q20) ==================== -->
             <section class="assess-section" data-section="4" id="section-4">
                 <div class="assess-section-header">
-                    <span class="assess-section-badge">構面四</span>
+                    <span class="assess-section-badge">構面四（共 5 題）</span>
                     <h2>技術與系統基礎</h2>
-                    <p>評估企業現有的技術架構、系統整合度與 AI 工具認知。</p>
+                    <p>評估企業現有技術架構、系統整合度、雲端化程度與 AI 工具採用現況。</p>
                 </div>
                 <div class="assess-questions">
+
                     <div class="assess-question" data-q="16" data-dim="tech">
                         <div class="q-header"><span class="q-number">Q16</span><span class="q-type-tag tag-multi">複選</span></div>
-                        <h3 class="q-title">貴公司目前使用了哪些資訊系統？（可複選）</h3>
+                        <h3 class="q-title">貴公司目前已部署哪些資訊系統？（可複選）</h3>
                         <div class="q-options">
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="ERP"><span class="q-option-text">ERP 企業資源規劃</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="CRM"><span class="q-option-text">CRM 客戶關係管理</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="WMS"><span class="q-option-text">WMS 倉儲管理</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="ERP"><span class="q-option-text">ERP 企業資源規劃（SAP/Oracle/鼎新等）</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="CRM"><span class="q-option-text">CRM 客戶關係管理（Salesforce/HubSpot等）</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="WMS/TMS"><span class="q-option-text">WMS 倉儲管理 / TMS 運輸管理</span></label>
                             <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="MES"><span class="q-option-text">MES 製造執行系統</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="BI"><span class="q-option-text">BI 商業智慧工具</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="POS"><span class="q-option-text">POS / 電商平台</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="協作工具"><span class="q-option-text">協作工具（Teams/Slack/Line）</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="幾乎沒有"><span class="q-option-text">幾乎沒有使用資訊系統</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="BI"><span class="q-option-text">BI 商業智慧工具（Power BI/Tableau等）</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="電商/POS"><span class="q-option-text">電商平台 / POS 系統</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="HR系統"><span class="q-option-text">HR 人資管理系統</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="協作工具"><span class="q-option-text">協作工具（Teams/Slack/Line/Google Workspace）</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q16" value="幾乎沒有"><span class="q-option-text">幾乎沒有正式資訊系統</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="17" data-dim="tech">
                         <div class="q-header"><span class="q-number">Q17</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司各系統之間的資料串接程度如何？</h3>
+                        <h3 class="q-title">貴公司各系統之間的資料串接與整合程度如何？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q17" value="1"><span class="q-option-text">各系統獨立運作，需手動搬資料</span></label>
-                            <label class="q-option"><input type="radio" name="q17" value="2"><span class="q-option-text">少數系統有基本串接</span></label>
-                            <label class="q-option"><input type="radio" name="q17" value="3"><span class="q-option-text">核心系統有 API 串接</span></label>
-                            <label class="q-option"><input type="radio" name="q17" value="4"><span class="q-option-text">大部分系統已整合，資料自動流通</span></label>
-                            <label class="q-option"><input type="radio" name="q17" value="5"><span class="q-option-text">完整的系統整合架構與數據中台</span></label>
+                            <label class="q-option"><input type="radio" name="q17" value="1"><span class="q-option-text">各系統完全獨立，靠人工匯出/匯入搬資料</span></label>
+                            <label class="q-option"><input type="radio" name="q17" value="2"><span class="q-option-text">少數系統有基本匯入匯出，多數仍手動</span></label>
+                            <label class="q-option"><input type="radio" name="q17" value="3"><span class="q-option-text">核心系統有 API 串接，但部分仍有斷點</span></label>
+                            <label class="q-option"><input type="radio" name="q17" value="4"><span class="q-option-text">大部分系統已透過 API/中間件自動串聯</span></label>
+                            <label class="q-option"><input type="radio" name="q17" value="5"><span class="q-option-text">完整的 iPaaS/ESB 整合架構，資料即時流通</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="18" data-dim="tech">
                         <div class="q-header"><span class="q-number">Q18</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司目前是否已使用任何 AI 相關工具？</h3>
+                        <h3 class="q-title">貴公司目前對 AI 工具的採用狀況為何？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q18" value="1"><span class="q-option-text">完全沒有接觸 AI 工具</span></label>
-                            <label class="q-option"><input type="radio" name="q18" value="2"><span class="q-option-text">個人嘗試過 ChatGPT 等工具</span></label>
-                            <label class="q-option"><input type="radio" name="q18" value="3"><span class="q-option-text">部分員工在工作中使用 AI 工具</span></label>
-                            <label class="q-option"><input type="radio" name="q18" value="4"><span class="q-option-text">公司已導入特定 AI 應用</span></label>
-                            <label class="q-option"><input type="radio" name="q18" value="5"><span class="q-option-text">已有多項 AI 應用並持續擴展</span></label>
+                            <label class="q-option"><input type="radio" name="q18" value="1"><span class="q-option-text">完全沒有接觸任何 AI 工具</span></label>
+                            <label class="q-option"><input type="radio" name="q18" value="2"><span class="q-option-text">個人嘗試過 ChatGPT/Copilot 等通用 AI</span></label>
+                            <label class="q-option"><input type="radio" name="q18" value="3"><span class="q-option-text">部分員工在工作中使用 AI 工具（翻譯/寫作/程式）</span></label>
+                            <label class="q-option"><input type="radio" name="q18" value="4"><span class="q-option-text">公司已正式導入特定 AI 應用（客服/分析/自動化）</span></label>
+                            <label class="q-option"><input type="radio" name="q18" value="5"><span class="q-option-text">多項 AI 應用已進入生產環境並持續擴展</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="19" data-dim="tech">
                         <div class="q-header"><span class="q-number">Q19</span><span class="q-type-tag tag-rating">評分</span></div>
-                        <h3 class="q-title">貴公司 IT 團隊（或外部合作夥伴）對新技術的導入能力如何？</h3>
-                        <p class="q-hint">1 = 沒有 IT 資源，10 = IT 團隊技術強且響應快</p>
+                        <h3 class="q-title">貴公司 IT 團隊（或外部合作夥伴）對新技術的學習與導入能力如何？</h3>
+                        <p class="q-hint">1 = 沒有 IT 資源或能力極有限，10 = IT 團隊技術強、反應快、能獨立評估導入</p>
                         <div class="q-rating" data-q="19">
-                            <button class="q-rating-btn" data-value="1">1</button>
-                            <button class="q-rating-btn" data-value="2">2</button>
-                            <button class="q-rating-btn" data-value="3">3</button>
-                            <button class="q-rating-btn" data-value="4">4</button>
-                            <button class="q-rating-btn" data-value="5">5</button>
-                            <button class="q-rating-btn" data-value="6">6</button>
-                            <button class="q-rating-btn" data-value="7">7</button>
-                            <button class="q-rating-btn" data-value="8">8</button>
-                            <button class="q-rating-btn" data-value="9">9</button>
-                            <button class="q-rating-btn" data-value="10">10</button>
+                            <button class="q-rating-btn" data-value="1">1</button><button class="q-rating-btn" data-value="2">2</button><button class="q-rating-btn" data-value="3">3</button><button class="q-rating-btn" data-value="4">4</button><button class="q-rating-btn" data-value="5">5</button><button class="q-rating-btn" data-value="6">6</button><button class="q-rating-btn" data-value="7">7</button><button class="q-rating-btn" data-value="8">8</button><button class="q-rating-btn" data-value="9">9</button><button class="q-rating-btn" data-value="10">10</button>
                         </div>
                         <div class="q-rating-labels"><span>沒有 IT 資源</span><span>技術強大</span></div>
                     </div>
+
                     <div class="assess-question" data-q="20" data-dim="tech">
                         <div class="q-header"><span class="q-number">Q20</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司對雲端服務的採用程度如何？</h3>
+                        <h3 class="q-title">貴公司對雲端服務的採用策略為何？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q20" value="1"><span class="q-option-text">完全使用地端（On-Premise），不考慮雲端</span></label>
-                            <label class="q-option"><input type="radio" name="q20" value="2"><span class="q-option-text">少量使用雲端（如 Email/Office 365）</span></label>
-                            <label class="q-option"><input type="radio" name="q20" value="3"><span class="q-option-text">核心系統仍在地端，搭配部分雲端服務</span></label>
-                            <label class="q-option"><input type="radio" name="q20" value="4"><span class="q-option-text">大部分系統已遷移至雲端</span></label>
-                            <label class="q-option"><input type="radio" name="q20" value="5"><span class="q-option-text">Cloud-first 策略，全面雲端化</span></label>
+                            <label class="q-option"><input type="radio" name="q20" value="1"><span class="q-option-text">完全地端部署（On-Premise），排斥雲端</span></label>
+                            <label class="q-option"><input type="radio" name="q20" value="2"><span class="q-option-text">僅使用 SaaS（如 Email/Office 365），核心仍地端</span></label>
+                            <label class="q-option"><input type="radio" name="q20" value="3"><span class="q-option-text">混合雲策略，核心在地端、輔助上雲</span></label>
+                            <label class="q-option"><input type="radio" name="q20" value="4"><span class="q-option-text">大部分系統已遷移至公有雲（AWS/Azure/GCP）</span></label>
+                            <label class="q-option"><input type="radio" name="q20" value="5"><span class="q-option-text">Cloud-first 策略，全面雲端原生架構</span></label>
                         </div>
                     </div>
+
+
                 </div>
             </section>
 
-            <!-- Section 5: 構面五 AI 策略與治理 -->
+            <!-- ==================== Section 5: AI 策略與治理 (Q21-Q25) ==================== -->
             <section class="assess-section" data-section="5" id="section-5">
                 <div class="assess-section-header">
-                    <span class="assess-section-badge">構面五</span>
+                    <span class="assess-section-badge">構面五（共 5 題）</span>
                     <h2>AI 策略與治理</h2>
-                    <p>評估企業對 AI 導入的規劃深度、治理機制與風險意識。</p>
+                    <p>評估企業對 AI 導入的規劃深度、治理機制、風險管控與方案評估能力。</p>
                 </div>
                 <div class="assess-questions">
+
                     <div class="assess-question" data-q="21" data-dim="governance">
                         <div class="q-header"><span class="q-number">Q21</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司是否有明確的 AI 導入目標或 KPI？</h3>
+                        <h3 class="q-title">貴公司是否已設定明確的 AI 導入目標或 KPI？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q21" value="1"><span class="q-option-text">完全沒有，尚在觀望</span></label>
-                            <label class="q-option"><input type="radio" name="q21" value="2"><span class="q-option-text">有模糊方向但未量化</span></label>
-                            <label class="q-option"><input type="radio" name="q21" value="3"><span class="q-option-text">有初步目標但未與業務 KPI 綁定</span></label>
-                            <label class="q-option"><input type="radio" name="q21" value="4"><span class="q-option-text">有量化目標且與業務指標連動</span></label>
-                            <label class="q-option"><input type="radio" name="q21" value="5"><span class="q-option-text">有完整 AI 策略地圖與階段性 KPI</span></label>
+                            <label class="q-option"><input type="radio" name="q21" value="1"><span class="q-option-text">完全沒有，尚在觀望階段</span></label>
+                            <label class="q-option"><input type="radio" name="q21" value="2"><span class="q-option-text">有模糊方向（如「提升效率」）但未量化</span></label>
+                            <label class="q-option"><input type="radio" name="q21" value="3"><span class="q-option-text">有初步目標但未與具體業務 KPI 綁定</span></label>
+                            <label class="q-option"><input type="radio" name="q21" value="4"><span class="q-option-text">有量化目標（如「客服回應時間縮短 50%」）且與 OKR 連動</span></label>
+                            <label class="q-option"><input type="radio" name="q21" value="5"><span class="q-option-text">有完整 AI 策略地圖，含階段性 KPI 與成效追蹤儀表板</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="22" data-dim="governance">
                         <div class="q-header"><span class="q-number">Q22</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司是否已考慮 AI 使用的倫理、合規與風險管理？</h3>
+                        <h3 class="q-title">貴公司是否已建立 AI 使用的倫理規範、合規政策或風險管理機制？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q22" value="1"><span class="q-option-text">完全沒有考慮過</span></label>
-                            <label class="q-option"><input type="radio" name="q22" value="2"><span class="q-option-text">知道有需要但尚未行動</span></label>
-                            <label class="q-option"><input type="radio" name="q22" value="3"><span class="q-option-text">已開始討論但無正式規範</span></label>
-                            <label class="q-option"><input type="radio" name="q22" value="4"><span class="q-option-text">有基本使用規範與風險評估</span></label>
-                            <label class="q-option"><input type="radio" name="q22" value="5"><span class="q-option-text">有完整 AI 治理框架與合規機制</span></label>
+                            <label class="q-option"><input type="radio" name="q22" value="1"><span class="q-option-text">完全沒有考慮過 AI 倫理或合規議題</span></label>
+                            <label class="q-option"><input type="radio" name="q22" value="2"><span class="q-option-text">知道重要但尚未啟動任何行動</span></label>
+                            <label class="q-option"><input type="radio" name="q22" value="3"><span class="q-option-text">已開始內部討論，但無正式規範文件</span></label>
+                            <label class="q-option"><input type="radio" name="q22" value="4"><span class="q-option-text">有基本的 AI 使用準則與風險評估流程</span></label>
+                            <label class="q-option"><input type="radio" name="q22" value="5"><span class="q-option-text">有完整 AI 治理框架（含倫理委員會/合規審查/風險矩陣）</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="23" data-dim="governance">
                         <div class="q-header"><span class="q-number">Q23</span><span class="q-type-tag tag-rating">評分</span></div>
-                        <h3 class="q-title">貴公司目前的 AI 導入準備程度，您自己的評估是？</h3>
-                        <p class="q-hint">1 = 完全沒準備好，10 = 非常有信心可以開始</p>
+                        <h3 class="q-title">您自己對貴公司目前 AI 導入準備程度的信心如何？</h3>
+                        <p class="q-hint">1 = 完全沒準備好，10 = 非常有信心可以立即啟動</p>
                         <div class="q-rating" data-q="23">
-                            <button class="q-rating-btn" data-value="1">1</button>
-                            <button class="q-rating-btn" data-value="2">2</button>
-                            <button class="q-rating-btn" data-value="3">3</button>
-                            <button class="q-rating-btn" data-value="4">4</button>
-                            <button class="q-rating-btn" data-value="5">5</button>
-                            <button class="q-rating-btn" data-value="6">6</button>
-                            <button class="q-rating-btn" data-value="7">7</button>
-                            <button class="q-rating-btn" data-value="8">8</button>
-                            <button class="q-rating-btn" data-value="9">9</button>
-                            <button class="q-rating-btn" data-value="10">10</button>
+                            <button class="q-rating-btn" data-value="1">1</button><button class="q-rating-btn" data-value="2">2</button><button class="q-rating-btn" data-value="3">3</button><button class="q-rating-btn" data-value="4">4</button><button class="q-rating-btn" data-value="5">5</button><button class="q-rating-btn" data-value="6">6</button><button class="q-rating-btn" data-value="7">7</button><button class="q-rating-btn" data-value="8">8</button><button class="q-rating-btn" data-value="9">9</button><button class="q-rating-btn" data-value="10">10</button>
                         </div>
                         <div class="q-rating-labels"><span>完全沒準備</span><span>非常有信心</span></div>
                     </div>
+
                     <div class="assess-question" data-q="24" data-dim="governance">
                         <div class="q-header"><span class="q-number">Q24</span><span class="q-type-tag tag-multi">複選</span></div>
-                        <h3 class="q-title">貴公司推動 AI 導入時，最擔心的風險是什麼？（可複選）</h3>
+                        <h3 class="q-title">貴公司推動 AI 導入時最擔心的風險是什麼？（可複選）</h3>
                         <div class="q-options">
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="投資回報不明確"><span class="q-option-text">投資回報不明確，怕白花錢</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="資安風險"><span class="q-option-text">公司資料外洩或資安風險</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="員工抗拒"><span class="q-option-text">員工抗拒改變，導入後沒人用</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="缺乏內部推手"><span class="q-option-text">缺乏內部推手，無人帶頭</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="供應商選擇困難"><span class="q-option-text">AI 供應商/方案太多，不知如何選擇</span></label>
-                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="法規合規"><span class="q-option-text">法規合規或產業監管限制</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="ROI不明確"><span class="q-option-text">投資回報不明確，怕白花錢</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="資安風險"><span class="q-option-text">公司機密資料外洩或 AI 幻覺產生錯誤決策</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="員工抗拒"><span class="q-option-text">員工抗拒改變，導入後沒人使用</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="缺乏推手"><span class="q-option-text">缺乏內部推手與專案管理能力</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="供應商選擇困難"><span class="q-option-text">AI 方案/廠商太多，不知如何評估選擇</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="法規合規"><span class="q-option-text">產業法規監管或個資法合規限制</span></label>
+                            <label class="q-option q-option-multi"><input type="checkbox" name="q24" value="技術鎖定"><span class="q-option-text">擔心被單一廠商綁定（Vendor Lock-in）</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="25" data-dim="governance">
                         <div class="q-header"><span class="q-number">Q25</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司是否已有跨部門的 AI 推動小組或數位轉型委員會？</h3>
+                        <h3 class="q-title">貴公司是否已建立跨部門的 AI/數位轉型推動組織？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q25" value="1"><span class="q-option-text">沒有，也沒有計劃</span></label>
-                            <label class="q-option"><input type="radio" name="q25" value="2"><span class="q-option-text">正在考慮組建</span></label>
-                            <label class="q-option"><input type="radio" name="q25" value="3"><span class="q-option-text">有指定窗口但非正式組織</span></label>
-                            <label class="q-option"><input type="radio" name="q25" value="4"><span class="q-option-text">有正式跨部門推動小組</span></label>
-                            <label class="q-option"><input type="radio" name="q25" value="5"><span class="q-option-text">有專責數位轉型辦公室/CDO</span></label>
+                            <label class="q-option"><input type="radio" name="q25" value="1"><span class="q-option-text">沒有，也沒有計劃成立</span></label>
+                            <label class="q-option"><input type="radio" name="q25" value="2"><span class="q-option-text">正在考慮或醞釀中</span></label>
+                            <label class="q-option"><input type="radio" name="q25" value="3"><span class="q-option-text">有指定窗口但非正式組織，權責不明確</span></label>
+                            <label class="q-option"><input type="radio" name="q25" value="4"><span class="q-option-text">有正式跨部門推動委員會，定期開會追蹤</span></label>
+                            <label class="q-option"><input type="radio" name="q25" value="5"><span class="q-option-text">有專責數位轉型辦公室（DTO）或 CDO/CTO 統籌</span></label>
                         </div>
                     </div>
+
+
                 </div>
             </section>
 
-            <!-- Section 6: 構面六 組織文化與人才 -->
+            <!-- ==================== Section 6: 組織文化與人才 (Q26-Q30) ==================== -->
             <section class="assess-section" data-section="6" id="section-6">
                 <div class="assess-section-header">
-                    <span class="assess-section-badge">構面六</span>
+                    <span class="assess-section-badge">構面六（共 5 題）</span>
                     <h2>組織文化與人才</h2>
-                    <p>評估企業的學習文化、人才儲備與變革接受度。</p>
+                    <p>評估企業的學習文化、人才儲備、變革接受度與創新驅動力。</p>
                 </div>
                 <div class="assess-questions">
+
                     <div class="assess-question" data-q="26" data-dim="culture">
                         <div class="q-header"><span class="q-number">Q26</span><span class="q-type-tag tag-rating">評分</span></div>
-                        <h3 class="q-title">貴公司員工對新技術、新工具的接受度如何？</h3>
-                        <p class="q-hint">1 = 非常抗拒改變，10 = 非常樂於嘗試新事物</p>
+                        <h3 class="q-title">貴公司員工對新技術、新工具的整體接受度如何？</h3>
+                        <p class="q-hint">1 = 組織極度保守、高度抗拒改變，10 = 團隊積極擁抱新技術、主動學習</p>
                         <div class="q-rating" data-q="26">
-                            <button class="q-rating-btn" data-value="1">1</button>
-                            <button class="q-rating-btn" data-value="2">2</button>
-                            <button class="q-rating-btn" data-value="3">3</button>
-                            <button class="q-rating-btn" data-value="4">4</button>
-                            <button class="q-rating-btn" data-value="5">5</button>
-                            <button class="q-rating-btn" data-value="6">6</button>
-                            <button class="q-rating-btn" data-value="7">7</button>
-                            <button class="q-rating-btn" data-value="8">8</button>
-                            <button class="q-rating-btn" data-value="9">9</button>
-                            <button class="q-rating-btn" data-value="10">10</button>
+                            <button class="q-rating-btn" data-value="1">1</button><button class="q-rating-btn" data-value="2">2</button><button class="q-rating-btn" data-value="3">3</button><button class="q-rating-btn" data-value="4">4</button><button class="q-rating-btn" data-value="5">5</button><button class="q-rating-btn" data-value="6">6</button><button class="q-rating-btn" data-value="7">7</button><button class="q-rating-btn" data-value="8">8</button><button class="q-rating-btn" data-value="9">9</button><button class="q-rating-btn" data-value="10">10</button>
                         </div>
-                        <div class="q-rating-labels"><span>非常抗拒</span><span>樂於嘗試</span></div>
+                        <div class="q-rating-labels"><span>極度抗拒</span><span>積極擁抱</span></div>
                     </div>
+
                     <div class="assess-question" data-q="27" data-dim="culture">
                         <div class="q-header"><span class="q-number">Q27</span><span class="q-type-tag">單選</span></div>
                         <h3 class="q-title">貴公司是否有提供員工數位技能或 AI 相關的教育訓練？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q27" value="1"><span class="q-option-text">完全沒有任何培訓計畫</span></label>
-                            <label class="q-option"><input type="radio" name="q27" value="2"><span class="q-option-text">偶爾有外部講座或分享會</span></label>
-                            <label class="q-option"><input type="radio" name="q27" value="3"><span class="q-option-text">有基礎的數位技能培訓</span></label>
-                            <label class="q-option"><input type="radio" name="q27" value="4"><span class="q-option-text">有系統化的 AI/數位培訓計畫</span></label>
-                            <label class="q-option"><input type="radio" name="q27" value="5"><span class="q-option-text">有完整的學習路徑與認證機制</span></label>
+                            <label class="q-option"><input type="radio" name="q27" value="1"><span class="q-option-text">完全沒有任何數位或 AI 培訓計畫</span></label>
+                            <label class="q-option"><input type="radio" name="q27" value="2"><span class="q-option-text">偶爾有外部講座或一次性工作坊</span></label>
+                            <label class="q-option"><input type="radio" name="q27" value="3"><span class="q-option-text">有基礎數位技能培訓（Excel/BI/簡單自動化）</span></label>
+                            <label class="q-option"><input type="radio" name="q27" value="4"><span class="q-option-text">有系統化的 AI/數位培訓計畫，含實作練習</span></label>
+                            <label class="q-option"><input type="radio" name="q27" value="5"><span class="q-option-text">有完整的學習路徑、認證機制與持續進修預算</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="28" data-dim="culture">
                         <div class="q-header"><span class="q-number">Q28</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司內部是否有具備 AI 或資料分析能力的人才？</h3>
+                        <h3 class="q-title">貴公司內部是否具備 AI 或資料分析的專業人才？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q28" value="1"><span class="q-option-text">完全沒有相關人才</span></label>
-                            <label class="q-option"><input type="radio" name="q28" value="2"><span class="q-option-text">有人自學但非專業</span></label>
-                            <label class="q-option"><input type="radio" name="q28" value="3"><span class="q-option-text">有 1-2 位具備基礎能力的人</span></label>
-                            <label class="q-option"><input type="radio" name="q28" value="4"><span class="q-option-text">有小型資料/AI 團隊</span></label>
-                            <label class="q-option"><input type="radio" name="q28" value="5"><span class="q-option-text">有完整的 AI/數據團隊與專業分工</span></label>
+                            <label class="q-option"><input type="radio" name="q28" value="1"><span class="q-option-text">完全沒有相關專業人才</span></label>
+                            <label class="q-option"><input type="radio" name="q28" value="2"><span class="q-option-text">有人自學 AI 工具但非專業背景</span></label>
+                            <label class="q-option"><input type="radio" name="q28" value="3"><span class="q-option-text">有 1-2 位具備資料分析或 ML 基礎能力的人</span></label>
+                            <label class="q-option"><input type="radio" name="q28" value="4"><span class="q-option-text">有小型資料/AI 團隊（3-5 人）</span></label>
+                            <label class="q-option"><input type="radio" name="q28" value="5"><span class="q-option-text">有完整 AI/數據團隊含 Data Engineer、ML Engineer、Analyst</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="29" data-dim="culture">
                         <div class="q-header"><span class="q-number">Q29</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">貴公司過去推動重大變革專案（ERP/系統上線等）的經驗如何？</h3>
+                        <h3 class="q-title">貴公司過去推動重大變革專案（ERP/系統上線/組織改造等）的經驗如何？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q29" value="1"><span class="q-option-text">沒有推動過重大變革專案</span></label>
-                            <label class="q-option"><input type="radio" name="q29" value="2"><span class="q-option-text">有嘗試但多數失敗或延宕</span></label>
-                            <label class="q-option"><input type="radio" name="q29" value="3"><span class="q-option-text">有成功案例但過程辛苦</span></label>
-                            <label class="q-option"><input type="radio" name="q29" value="4"><span class="q-option-text">有方法論且成功推動過</span></label>
-                            <label class="q-option"><input type="radio" name="q29" value="5"><span class="q-option-text">有成熟的變革管理能力與文化</span></label>
+                            <label class="q-option"><input type="radio" name="q29" value="1"><span class="q-option-text">沒有推動過任何重大變革專案</span></label>
+                            <label class="q-option"><input type="radio" name="q29" value="2"><span class="q-option-text">有嘗試但多數失敗或嚴重延宕</span></label>
+                            <label class="q-option"><input type="radio" name="q29" value="3"><span class="q-option-text">有成功案例但過程艱辛、超出預算</span></label>
+                            <label class="q-option"><input type="radio" name="q29" value="4"><span class="q-option-text">有方法論且多次成功推動，累積了經驗</span></label>
+                            <label class="q-option"><input type="radio" name="q29" value="5"><span class="q-option-text">有成熟的變革管理能力，組織對變革有正向期待</span></label>
                         </div>
                     </div>
+
                     <div class="assess-question" data-q="30" data-dim="culture">
                         <div class="q-header"><span class="q-number">Q30</span><span class="q-type-tag">單選</span></div>
-                        <h3 class="q-title">如果今天有一位顧問陪你走完 AI 導入的全程，你最期待的是什麼？</h3>
+                        <h3 class="q-title">如果今天有一位 AI 顧問全程陪跑，您最期待他提供什麼價值？</h3>
                         <div class="q-options">
-                            <label class="q-option"><input type="radio" name="q30" value="釐清方向"><span class="q-option-text">幫我釐清方向，知道該從哪裡開始</span></label>
-                            <label class="q-option"><input type="radio" name="q30" value="設計場景"><span class="q-option-text">幫我設計可以快速看到成果的場景</span></label>
-                            <label class="q-option"><input type="radio" name="q30" value="推動落地"><span class="q-option-text">協助推動 AI 落地，確保團隊能用起來</span></label>
-                            <label class="q-option"><input type="radio" name="q30" value="建立制度"><span class="q-option-text">建立長期制度，讓 AI 持續創造價值</span></label>
+                            <label class="q-option"><input type="radio" name="q30" value="釐清方向"><span class="q-option-text">幫我釐清方向，知道該從哪裡開始、優先做什麼</span></label>
+                            <label class="q-option"><input type="radio" name="q30" value="設計場景"><span class="q-option-text">幫我設計可以快速看到成果的 AI 應用場景</span></label>
+                            <label class="q-option"><input type="radio" name="q30" value="推動落地"><span class="q-option-text">協助推動 AI 落地，確保團隊真的會用起來</span></label>
+                            <label class="q-option"><input type="radio" name="q30" value="建立制度"><span class="q-option-text">建立長期的 AI 治理制度，讓 AI 持續創造價值</span></label>
+                            <label class="q-option"><input type="radio" name="q30" value="培訓賦能"><span class="q-option-text">培訓內部團隊，讓公司擁有自己的 AI 應用能力</span></label>
                         </div>
                         <div class="q-supplement">
                             <label class="assess-label">還有什麼想補充的嗎？（選填）</label>
-                            <textarea class="assess-textarea" name="q30_note" rows="3" placeholder="歡迎分享您對 AI 導入的期望或顧慮..."></textarea>
+                            <textarea class="assess-textarea" name="q30_note" rows="3" placeholder="歡迎分享您對 AI 導入的期望、顧慮或具體問題..."></textarea>
                         </div>
                     </div>
+
                 </div>
             </section>
 

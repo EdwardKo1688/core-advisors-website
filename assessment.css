@@ -528,6 +528,23 @@ body:has(.assess-wrapper) .navbar {
     margin-top: 2px;
 }
 
+/* Auto-advance highlight */
+.assess-question.highlight {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.15);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Pulse animation for Next button */
+@keyframes pulseBtn {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); box-shadow: 0 0 20px rgba(0, 212, 170, 0.4); }
+}
+.assess-btn-next.pulse,
+.assess-btn-submit.pulse {
+    animation: pulseBtn 0.5s ease 2;
+}
+
 /* === Result Page Styles === */
 
 .result-wrapper {
