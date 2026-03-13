@@ -39,7 +39,7 @@
             <div class="result-header-top">
                 <div class="result-company-info">
                     <h1>企業 AI 導入診斷報告</h1>
-                    <p id="resultCompanyName">威倫電子股份有限公司</p>
+                    <p id="resultCompanyName">載入中...</p>
                 </div>
                 <button class="result-copy-btn" onclick="navigator.clipboard.writeText(window.location.href).then(()=>this.textContent='已複製！')">
                     複製報告連結
@@ -48,15 +48,15 @@
             <div class="result-meta">
                 <div class="result-meta-item">
                     <span class="result-meta-label">受訪者：</span>
-                    <span id="resultUserName">陳彥廷</span>
+                    <span id="resultUserName">—</span>
                 </div>
                 <div class="result-meta-item">
                     <span class="result-meta-label">職稱：</span>
-                    <span id="resultJobTitle">流程優化專員</span>
+                    <span id="resultJobTitle">—</span>
                 </div>
                 <div class="result-meta-item">
                     <span class="result-meta-label">產業：</span>
-                    <span id="resultIndustry">半導體/電子</span>
+                    <span id="resultIndustry">—</span>
                 </div>
                 <div class="result-meta-item">
                     <span class="result-meta-label">診斷版本：</span>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="result-meta-item">
                     <span class="result-meta-label">診斷日期：</span>
-                    <span id="resultDate">2026/03/13</span>
+                    <span id="resultDate">—</span>
                 </div>
                 <div class="result-meta-item">
                     <span class="result-meta-label">顧問公司：</span>
@@ -95,11 +95,11 @@
         <!-- 總分與成熟度 -->
         <div class="result-score-overview">
             <div class="result-score-card">
-                <div class="result-score-circle" style="--score: 56">
-                    <div class="result-score-value">56<span>%</span></div>
+                <div class="result-score-circle" style="--score: 0">
+                    <div class="result-score-value">—<span></span></div>
                 </div>
-                <div class="result-stage-name">整合期</div>
-                <div class="result-stage-desc">企業已有基礎條件，正在整合資源與流程以推動 AI 導入。</div>
+                <div class="result-stage-name">計算中</div>
+                <div class="result-stage-desc">正在根據您的診斷回答計算 AI 成熟度...</div>
             </div>
 
             <!-- 雷達圖 -->
@@ -110,54 +110,7 @@
                     <canvas id="radarChart" width="280" height="280"></canvas>
                 </div>
                 <div class="result-dims">
-                    <div class="result-dim-item">
-                        <div class="result-dim-score">62</div>
-                        <div class="result-dim-info">
-                            <h4>企業戰略與決策</h4>
-                            <div class="result-dim-bar"><div class="result-dim-bar-fill score-mid" style="width:62%"></div></div>
-                            <span class="result-dim-level">發展中</span>
-                        </div>
-                    </div>
-                    <div class="result-dim-item">
-                        <div class="result-dim-score">58</div>
-                        <div class="result-dim-info">
-                            <h4>營運流程成熟度</h4>
-                            <div class="result-dim-bar"><div class="result-dim-bar-fill score-mid" style="width:58%"></div></div>
-                            <span class="result-dim-level">初步建立</span>
-                        </div>
-                    </div>
-                    <div class="result-dim-item">
-                        <div class="result-dim-score">45</div>
-                        <div class="result-dim-info">
-                            <h4>數據與資料能力</h4>
-                            <div class="result-dim-bar"><div class="result-dim-bar-fill score-low" style="width:45%"></div></div>
-                            <span class="result-dim-level">待強化</span>
-                        </div>
-                    </div>
-                    <div class="result-dim-item">
-                        <div class="result-dim-score">52</div>
-                        <div class="result-dim-info">
-                            <h4>技術與系統基礎</h4>
-                            <div class="result-dim-bar"><div class="result-dim-bar-fill score-mid" style="width:52%"></div></div>
-                            <span class="result-dim-level">初步建立</span>
-                        </div>
-                    </div>
-                    <div class="result-dim-item">
-                        <div class="result-dim-score">48</div>
-                        <div class="result-dim-info">
-                            <h4>AI 策略與治理</h4>
-                            <div class="result-dim-bar"><div class="result-dim-bar-fill score-low" style="width:48%"></div></div>
-                            <span class="result-dim-level">待強化</span>
-                        </div>
-                    </div>
-                    <div class="result-dim-item">
-                        <div class="result-dim-score">71</div>
-                        <div class="result-dim-info">
-                            <h4>組織文化與人才</h4>
-                            <div class="result-dim-bar"><div class="result-dim-bar-fill score-high" style="width:71%"></div></div>
-                            <span class="result-dim-level">成熟</span>
-                        </div>
-                    </div>
+                    <!-- Dynamically populated by result.js -->
                 </div>
             </div>
         </div>
@@ -169,11 +122,7 @@
                 AI 自動診斷分析
             </div>
             <div class="result-analysis-text">
-                <p>根據診斷結果，威倫電子目前處於 AI 導入的「整合期」，整體成熟度為 56 分。企業在<strong>組織文化與人才</strong>方面表現最為突出（71 分），顯示團隊對新技術的接受度高且具備一定的變革管理經驗，這是推動 AI 導入的重要優勢。</p>
-                <br>
-                <p>然而，<strong>數據與資料能力</strong>（45 分）和 <strong>AI 策略與治理</strong>（48 分）為目前最需優先強化的領域。資料仍散落在不同系統中，缺乏統一的資料治理機制，這將直接影響 AI 模型的訓練效果與應用品質。同時，企業尚未建立明確的 AI 導入 KPI 與治理框架，建議優先處理。</p>
-                <br>
-                <p>在技術基礎方面（52 分），企業已具備基本的資訊系統架構，但系統間的整合度仍有提升空間。建議在啟動 AI 專案前，先確保核心系統的資料能夠順暢流通，才能發揮 AI 的最大效益。</p>
+                <!-- Dynamically populated by result.js -->
             </div>
         </div>
 
@@ -184,26 +133,7 @@
                 優先改善項目
             </div>
             <div class="result-priority-list">
-                <div class="result-priority-item">
-                    <h4>1. 建立基礎資料治理與整合機制</h4>
-                    <p>將分散在 ERP、Excel、CRM 中的業務資料進行盤點，建立統一的資料標準與清洗流程，為 AI 應用奠定資料基礎。</p>
-                    <div class="result-priority-basis">判斷依據：資料儲存分散（Q11）、資料品質滿意度偏低（Q12）、缺乏專責資料管理人員（Q15）</div>
-                </div>
-                <div class="result-priority-item">
-                    <h4>2. 制定明確的 AI 導入策略與 KPI</h4>
-                    <p>結合企業戰略目標，設定可量化的 AI 導入階段性指標，並建立跨部門的推動小組確保執行力。</p>
-                    <div class="result-priority-basis">判斷依據：AI 導入目標尚未量化（Q21）、缺乏正式推動組織（Q25）、自評準備度中等（Q23）</div>
-                </div>
-                <div class="result-priority-item">
-                    <h4>3. 優化客戶開發與銷售流程</h4>
-                    <p>針對客戶報價與訂單處理的瓶頸，導入 AI 輔助的客戶分析與自動化報價機制，提升業務效率。</p>
-                    <div class="result-priority-basis">判斷依據：最大營運挑戰為客戶開發效率（Q3）、最希望 AI 解決的問題為強化客戶經營（Q5）</div>
-                </div>
-                <div class="result-priority-item">
-                    <h4>4. 強化高階支持與資源投入</h4>
-                    <p>將 AI 導入議題提升至高層決策層級，爭取明確的預算配置與資源承諾，確保專案有足夠的推動力。</p>
-                    <div class="result-priority-basis">判斷依據：高層態度為研究階段（Q1）、預算配置意願中等（Q4）</div>
-                </div>
+                <!-- Dynamically populated by result.js -->
             </div>
         </div>
 
@@ -214,42 +144,7 @@
                 產業專屬 AI 落地場景
             </div>
             <div class="result-scenarios">
-                <div class="result-scenario-card">
-                    <h4>銷售潛在客戶智能推薦與管理</h4>
-                    <div class="result-scenario-meta">
-                        <span class="result-scenario-tag tag-difficulty-low">難度：低</span>
-                        <span class="result-scenario-tag" style="background:var(--teal-dim);color:var(--teal)">時程：4-6 週</span>
-                    </div>
-                    <p>運用 AI 分析既有客戶資料與互動紀錄，自動識別高潛力客戶並推薦開發策略，提升業務人員的精準度。</p>
-                    <div class="result-scenario-kpi">預期 KPI：客戶轉換率提升 15-25%</div>
-                </div>
-                <div class="result-scenario-card">
-                    <h4>客戶溝通與查詢自動化</h4>
-                    <div class="result-scenario-meta">
-                        <span class="result-scenario-tag tag-difficulty-low">難度：低</span>
-                        <span class="result-scenario-tag" style="background:var(--teal-dim);color:var(--teal)">時程：2-4 週</span>
-                    </div>
-                    <p>部署 AI 智能客服處理常見產品規格查詢、交期確認、價格試算等重複性溝通，釋放業務人力。</p>
-                    <div class="result-scenario-kpi">預期 KPI：客服回應時間縮短 60%</div>
-                </div>
-                <div class="result-scenario-card">
-                    <h4>內部知識庫與文件智能檢索</h4>
-                    <div class="result-scenario-meta">
-                        <span class="result-scenario-tag tag-difficulty-mid">難度：中</span>
-                        <span class="result-scenario-tag" style="background:var(--teal-dim);color:var(--teal)">時程：6-8 週</span>
-                    </div>
-                    <p>建立企業 AI 知識庫，讓員工透過自然語言快速找到產品手冊、技術文件、歷史報價等內部資訊。</p>
-                    <div class="result-scenario-kpi">預期 KPI：資訊搜尋時間縮短 70%</div>
-                </div>
-                <div class="result-scenario-card">
-                    <h4>採購需求預測與庫存優化</h4>
-                    <div class="result-scenario-meta">
-                        <span class="result-scenario-tag tag-difficulty-high">難度：高</span>
-                        <span class="result-scenario-tag" style="background:var(--teal-dim);color:var(--teal)">時程：8-12 週</span>
-                    </div>
-                    <p>結合歷史銷售資料與市場趨勢，預測未來採購需求，降低庫存成本與缺貨風險。</p>
-                    <div class="result-scenario-kpi">預期 KPI：庫存週轉天數縮短 20%</div>
-                </div>
+                <!-- Dynamically populated by result.js -->
             </div>
         </div>
 
@@ -260,19 +155,7 @@
                 建議判斷邏輯說明
             </div>
             <div class="result-analysis-text">
-                <p><strong>AI 分析依據</strong></p>
-                <p>• <strong>產業適配性：</strong>半導體/電子產業的 AI 應用成熟度較高，已有大量業界成功案例可參考，特別在供應鏈優化、品質檢測、客戶管理等領域。</p>
-                <p>• <strong>規模適配性：</strong>201-500 人的中型企業，具備導入 AI 的組織基礎，但需要確保跨部門協調與資源配置。</p>
-                <br>
-                <p><strong>關鍵答案影響分析</strong></p>
-                <p>• 最大營運挑戰為「客戶開發效率低」與「數據散落」→ 優先推薦客戶智能管理與資料整合場景</p>
-                <p>• 最希望 AI 解決的問題為「強化客戶經營」→ 聚焦 CRM 智能化方案</p>
-                <p>• 最大內部阻力為「不知從何開始」→ 建議先進行策略診斷與場景設計</p>
-                <p>• 業務資料儲存於多個系統但未整合 → 資料治理為前置必要工作</p>
-                <p>• AI 導入準備度自評 5/10 → 建議分階段推進，由低風險場景開始</p>
-                <br>
-                <p><strong>優先順序判斷邏輯</strong></p>
-                <p>根據「影響範圍 × 改善空間 × 實施難度」三維評估，資料治理與整合為最優先項目（影響所有後續 AI 應用），其次為策略制定（確保方向正確），再次為業務場景導入（快速產生可見成果）。</p>
+                <!-- Dynamically populated by result.js -->
             </div>
         </div>
 
@@ -283,19 +166,7 @@
                 建議顧問方案
             </div>
             <div class="result-solutions">
-                <div class="result-solution-card recommended">
-                    <span class="result-solution-badge">推薦方案</span>
-                    <h4>AI Strategy Sprint</h4>
-                    <p>2-4 週內找到最有價值的 AI 導入場景，交付 AI 導入路線圖與優先順序建議。適合目前處於探索與整合期的企業。</p>
-                </div>
-                <div class="result-solution-card">
-                    <h4>AI POC Sprint</h4>
-                    <p>6-8 週完成概念驗證，交付 POC 系統與驗證報告，確認 AI 的實際業務效益。適合已有明確場景的企業。</p>
-                </div>
-                <div class="result-solution-card">
-                    <h4>AI Governance & Scale</h4>
-                    <p>3-12 個月建立企業 AI 治理架構與規模化導入機制，交付治理框架與擴展策略。適合已驗證場景的企業。</p>
-                </div>
+                <!-- Dynamically populated by result.js -->
             </div>
         </div>
 
@@ -306,42 +177,7 @@
                 AI 導入路線圖
             </div>
             <div class="result-roadmap">
-                <div class="result-roadmap-phase">
-                    <div class="result-roadmap-time">0–4 週</div>
-                    <div class="result-roadmap-content">
-                        <h4>Strategy Sprint — 戰略對焦</h4>
-                        <ul>
-                            <li>高層共識工作坊：AI 願景與策略對齊</li>
-                            <li>核心業務流程 AI 潛力評估與優先排序</li>
-                            <li>資料現況盤點與初步治理規劃</li>
-                            <li>建立跨部門 AI 推動小組</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="result-roadmap-phase">
-                    <div class="result-roadmap-time">4–12 週</div>
-                    <div class="result-roadmap-content">
-                        <h4>POC 驗證 — 場景落地</h4>
-                        <ul>
-                            <li>挑選 1-2 個高頻業務流程進行 AI POC</li>
-                            <li>導入客戶溝通自動化工具（如智能客服、銷售助理）</li>
-                            <li>建置 POC 所需資料集與資料清洗機制</li>
-                            <li>團隊 AI 基礎知識與工具操作培訓</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="result-roadmap-phase">
-                    <div class="result-roadmap-time">3–12 月</div>
-                    <div class="result-roadmap-content">
-                        <h4>AI 治理與規模化</h4>
-                        <ul>
-                            <li>POC 成果評估與效益量化</li>
-                            <li>建立 AI 導入標準流程與治理框架</li>
-                            <li>將成功 AI 應用擴展至其他業務流程</li>
-                            <li>建置企業級資料湖或資料中台</li>
-                        </ul>
-                    </div>
-                </div>
+                <!-- Dynamically populated by result.js -->
             </div>
         </div>
 
@@ -408,85 +244,7 @@
     </footer>
 
     <script src="script.js"></script>
-    <script>
-    // Draw radar chart
-    (function() {
-        const canvas = document.getElementById('radarChart');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        const w = 280, h = 280;
-        canvas.width = w * 2; canvas.height = h * 2;
-        ctx.scale(2, 2);
-        const cx = w / 2, cy = h / 2, r = 100;
-        const dims = [62, 58, 45, 52, 48, 71]; // scores
-        const labels = ['戰略決策', '流程成熟度', '數據能力', '技術基礎', 'AI治理', '組織文化'];
-        const n = dims.length;
-
-        function getPoint(i, val) {
-            const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
-            return { x: cx + Math.cos(angle) * val, y: cy + Math.sin(angle) * val };
-        }
-
-        // Draw grid
-        [20, 40, 60, 80, 100].forEach(level => {
-            ctx.beginPath();
-            for (let i = 0; i <= n; i++) {
-                const p = getPoint(i % n, level * r / 100);
-                if (i === 0) ctx.moveTo(p.x, p.y);
-                else ctx.lineTo(p.x, p.y);
-            }
-            ctx.closePath();
-            ctx.strokeStyle = '#e2e8f0';
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-        });
-
-        // Draw axes
-        for (let i = 0; i < n; i++) {
-            const p = getPoint(i, r);
-            ctx.beginPath();
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(p.x, p.y);
-            ctx.strokeStyle = '#e2e8f0';
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-        }
-
-        // Draw data
-        ctx.beginPath();
-        dims.forEach((d, i) => {
-            const p = getPoint(i, d * r / 100);
-            if (i === 0) ctx.moveTo(p.x, p.y);
-            else ctx.lineTo(p.x, p.y);
-        });
-        ctx.closePath();
-        ctx.fillStyle = 'rgba(0, 212, 170, 0.15)';
-        ctx.fill();
-        ctx.strokeStyle = '#00d4aa';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Draw points
-        dims.forEach((d, i) => {
-            const p = getPoint(i, d * r / 100);
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-            ctx.fillStyle = '#00d4aa';
-            ctx.fill();
-            ctx.strokeStyle = '#fff';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-        });
-
-        // Draw labels
-        ctx.fillStyle = '#4a5568';
-        ctx.font = '11px "Noto Sans TC", sans-serif';
-        ctx.textAlign = 'center';
-        labels.forEach((label, i) => {
-            const p = getPoint(i, r + 18);
-            ctx.fillText(label, p.x, p.y + 4);
-        });
-    })();
-    </script>
+    <script src="api-config.js"></script>
+    <script src="result.js"></script>
 </body>
 </html>

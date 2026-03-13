@@ -228,16 +228,25 @@
     }
     if (btnSubmit) {
         btnSubmit.addEventListener('click', () => {
+            // Collect supplement notes
+            const notes = {};
+            document.querySelectorAll('.assess-textarea').forEach(ta => {
+                if (ta.name && ta.value.trim()) notes[ta.name] = ta.value.trim();
+            });
+
             const formData = {
                 companyName: document.getElementById('companyName')?.value || '',
                 industry: document.getElementById('industry')?.value || '',
                 companySize: document.getElementById('companySize')?.value || '',
+                revenue: document.getElementById('revenue')?.value || '',
+                companyAge: document.getElementById('companyAge')?.value || '',
                 department: document.getElementById('department')?.value || '',
                 userName: document.getElementById('userName')?.value || '',
                 jobTitle: document.getElementById('jobTitle')?.value || '',
                 userEmail: document.getElementById('userEmail')?.value || '',
                 userPhone: document.getElementById('userPhone')?.value || '',
                 answers: answers,
+                notes: notes,
                 answeredCount: countAnsweredQuestions(),
                 totalQuestions: TOTAL_QUESTIONS,
                 timestamp: new Date().toISOString()
