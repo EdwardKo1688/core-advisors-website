@@ -53,6 +53,240 @@
         </div>
     </section>
 
+    <!-- ========================================
+         AI 全球趨勢洞察 — 2026 前瞻戰略區塊
+         ======================================== -->
+    <section class="ai-trends-section" id="ai-trends">
+      <!-- 語音導覽浮動控制列 -->
+      <div class="trends-voice-bar" id="trendsVoiceBar">
+        <button class="tv-btn tv-play" id="tvPlay" onclick="tvToggle()">🎙️ 開始語音導覽</button>
+        <button class="tv-btn tv-skip" onclick="tvSkip()" title="下一段">⏭</button>
+        <div class="tv-progress-wrap">
+          <div class="tv-progress" id="tvProgress"></div>
+        </div>
+        <span class="tv-status" id="tvStatus">準備就緒</span>
+        <select class="tv-speed" id="tvSpeed" onchange="tvSpeedChange()">
+          <option value="0.85">0.85x</option>
+          <option value="1" selected>1x</option>
+          <option value="1.15">1.15x</option>
+          <option value="1.3">1.3x</option>
+        </select>
+      </div>
+
+      <div class="trends-container">
+        <!-- 區塊標題 -->
+        <div class="trends-header" data-anim="fadeUp">
+          <span class="trends-badge">🌐 GLOBAL AI PULSE — 2026.03</span>
+          <h2 class="trends-title">AI 趨勢前瞻<br><span class="trends-gradient">經理人戰略指引</span></h2>
+          <p class="trends-subtitle">整合 GTC 2026、xAI 最新佈局與全球企業 AI Agent 實戰數據，<br>為台灣企業主管提供可行動的策略洞察。</p>
+        </div>
+
+        <!-- 數據儀表板 -->
+        <div class="trends-dashboard" data-anim="fadeUp">
+          <div class="td-card">
+            <div class="td-number" data-count="1000">0</div>
+            <div class="td-unit">十億美元</div>
+            <div class="td-label">NVIDIA 預估 AI 晶片營收<br><span class="td-src">2025-2027 累計</span></div>
+          </div>
+          <div class="td-card">
+            <div class="td-number" data-count="40" data-suffix="%">0</div>
+            <div class="td-unit"></div>
+            <div class="td-label">企業應用將嵌入 AI Agent<br><span class="td-src">Gartner 2026 年底預測</span></div>
+          </div>
+          <div class="td-card">
+            <div class="td-number" data-count="52">0</div>
+            <div class="td-unit">十億美元</div>
+            <div class="td-label">AI Agent 市場規模<br><span class="td-src">2030 年預估</span></div>
+          </div>
+          <div class="td-card">
+            <div class="td-number" data-count="57" data-suffix="%">0</div>
+            <div class="td-unit"></div>
+            <div class="td-label">企業已在生產環境運行 AI Agent<br><span class="td-src">G2 Enterprise Report</span></div>
+          </div>
+        </div>
+
+        <!-- 雙巨頭觀點 -->
+        <div class="trends-leaders" data-anim="fadeUp">
+          <h3 class="trends-section-title">
+            <span class="tst-icon">🎯</span> 科技巨頭最新佈局
+          </h3>
+
+          <div class="leader-grid">
+            <!-- 黃仁勳 -->
+            <div class="leader-card leader-nvidia" data-anim="slideLeft">
+              <div class="lc-header">
+                <div class="lc-avatar lc-nvidia">JH</div>
+                <div>
+                  <div class="lc-name">黃仁勳 Jensen Huang</div>
+                  <div class="lc-role">NVIDIA CEO · GTC 2026 Keynote</div>
+                  <div class="lc-date">2026.03.16 San Jose</div>
+                </div>
+              </div>
+              <div class="lc-insights">
+                <div class="lc-insight">
+                  <span class="lci-tag">推論革命</span>
+                  <p>「推論拐點已到來」— AI 運算重心正從訓練轉向推論。Agentic AI 應用爆發式產生 Token，推論需求以十倍速成長。</p>
+                </div>
+                <div class="lc-insight">
+                  <span class="lci-tag">Vera Rubin</span>
+                  <p>下一代 GPU 平台：訓練同等模型只需 1/4 的 GPU 數量，推論吞吐量提升 10 倍、每 Token 成本降至 1/10。</p>
+                </div>
+                <div class="lc-insight">
+                  <span class="lci-tag">Physical AI</span>
+                  <p>數位 AI 之後的下一個黃金地帶：機器人、自駕系統、工業軟體。NVIDIA 發布 GR00T N2 機器人基礎模型。</p>
+                </div>
+                <div class="lc-insight">
+                  <span class="lci-tag">NemoClaw</span>
+                  <p>企業級 AI Agent 平台：將 OpenClaw 加上安全性與隱私控管，讓企業一鍵部署自主 Agent。</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Musk -->
+            <div class="leader-card leader-xai" data-anim="slideRight">
+              <div class="lc-header">
+                <div class="lc-avatar lc-xai">EM</div>
+                <div>
+                  <div class="lc-name">Elon Musk</div>
+                  <div class="lc-role">xAI / Tesla / SpaceX</div>
+                  <div class="lc-date">2026.03 最新動態</div>
+                </div>
+              </div>
+              <div class="lc-insights">
+                <div class="lc-insight">
+                  <span class="lci-tag">Grok 重建</span>
+                  <p>承認 xAI「從一開始就沒有建對」，宣布從底層重新設計。目標年底追平 OpenAI、Google、Anthropic。</p>
+                </div>
+                <div class="lc-insight">
+                  <span class="lci-tag">Digital Optimus</span>
+                  <p>xAI × Tesla 聯合專案「數位擎天柱」：用 Grok 大語言模型驅動 AI 代理人操控電腦，打造全自動數位勞動力。</p>
+                </div>
+                <div class="lc-insight">
+                  <span class="lci-tag">金融 AI</span>
+                  <p>大舉招募華爾街銀行家、交易員、信用分析師，訓練 Grok 理解槓桿貸款、不良資產投資等專業金融模型。</p>
+                </div>
+                <div class="lc-insight">
+                  <span class="lci-tag">軍事 AI</span>
+                  <p>xAI 與美國國防部簽約，Grok 進入機密系統。AI 正式成為國家安全基礎設施。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 趨勢時間軸 -->
+        <div class="trends-timeline" data-anim="fadeUp">
+          <h3 class="trends-section-title">
+            <span class="tst-icon">📊</span> 2026 企業 AI Agent 關鍵趨勢
+          </h3>
+          <div class="tt-grid">
+            <div class="tt-card" data-anim="fadeUp" style="--delay:0.1s">
+              <div class="tt-icon">🤖</div>
+              <div class="tt-tag">趨勢 1</div>
+              <h4>從聊天機器人到自主工作流</h4>
+              <p>AI Agent 不再只是問答工具，而是能夠端到端執行業務流程的「數位裝配線」。多個 Agent 協作完成從接單到交付的完整流程。</p>
+              <div class="tt-action">
+                <strong>經理人行動：</strong>盤點哪些跨部門流程可由 Agent 串接自動化，優先選擇重複性高且規則明確的作業。
+              </div>
+            </div>
+            <div class="tt-card" data-anim="fadeUp" style="--delay:0.2s">
+              <div class="tt-icon">🛡️</div>
+              <div class="tt-tag">趨勢 2</div>
+              <h4>治理先行：有界自主權</h4>
+              <p>領先企業導入「有界自主權」架構——明確 Agent 的操作邊界、人工介入觸發條件、完整的行為審計紀錄，甚至部署「治理 Agent」來監督其他 Agent。</p>
+              <div class="tt-action">
+                <strong>經理人行動：</strong>在導入任何 AI Agent 前，先建立治理框架：定義 Agent 可以自主決策的範圍與需要人工覆核的紅線。
+              </div>
+            </div>
+            <div class="tt-card" data-anim="fadeUp" style="--delay:0.3s">
+              <div class="tt-icon">👥</div>
+              <div class="tt-tag">趨勢 3</div>
+              <h4>人機混合團隊</h4>
+              <p>到 2028 年，38% 的組織將有 AI Agent 作為正式團隊成員。這不是取代人類，而是重新定義「團隊」的組成方式。</p>
+              <div class="tt-action">
+                <strong>經理人行動：</strong>開始規劃「AI 同事」的角色定位——哪些會議它應該參加？哪些決策它可以建議但不能拍板？
+              </div>
+            </div>
+            <div class="tt-card" data-anim="fadeUp" style="--delay:0.4s">
+              <div class="tt-icon">🏭</div>
+              <div class="tt-tag">趨勢 4</div>
+              <h4>Physical AI：從數位到實體</h4>
+              <p>黃仁勳宣告「數位 AI 之後的下一波金礦是 Physical AI」。機器人、自駕車、工業自動化將消耗更多 AI 運算。Uber 計畫 2028 年在全球 28 城市部署自駕車隊。</p>
+              <div class="tt-action">
+                <strong>經理人行動：</strong>評估企業是否有物流、倉儲、生產線等場景可導入 Physical AI，密切關注機器人基礎模型發展。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 戰略建議 -->
+        <div class="trends-strategy" data-anim="fadeUp">
+          <h3 class="trends-section-title">
+            <span class="tst-icon">🧭</span> 台灣經理人 2026 行動清單
+          </h3>
+          <div class="ts-grid">
+            <div class="ts-item" data-anim="fadeUp" style="--delay:0.1s">
+              <div class="ts-num">01</div>
+              <div class="ts-content">
+                <h4>立即啟動 AI Agent 試點</h4>
+                <p>不要再停留在觀望。57% 的全球企業已有 Agent 在生產環境運行。選一個痛點明確的流程，90 天內完成 POC。</p>
+              </div>
+            </div>
+            <div class="ts-item" data-anim="fadeUp" style="--delay:0.2s">
+              <div class="ts-num">02</div>
+              <div class="ts-content">
+                <h4>投資推論基礎設施</h4>
+                <p>黃仁勳說「推論拐點已到來」。評估企業 AI 推論需求，關注 Vera Rubin 等新平台帶來的 10 倍成本降幅。</p>
+              </div>
+            </div>
+            <div class="ts-item" data-anim="fadeUp" style="--delay:0.3s">
+              <div class="ts-num">03</div>
+              <div class="ts-content">
+                <h4>建立 AI 治理制度</h4>
+                <p>「有界自主權」不是限制創新，而是讓 AI 擴散有路可循。定義角色、權限、審計與緊急介入機制。</p>
+              </div>
+            </div>
+            <div class="ts-item" data-anim="fadeUp" style="--delay:0.4s">
+              <div class="ts-num">04</div>
+              <div class="ts-content">
+                <h4>培養「AI 原生」管理層</h4>
+                <p>未來不是 AI 取代經理人，而是懂 AI 的經理人取代不懂的。投資高階主管的 AI 素養培訓，從「看懂」走向「敢投資」。</p>
+              </div>
+            </div>
+            <div class="ts-item" data-anim="fadeUp" style="--delay:0.5s">
+              <div class="ts-num">05</div>
+              <div class="ts-content">
+                <h4>關注 Physical AI 佈局窗口</h4>
+                <p>如果你的企業涉及物流、製造、倉儲，2026 是開始評估機器人基礎模型與自駕技術的最佳時機。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="trends-cta" data-anim="fadeUp">
+          <div class="tc-inner">
+            <p class="tc-lead">不確定如何將這些趨勢轉化為企業行動？</p>
+            <h3 class="tc-title">免費 AI 導入診斷，找到您的最佳起點</h3>
+            <div class="tc-actions">
+              <a href="navigator.html" class="btn btn-primary btn-glow">開始 AI 診斷 <span class="arrow">&rarr;</span></a>
+              <a href="booking.html" class="btn btn-outline-light">預約顧問諮詢</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 資料來源 -->
+        <div class="trends-sources" data-anim="fadeUp">
+          <p>資料來源：<a href="https://www.cnbc.com/2026/03/16/nvidia-gtc-2026-ceo-jensen-huang-keynote-blackwell-vera-rubin.html" target="_blank">NVIDIA GTC 2026</a> ·
+          <a href="https://www.storyboard18.com/digital/elon-musk-says-xai-will-match-openai-google-and-anthropic-by-2026-92333.htm" target="_blank">xAI 2026</a> ·
+          <a href="https://cloud.google.com/resources/content/ai-agent-trends-2026" target="_blank">Google Cloud AI Agent Report</a> ·
+          <a href="https://www.deloitte.com/us/en/insights/topics/technology-management/tech-trends/2026/agentic-ai-strategy.html" target="_blank">Deloitte Tech Trends 2026</a> ·
+          <a href="https://learn.g2.com/enterprise-ai-agents-report" target="_blank">G2 Enterprise AI Report</a>
+          <br>最後更新：2026.03.17</p>
+        </div>
+      </div>
+    </section>
+
     <!-- 四步顧問導入路徑 -->
     <section class="four-steps">
         <div class="container">
@@ -374,5 +608,234 @@
     <script src="script.js"></script>
     <script src="api-config.js"></script>
     <script src="cms-loader.js"></script>
+
+    <!-- AI 趨勢區塊：動畫 + 數字計數器 + 語音導覽 -->
+    <script>
+    (function(){
+      /* ── Scroll Animations ── */
+      const animObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('anim-visible'); animObs.unobserve(e.target); }});
+      }, { threshold: 0.15 });
+      document.querySelectorAll('[data-anim]').forEach(el => animObs.observe(el));
+
+      /* ── Counter Animation ── */
+      const counterObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if(!e.isIntersecting) return;
+          const el = e.target;
+          const target = parseInt(el.dataset.count);
+          const suffix = el.dataset.suffix || '';
+          const duration = 2000;
+          const start = performance.now();
+          function tick(now) {
+            const p = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+            el.textContent = Math.round(target * eased).toLocaleString() + suffix;
+            if(p < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+          counterObs.unobserve(el);
+        });
+      }, { threshold: 0.5 });
+      document.querySelectorAll('.td-number[data-count]').forEach(el => counterObs.observe(el));
+
+      /* ── 改良版語音導覽 (Web Speech API) ── */
+      /*
+       * 改善策略：
+       * 1. 優先選擇高品質本地語音（非 remote/network 語音）
+       * 2. 降低語速 (rate 0.92)、調整音調 (pitch 1.05)
+       * 3. 在句子間加入自然停頓
+       * 4. 將長段落拆分為短句，避免合成引擎吞字
+       * 5. 使用 SSML-like 的文本前處理：在標點後加空白
+       */
+
+      const tvScripts = [
+        // 0: 開場
+        { text: "歡迎來到，AI 全球趨勢前瞻。", el: ".trends-header" },
+        { text: "接下來，我將為您解讀 2026 年 3 月，最新的 AI 產業動態，以及對企業經理人的戰略啟示。", el: ".trends-header" },
+        // 1-2: 數據
+        { text: "首先看四組關鍵數據。", el: ".trends-dashboard" },
+        { text: "NVIDIA 預估 2025 到 2027 年，AI 晶片累計營收，將達到一兆美元。Gartner 預測，2026 年底，40% 的企業應用將嵌入 AI Agent。AI Agent 市場規模，預計 2030 年突破 520 億美元。目前已有 57% 的企業，在生產環境中運行 AI Agent。", el: ".trends-dashboard" },
+        // 3-6: 黃仁勳
+        { text: "接下來是科技巨頭的最新佈局。", el: ".trends-leaders" },
+        { text: "黃仁勳在 GTC 2026 主題演講中宣布，推論的拐點，已經到來。AI 運算重心，正從模型訓練，轉向即時推論。", el: ".leader-nvidia" },
+        { text: "他發佈了下一代 GPU 平台，Vera Rubin。訓練同等規模的模型，只需四分之一的 GPU，推論速度提升十倍，成本降至十分之一。", el: ".leader-nvidia" },
+        { text: "更重要的是，他宣告 Physical AI 時代來臨。機器人、自駕系統、工業軟體，將成為 AI 下一個兆元市場。", el: ".leader-nvidia" },
+        // 7-9: Musk
+        { text: "另一邊，Elon Musk 的動作更為激進。", el: ".leader-xai" },
+        { text: "他坦承 xAI 從一開始就沒有建對，宣布從底層重新設計，目標年底追平 OpenAI 和 Google。同時推出 Digital Optimus 計畫，用 Grok 大語言模型，驅動 AI Agent 操控電腦。", el: ".leader-xai" },
+        { text: "此外，xAI 大舉招募華爾街金融專家，訓練 Grok 理解專業金融模型。xAI 也與美國國防部簽約，Grok 正式進入機密系統。", el: ".leader-xai" },
+        // 10-13: 趨勢
+        { text: "基於以上動態，我們歸納出四大關鍵趨勢。", el: ".trends-timeline" },
+        { text: "趨勢一：AI Agent，正從聊天機器人，進化為自主工作流的數位裝配線。多個 Agent 協作，完成端到端的業務流程。", el: ".tt-grid .tt-card:nth-child(1)" },
+        { text: "趨勢二：治理先行。領先企業導入有界自主權架構，定義 Agent 的操作邊界，和人工介入的觸發條件。", el: ".tt-grid .tt-card:nth-child(2)" },
+        { text: "趨勢三：人機混合團隊。到 2028 年，38% 的組織，將有 AI Agent 作為正式團隊成員。", el: ".tt-grid .tt-card:nth-child(3)" },
+        // 14-18: 行動清單
+        { text: "最後，是給台灣經理人的五項行動建議。", el: ".trends-strategy" },
+        { text: "第一，立即啟動 AI Agent 試點。選一個痛點明確的流程，90 天內完成概念驗證。", el: ".ts-grid .ts-item:nth-child(1)" },
+        { text: "第二，關注推論基礎設施的演進。新平台帶來的十倍成本降幅，將重新定義 AI 的投資回報率。", el: ".ts-grid .ts-item:nth-child(2)" },
+        { text: "第三，建立 AI 治理制度。第四，培養 AI 原生管理層。第五，開始評估 Physical AI 的佈局窗口。", el: ".ts-grid .ts-item:nth-child(3)" },
+        // 19: 結尾
+        { text: "以上就是 2026 年 3 月的 AI 全球趨勢前瞻。如果您想了解如何將這些趨勢，轉化為企業具體行動，歡迎使用我們的免費 AI 導入診斷。", el: ".trends-cta" },
+      ];
+
+      let tvPlaying = false, tvIdx = 0, tvPaused = false, tvVoice = null;
+
+      /* 語音選擇 — 改良版 */
+      function tvFindVoice() {
+        const voices = speechSynthesis.getVoices();
+        // 優先排序：macOS 高品質中文語音 > 其他中文女聲 > 任何中文
+        const prefs = [
+          // Apple 高品質語音
+          v => v.lang.includes('zh-TW') && /Meijia|美佳/.test(v.name),
+          v => v.lang.includes('zh-TW') && /premium|enhanced/i.test(v.name),
+          v => v.lang.includes('zh') && /Ting-Ting|婷婷/.test(v.name),
+          // Google / Microsoft 高品質
+          v => v.lang.includes('zh-TW') && /Google|Microsoft/i.test(v.name),
+          v => v.lang.includes('zh-TW') && /female|女/i.test(v.name),
+          // 任何 zh-TW
+          v => v.lang === 'zh-TW',
+          v => v.lang.startsWith('zh-TW'),
+          // 回退：任何中文
+          v => v.lang.includes('zh'),
+        ];
+        for (const fn of prefs) {
+          const found = voices.find(fn);
+          if (found) return found;
+        }
+        return null;
+      }
+
+      function tvInitVoices() {
+        tvVoice = tvFindVoice();
+      }
+      speechSynthesis.onvoiceschanged = tvInitVoices;
+      tvInitVoices();
+
+      /* 改良版文本前處理 — 提升咬字清晰度 */
+      function tvPreprocessText(text) {
+        // 在逗號、句號後加微停頓（用空白模擬）
+        let t = text;
+        // 確保標點後有空格讓引擎自然斷句
+        t = t.replace(/，/g, '，  ');
+        t = t.replace(/。/g, '。  ');
+        t = t.replace(/；/g, '；  ');
+        t = t.replace(/：/g, '：  ');
+        // 英文詞彙前後加空白確保正確發音
+        t = t.replace(/([a-zA-Z0-9]+)/g, ' $1 ');
+        t = t.replace(/\s+/g, ' ').trim();
+        return t;
+      }
+
+      function tvSpeak(text, cb) {
+        speechSynthesis.cancel();
+        const processed = tvPreprocessText(text);
+        const u = new SpeechSynthesisUtterance(processed);
+        u.lang = 'zh-TW';
+        // 核心改善：降低語速、微調音調
+        const speedVal = parseFloat(document.getElementById('tvSpeed').value);
+        u.rate = speedVal * 0.92; // 比選擇值再慢 8%
+        u.pitch = 1.05;           // 微升音調，更清晰
+        u.volume = 1.0;
+        if (tvVoice) u.voice = tvVoice;
+        u.onend = () => { if(cb) cb(); };
+        u.onerror = () => { if(cb) cb(); };
+
+        // Chrome bug 修復：長文本會中斷
+        // 每 14 秒重新觸發 resume 避免卡死
+        const keepAlive = setInterval(() => {
+          if (!speechSynthesis.speaking) { clearInterval(keepAlive); return; }
+          speechSynthesis.pause();
+          speechSynthesis.resume();
+        }, 14000);
+        u.onend = () => { clearInterval(keepAlive); if(cb) cb(); };
+        u.onerror = () => { clearInterval(keepAlive); if(cb) cb(); };
+
+        speechSynthesis.speak(u);
+      }
+
+      function tvPlaySeg() {
+        if (!tvPlaying || tvIdx >= tvScripts.length) {
+          tvStop();
+          document.getElementById('tvStatus').textContent = '導覽完成 ✓';
+          return;
+        }
+        const seg = tvScripts[tvIdx];
+        const total = tvScripts.length;
+        document.getElementById('tvProgress').style.width = ((tvIdx + 1) / total * 100).toFixed(0) + '%';
+        document.getElementById('tvStatus').textContent = (tvIdx + 1) + '/' + total;
+
+        // 清除舊高亮
+        document.querySelectorAll('.tv-highlight').forEach(e => e.classList.remove('tv-highlight'));
+
+        // 高亮目標元素
+        if (seg.el) {
+          const el = document.querySelector(seg.el);
+          if (el) {
+            el.classList.add('tv-highlight');
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+
+        tvSpeak(seg.text, () => {
+          if (!tvPlaying) return;
+          tvIdx++;
+          setTimeout(tvPlaySeg, 600); // 段落間停頓
+        });
+      }
+
+      window.tvToggle = function() {
+        const btn = document.getElementById('tvPlay');
+        if (!tvPlaying) {
+          tvPlaying = true;
+          tvPaused = false;
+          tvIdx = 0;
+          btn.textContent = '⏸ 暫停導覽';
+          btn.classList.add('playing');
+          btn.classList.remove('paused');
+          tvPlaySeg();
+        } else if (!tvPaused) {
+          tvPaused = true;
+          speechSynthesis.pause();
+          btn.textContent = '▶️ 繼續導覽';
+          btn.classList.remove('playing');
+          btn.classList.add('paused');
+        } else {
+          tvPaused = false;
+          speechSynthesis.resume();
+          btn.textContent = '⏸ 暫停導覽';
+          btn.classList.add('playing');
+          btn.classList.remove('paused');
+        }
+      };
+
+      window.tvStop = function() {
+        tvPlaying = false;
+        tvPaused = false;
+        speechSynthesis.cancel();
+        const btn = document.getElementById('tvPlay');
+        btn.textContent = '🎙️ 開始語音導覽';
+        btn.classList.remove('playing', 'paused');
+        document.querySelectorAll('.tv-highlight').forEach(e => e.classList.remove('tv-highlight'));
+        tvIdx = 0;
+        document.getElementById('tvProgress').style.width = '0%';
+        document.getElementById('tvStatus').textContent = '準備就緒';
+      };
+
+      window.tvSkip = function() {
+        if (!tvPlaying) return;
+        speechSynthesis.cancel();
+        tvIdx++;
+        tvPlaySeg();
+      };
+
+      window.tvSpeedChange = function() {
+        if (tvPlaying && !tvPaused) {
+          speechSynthesis.cancel();
+          tvPlaySeg();
+        }
+      };
+    })();
+    </script>
 </body>
 </html>
