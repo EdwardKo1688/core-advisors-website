@@ -129,7 +129,7 @@
         const statusEl = document.getElementById('apiStatus');
         if (isApiConfigured()) {
             statusEl.textContent = 'API 已連線';
-            statusEl.style.color = '#00d4aa';
+            statusEl.style.color = '#2e7d32';
         } else {
             statusEl.textContent = '展示模式';
             statusEl.style.color = '#f5a623';
@@ -197,8 +197,8 @@
             datasets: [{
                 label: '診斷數量',
                 data: stats.monthlyTrend.map(m => m.count),
-                borderColor: '#00d4aa',
-                backgroundColor: 'rgba(0,212,170,0.1)',
+                borderColor: '#003366',
+                backgroundColor: 'rgba(0,51,102,0.08)',
                 fill: true,
                 tension: 0.3
             }]
@@ -207,7 +207,7 @@
         // Industry chart
         const indLabels = Object.keys(stats.industries);
         const indValues = Object.values(stats.industries);
-        const colors = ['#00d4aa', '#1976d2', '#f57c00', '#9c27b0', '#e91e63', '#607d8b', '#ff5722'];
+        const colors = ['#003366', '#1565c0', '#e65100', '#6a1b9a', '#c62828', '#546e7a', '#d84315'];
         renderChart('chartIndustry', 'doughnut', {
             labels: indLabels,
             datasets: [{ data: indValues, backgroundColor: colors.slice(0, indLabels.length) }]
@@ -220,9 +220,9 @@
             datasets: [{
                 label: '平均分數',
                 data: stats.dimensionAverages,
-                borderColor: '#00d4aa',
-                backgroundColor: 'rgba(0,212,170,0.2)',
-                pointBackgroundColor: '#00d4aa'
+                borderColor: '#003366',
+                backgroundColor: 'rgba(0,51,102,0.12)',
+                pointBackgroundColor: '#003366'
             }]
         }, { scales: { r: { min: 0, max: 100, ticks: { stepSize: 20 } } } });
 
@@ -581,7 +581,7 @@
         if (isApiConfigured()) {
             urlDisplay.textContent = GAS_API_URL.substring(0, 60) + '...';
             connStatus.textContent = '已連線';
-            connStatus.style.color = '#00d4aa';
+            connStatus.style.color = '#2e7d32';
         } else {
             urlDisplay.textContent = '未設定（展示模式）';
             connStatus.textContent = '未連線 - 使用展示資料';

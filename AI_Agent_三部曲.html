@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent 從入門到企業級 — 三部曲</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#08090f;--card:#0f1320;--card-hover:#151b2e;
+  --red:#ef4444;--orange:#f59e0b;--cyan:#06b6d4;--green:#10b981;
+  --purple:#8b5cf6;--blue:#3b82f6;--pink:#ec4899;
+  --white:#f1f5f9;--gray:#94a3b8;--gray-dk:#1e293b;--gray-md:#475569;
+}
+body{background:var(--bg);color:var(--white);font-family:'Noto Sans TC',sans-serif;
+  min-height:100vh;overflow-x:hidden}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* === HERO === */
+.hero{text-align:center;padding:60px 24px 40px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(ellipse at 50% 30%,rgba(139,92,246,0.08) 0%,transparent 60%);pointer-events:none}
+.hero-badge{display:inline-block;padding:6px 18px;border-radius:99px;font-size:11px;font-weight:600;
+  background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(139,92,246,0.15));
+  border:1px solid rgba(139,92,246,0.25);color:var(--purple);letter-spacing:1px;margin-bottom:20px}
+.hero h1{font-size:clamp(28px,5vw,48px);font-weight:900;line-height:1.25;
+  background:linear-gradient(135deg,#fff 0%,#94a3b8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero h1 em{font-style:normal;
+  background:linear-gradient(135deg,#ef4444,#f59e0b,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{font-size:15px;color:var(--gray);margin-top:14px;line-height:1.8;max-width:680px;margin-left:auto;margin-right:auto}
+.hero .tags{margin-top:18px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.hero .tag{font-size:10px;padding:4px 12px;border-radius:99px;border:1px solid var(--gray-dk);
+  color:var(--gray-md);background:rgba(255,255,255,0.02)}
+
+/* === STORY ARC === */
+.arc{max-width:960px;margin:0 auto 40px;padding:0 20px}
+.arc-title{text-align:center;font-size:13px;color:var(--gray-md);margin-bottom:24px;letter-spacing:2px;font-weight:700}
+.arc-steps{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
+.arc-step{text-align:center;padding:12px 20px;position:relative}
+.arc-dot{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:18px;margin:0 auto 8px;border:2px solid}
+.arc-label{font-size:11px;font-weight:700;letter-spacing:0.5px}
+.arc-sub{font-size:9px;color:var(--gray-md);margin-top:2px}
+.arc-arrow{font-size:20px;color:var(--gray-dk);margin:0 4px;align-self:center}
+
+/* === CARDS === */
+.cards{max-width:1100px;margin:0 auto;padding:0 20px 40px;display:flex;flex-direction:column;gap:24px}
+
+.chapter-card{background:var(--card);border-radius:16px;padding:0;overflow:hidden;
+  border:1px solid var(--gray-dk);transition:all .4s;cursor:pointer;position:relative;
+  display:grid;grid-template-columns:160px 1fr;min-height:220px}
+.chapter-card:hover{transform:translateY(-4px);border-color:var(--gray-md);
+  box-shadow:0 20px 40px rgba(0,0,0,0.4)}
+
+.card-num{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;position:relative;overflow:hidden}
+.card-num::before{content:'';position:absolute;inset:0;opacity:0.08}
+.card-num .chapter{font-size:11px;font-weight:700;letter-spacing:2px;margin-bottom:6px}
+.card-num .big{font-size:52px;font-weight:900;line-height:1}
+.card-num .emoji{font-size:36px;margin-top:8px}
+
+.card-body{padding:28px 32px 28px 24px;display:flex;flex-direction:column;justify-content:center}
+.card-body h2{font-size:22px;font-weight:900;margin-bottom:4px}
+.card-body .subtitle{font-size:13px;color:var(--gray);margin-bottom:14px;line-height:1.6}
+.card-body .desc{font-size:12px;color:var(--gray-md);line-height:1.8;margin-bottom:16px}
+.card-body .meta{display:flex;gap:16px;flex-wrap:wrap}
+.card-body .meta-item{font-size:10px;color:var(--gray);display:flex;align-items:center;gap:4px}
+.card-body .meta-icon{font-size:12px}
+
+.card-cta{position:absolute;bottom:20px;right:24px;font-size:11px;font-weight:700;
+  padding:8px 18px;border-radius:8px;border:1px solid;transition:all .3s}
+.card-cta:hover{transform:scale(1.05)}
+
+/* Card colors */
+.card-1{border-left:4px solid var(--red)}
+.card-1 .card-num::before{background:linear-gradient(135deg,var(--red),var(--orange))}
+.card-1 .chapter,.card-1 .big,.card-1 h2{color:var(--red)}
+.card-1 .card-cta{border-color:var(--red);color:var(--red);background:rgba(239,68,68,0.08)}
+.card-1 .card-cta:hover{background:var(--red);color:#fff}
+
+.card-2{border-left:4px solid var(--orange)}
+.card-2 .card-num::before{background:linear-gradient(135deg,var(--orange),#facc15)}
+.card-2 .chapter,.card-2 .big,.card-2 h2{color:var(--orange)}
+.card-2 .card-cta{border-color:var(--orange);color:var(--orange);background:rgba(245,158,11,0.08)}
+.card-2 .card-cta:hover{background:var(--orange);color:#fff}
+
+.card-3{border-left:4px solid var(--cyan)}
+.card-3 .card-num::before{background:linear-gradient(135deg,var(--cyan),var(--blue))}
+.card-3 .chapter,.card-3 .big,.card-3 h2{color:var(--cyan)}
+.card-3 .card-cta{border-color:var(--cyan);color:var(--cyan);background:rgba(6,182,212,0.08)}
+.card-3 .card-cta:hover{background:var(--cyan);color:#fff}
+
+/* === TRANSITION QUOTES === */
+.transition{max-width:680px;margin:0 auto;padding:8px 20px 24px;text-align:center}
+.transition .quote{font-size:13px;color:var(--gray);font-style:italic;line-height:1.6;
+  padding:16px 24px;border-left:3px solid var(--gray-dk);text-align:left;
+  background:rgba(255,255,255,0.01);border-radius:0 8px 8px 0}
+.transition .speaker{font-size:10px;color:var(--gray-md);margin-top:6px;text-align:right}
+
+/* === BOTTOM === */
+.bottom{text-align:center;padding:40px 20px 60px;max-width:700px;margin:0 auto}
+.bottom h3{font-size:20px;font-weight:900;margin-bottom:12px;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.bottom p{font-size:13px;color:var(--gray);line-height:1.8;margin-bottom:24px}
+.bottom .use-cases{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.bottom .use-case{font-size:10px;padding:6px 14px;border-radius:8px;background:var(--card);
+  border:1px solid var(--gray-dk);color:var(--gray)}
+.bottom .footer-note{font-size:9px;color:var(--gray-dk);margin-top:32px;letter-spacing:0.5px}
+
+/* === Responsive === */
+@media(max-width:768px){
+  .chapter-card{grid-template-columns:1fr;min-height:auto}
+  .card-num{flex-direction:row;gap:12px;padding:16px 20px;justify-content:flex-start}
+  .card-num .emoji{margin-top:0}
+  .card-cta{position:static;margin-top:12px;display:inline-block;width:fit-content}
+  .arc-steps{flex-direction:column;gap:4px}
+  .arc-arrow{transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">EXECUTIVE AI LITERACY SERIES</div>
+  <h1>AI Agent <em>從入門到企業級</em><br>三部曲</h1>
+  <p>
+    為企業高階主管量身設計的 AI 素養培訓教材<br>
+    從「看懂 AI」到「敢投資 AI」— 三個互動章節、一套完整故事
+  </p>
+  <div class="tags">
+    <span class="tag">CEO / CFO / CTO</span>
+    <span class="tag">非技術背景友善</span>
+    <span class="tag">互動式簡報</span>
+    <span class="tag">可離線使用</span>
+    <span class="tag">30 分鐘完整體驗</span>
+  </div>
+</div>
+
+<!-- STORY ARC -->
+<div class="arc">
+  <div class="arc-title">簡 報 故 事 弧</div>
+  <div class="arc-steps">
+    <div class="arc-step">
+      <div class="arc-dot" style="border-color:var(--red);color:var(--red)">1</div>
+      <div class="arc-label" style="color:var(--red)">WOW</div>
+      <div class="arc-sub">想要 AI</div>
+    </div>
+    <div class="arc-arrow">→</div>
+    <div class="arc-step">
+      <div class="arc-dot" style="border-color:var(--orange);color:var(--orange)">2</div>
+      <div class="arc-label" style="color:var(--orange)">AHA</div>
+      <div class="arc-sub">理解 AI</div>
+    </div>
+    <div class="arc-arrow">→</div>
+    <div class="arc-step">
+      <div class="arc-dot" style="border-color:var(--cyan);color:var(--cyan)">3</div>
+      <div class="arc-label" style="color:var(--cyan)">GO!</div>
+      <div class="arc-sub">投資 AI</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAPTER CARDS -->
+<div class="cards">
+
+  <!-- CH 1 -->
+  <div class="chapter-card card-1" onclick="location.href='AI_Agent_龍蝦動畫流程圖.html'">
+    <div class="card-num">
+      <div class="chapter">CHAPTER</div>
+      <div class="big">01</div>
+      <div class="emoji">⚡</div>
+    </div>
+    <div class="card-body">
+      <h2>AI Agent 怎麼工作？</h2>
+      <div class="subtitle">看懂 AI 的第一步 — 30 秒搞懂全流程</div>
+      <div class="desc">
+        透過 8 步驟動畫流程圖，直覺展示：使用者提問 → AI 穿上系統提示詞的「殼」→
+        呼叫大語言模型思考 → 調用工具與技能執行 → 回傳結果。<br>
+        就像看一部 30 秒的迷你動畫 — 不需要任何技術背景就能理解 AI 的「魔法」。
+      </div>
+      <div class="meta">
+        <div class="meta-item"><span class="meta-icon">🎬</span> 8 步驟互動動畫</div>
+        <div class="meta-item"><span class="meta-icon">⏱</span> 5 分鐘</div>
+        <div class="meta-item"><span class="meta-icon">🎯</span> 建立好奇心</div>
+      </div>
+    </div>
+    <div class="card-cta">開始體驗 →</div>
+  </div>
+
+  <!-- Transition 1→2 -->
+  <div class="transition">
+    <div class="quote">
+      「剛才看到 AI Agent 如何回應使用者，但裡面的零件到底是什麼？<br>
+      每個步驟背後的技術元件，各自扮演什麼角色？」
+      <div class="speaker">— 轉場引導：從「流程」進入「結構」</div>
+    </div>
+  </div>
+
+  <!-- CH 2 -->
+  <div class="chapter-card card-2" onclick="location.href='AI_Agent_龍蝦解剖學.html'">
+    <div class="card-num">
+      <div class="chapter">CHAPTER</div>
+      <div class="big">02</div>
+      <div class="emoji">🦞</div>
+    </div>
+    <div class="card-body">
+      <h2>AI Agent 裡面有什麼？</h2>
+      <div class="subtitle">一隻龍蝦搞懂 AI 全部核心技術</div>
+      <div class="desc">
+        龍蝦沒有大腦（如同 AI Agent 沒有內建 LLM）、殼就是 System Prompt、
+        鉗子是 Tools、腿是 Skills、消化系統是 RAG、還能繁殖子 Agent（Multi-Agent）。<br>
+        用最生動的比喻，建立企業高階與技術團隊之間的「共同語彙」。
+      </div>
+      <div class="meta">
+        <div class="meta-item"><span class="meta-icon">🔬</span> 10 大元件解剖</div>
+        <div class="meta-item"><span class="meta-icon">⏱</span> 10 分鐘</div>
+        <div class="meta-item"><span class="meta-icon">🎯</span> 建立共同語彙</div>
+      </div>
+    </div>
+    <div class="card-cta">開始探索 →</div>
+  </div>
+
+  <!-- Transition 2→3 -->
+  <div class="transition">
+    <div class="quote">
+      「每個零件都懂了。但要在企業裡落地，資安怎麼做？個資怎麼管？<br>
+      從基礎設施到應用層，完整的企業級架構應該長什麼樣？」
+      <div class="speaker">— 轉場引導：從「理解」進入「投資決策」</div>
+    </div>
+  </div>
+
+  <!-- CH 3 -->
+  <div class="chapter-card card-3" onclick="location.href='企業AI系統架構圖.html'">
+    <div class="card-num">
+      <div class="chapter">CHAPTER</div>
+      <div class="big">03</div>
+      <div class="emoji">🏗️</div>
+    </div>
+    <div class="card-body">
+      <h2>企業級 AI 怎麼建？</h2>
+      <div class="subtitle">從基礎設施到 Agent 調度 — CTO 的完整藍圖</div>
+      <div class="desc">
+        6 大架構層（基礎設施 → IAM → 網路安全 → 資料平台 → AI 平台 → 應用整合），
+        對應 OSI 七層模型，搭配資安防護、個資保護、AI 治理、可觀測性四大橫切面。<br>
+        24 個技術元件全部可點擊展開，附技術細節、風險提醒與關鍵技術標籤。
+      </div>
+      <div class="meta">
+        <div class="meta-item"><span class="meta-icon">🏛️</span> 6 層 × 4 元件 + 4 橫切面</div>
+        <div class="meta-item"><span class="meta-icon">⏱</span> 15 分鐘</div>
+        <div class="meta-item"><span class="meta-icon">🎯</span> 驅動投資決策</div>
+      </div>
+    </div>
+    <div class="card-cta">開始規劃 →</div>
+  </div>
+
+</div>
+
+<!-- BOTTOM -->
+<div class="bottom">
+  <h3>準備好帶領企業進入 AI Agent 時代了嗎？</h3>
+  <p>
+    這三份互動式教材可以獨立使用，也可以按照 1→2→3 的故事弧依序簡報。<br>
+    所有檔案皆為自包含 HTML，無需安裝任何軟體，用瀏覽器即可開啟。
+  </p>
+  <div class="use-cases">
+    <div class="use-case">CTO 向董事會簡報</div>
+    <div class="use-case">外部顧問對客戶培訓</div>
+    <div class="use-case">企業 AI 素養工作坊</div>
+    <div class="use-case">新任主管到職培訓</div>
+  </div>
+  <div class="footer-note">
+    AI Agent 從入門到企業級三部曲 &nbsp;|&nbsp; 設計目標：WOW → AHA → GO! &nbsp;|&nbsp; 所有檔案可離線分享
+  </div>
+</div>
+
+<!-- TTS Narration Module -->
+<div id="ttsBar" style="position:fixed;bottom:0;left:0;width:100%;background:#0f1320;border-top:1px solid #1e293b;
+  padding:10px 20px;display:flex;align-items:center;gap:12px;z-index:9999;font-family:'Noto Sans TC',sans-serif">
+  <button id="ttsToggle" onclick="ttsToggle()" style="background:#8b5cf6;color:#fff;border:none;border-radius:8px;
+    padding:8px 16px;font-size:12px;cursor:pointer;font-weight:700;font-family:inherit;white-space:nowrap;transition:all .2s">
+    🎙️ 開始語音導覽
+  </button>
+  <button onclick="ttsSkip()" style="background:#1e293b;color:#94a3b8;border:1px solid #334055;border-radius:8px;
+    padding:6px 12px;font-size:11px;cursor:pointer;font-family:inherit">⏭ 下一段</button>
+  <div id="ttsProgress" style="flex:1;height:4px;background:#1e293b;border-radius:2px;overflow:hidden">
+    <div id="ttsProgressBar" style="height:100%;background:linear-gradient(90deg,#8b5cf6,#06b6d4);width:0%;transition:width .3s"></div>
+  </div>
+  <div id="ttsStatus" style="font-size:10px;color:#64748b;min-width:80px;text-align:right">準備就緒</div>
+  <select id="ttsSpeed" onchange="ttsChangeSpeed()" style="background:#1e293b;color:#94a3b8;border:1px solid #334055;
+    border-radius:6px;padding:4px 6px;font-size:10px;font-family:inherit">
+    <option value="0.8">0.8x</option>
+    <option value="0.9">0.9x</option>
+    <option value="1" selected>1x</option>
+    <option value="1.1">1.1x</option>
+    <option value="1.2">1.2x</option>
+  </select>
+</div>
+<div style="height:54px"></div><!-- spacer for fixed bar -->
+
+<script>
+// === TTS NARRATION ENGINE ===
+const narrationScript = [
+  {text:"歡迎來到 AI Agent 從入門到企業級 三部曲。這是一套專為企業高階主管設計的 AI 素養培訓教材。",el:".hero"},
+  {text:"我們將用三個章節，帶您從看懂 AI、理解 AI，到有信心投資 AI。整個體驗大約 30 分鐘。",el:".hero"},
+  {text:"簡報故事弧採用 WOW、AHA、GO 三幕劇結構。第一幕讓您想要 AI，第二幕讓您理解 AI，第三幕讓您敢投資 AI。",el:".arc"},
+  {text:"第一章：AI Agent 怎麼工作？透過 8 步驟動畫流程圖，30 秒搞懂 AI 從接收問題到回覆答案的全流程。不需要任何技術背景。",el:".card-1"},
+  {text:"看完流程之後，自然會想知道：裡面的零件到底是什麼？每個步驟背後的技術元件，各自扮演什麼角色？",el:".card-1 ~ .transition"},
+  {text:"第二章：AI Agent 裡面有什麼？我們用龍蝦做比喻。龍蝦沒有大腦，殼是 System Prompt，鉗子是 Tools，腿是 Skills，消化系統是 RAG。一次搞懂所有核心技術。",el:".card-2"},
+  {text:"懂了每個零件之後，下一個問題就是：企業級要怎麼建？資安怎麼做？個資怎麼管？",el:".card-2 ~ .transition"},
+  {text:"第三章：企業級 AI 怎麼建？完整的六層架構，從基礎設施到應用整合，搭配資安防護、個資保護、AI 治理三大橫切面。這就是 CTO 的完整藍圖。",el:".card-3"},
+  {text:"準備好了嗎？點擊任意章節卡片即可開始體驗。建議按照第一、二、三章的順序，完整走一遍故事弧。祝您簡報順利！",el:".bottom"}
+];
+
+let ttsPlaying = false;
+let ttsIndex = 0;
+let ttsPaused = false;
+let femaleVoice = null;
+
+// Find Chinese female voice
+function findFemaleVoice(){
+  const voices = speechSynthesis.getVoices();
+  // Priority: zh-TW female > zh female > any zh > default
+  const priorities = [
+    v => v.lang.includes('zh-TW') && /female|美|雅|慧|小|mei|ya/i.test(v.name),
+    v => v.lang.includes('zh-TW'),
+    v => v.lang.includes('zh') && /female|美|雅|慧|小|mei|ya/i.test(v.name),
+    v => v.lang.includes('zh'),
+  ];
+  for(const fn of priorities){
+    const found = voices.find(fn);
+    if(found) return found;
+  }
+  return null;
+}
+
+function initVoices(){
+  femaleVoice = findFemaleVoice();
+  if(femaleVoice) console.log('TTS voice:',femaleVoice.name,femaleVoice.lang);
+}
+speechSynthesis.onvoiceschanged = initVoices;
+initVoices();
+
+function speak(text, callback){
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'zh-TW';
+  utter.rate = parseFloat(document.getElementById('ttsSpeed').value);
+  utter.pitch = 1.1;
+  if(femaleVoice) utter.voice = femaleVoice;
+  utter.onend = callback;
+  utter.onerror = callback;
+  speechSynthesis.speak(utter);
+}
+
+function ttsPlaySegment(){
+  if(ttsIndex >= narrationScript.length){
+    ttsStop();
+    document.getElementById('ttsStatus').textContent = '導覽完成 ✓';
+    return;
+  }
+  const seg = narrationScript[ttsIndex];
+  const pct = ((ttsIndex+1)/narrationScript.length*100).toFixed(0);
+  document.getElementById('ttsProgressBar').style.width = pct+'%';
+  document.getElementById('ttsStatus').textContent = `${ttsIndex+1}/${narrationScript.length}`;
+
+  // Highlight current element
+  document.querySelectorAll('.tts-highlight').forEach(e=>e.classList.remove('tts-highlight'));
+  const el = document.querySelector(seg.el);
+  if(el){
+    el.classList.add('tts-highlight');
+    el.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+
+  speak(seg.text, ()=>{
+    if(!ttsPlaying) return;
+    ttsIndex++;
+    setTimeout(()=>ttsPlaySegment(), 400);
+  });
+}
+
+function ttsToggle(){
+  const btn = document.getElementById('ttsToggle');
+  if(!ttsPlaying){
+    ttsPlaying = true;
+    btn.textContent = '⏸ 暫停導覽';
+    btn.style.background = '#ef4444';
+    ttsPlaySegment();
+  } else if(!ttsPaused){
+    ttsPaused = true;
+    speechSynthesis.pause();
+    btn.textContent = '▶️ 繼續導覽';
+    btn.style.background = '#10b981';
+  } else {
+    ttsPaused = false;
+    speechSynthesis.resume();
+    btn.textContent = '⏸ 暫停導覽';
+    btn.style.background = '#ef4444';
+  }
+}
+
+function ttsStop(){
+  ttsPlaying = false;
+  ttsPaused = false;
+  speechSynthesis.cancel();
+  document.getElementById('ttsToggle').textContent = '🎙️ 重新導覽';
+  document.getElementById('ttsToggle').style.background = '#8b5cf6';
+  document.querySelectorAll('.tts-highlight').forEach(e=>e.classList.remove('tts-highlight'));
+  ttsIndex = 0;
+}
+
+function ttsSkip(){
+  if(!ttsPlaying) return;
+  speechSynthesis.cancel();
+  ttsIndex++;
+  ttsPlaySegment();
+}
+
+function ttsChangeSpeed(){
+  if(ttsPlaying && !ttsPaused){
+    const seg = narrationScript[ttsIndex];
+    speechSynthesis.cancel();
+    ttsPlaySegment();
+  }
+}
+
+// Highlight style
+const style = document.createElement('style');
+style.textContent = `.tts-highlight{box-shadow:0 0 30px rgba(139,92,246,0.3)!important;border-color:#8b5cf6!important;transition:box-shadow .5s,border-color .5s}`;
+document.head.appendChild(style);
+</script>
+
+</body>
+</html>

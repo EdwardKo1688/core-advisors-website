@@ -1,0 +1,122 @@
+/* ===== BOOST Pages ===== */
+
+/* Overview Stats */
+.boost-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-4);margin-bottom:var(--sp-6)}
+.boost-chart-row{display:grid;grid-template-columns:2fr 1fr;gap:var(--sp-6);margin-bottom:var(--sp-6)}
+
+/* Leaderboard */
+.leaderboard{display:flex;flex-direction:column;gap:0}
+.leaderboard-item{
+  display:flex;align-items:center;gap:var(--sp-3);
+  padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--xd-gray-100);
+}
+.leaderboard-item:last-child{border-bottom:none}
+.leaderboard-rank{
+  width:28px;height:28px;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-weight:700;font-size:.8rem;
+  flex-shrink:0;
+}
+.leaderboard-rank.top1{background:#FEF3C7;color:#92400E}
+.leaderboard-rank.top2{background:var(--xd-gray-100);color:var(--xd-gray-600)}
+.leaderboard-rank.top3{background:#FED7AA;color:#9A3412}
+.leaderboard-name{flex:1;font-size:.85rem;font-weight:500}
+.leaderboard-value{font-size:.85rem;font-weight:600;font-family:'Inter',var(--font-sans)}
+.leaderboard-pct{font-size:.75rem;width:50px;text-align:right}
+
+/* Customer Table */
+.customer-toolbar{
+  display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-4);flex-wrap:wrap;
+}
+.customer-toolbar .search-box{
+  flex:1;min-width:200px;padding:8px 12px;border:1px solid var(--xd-border);
+  border-radius:var(--radius-sm);font-size:.85rem;
+}
+.customer-toolbar select{
+  padding:8px 32px 8px 12px;border:1px solid var(--xd-border);
+  border-radius:var(--radius-sm);font-size:.85rem;background:var(--xd-surface);
+  appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;
+}
+.customer-table{width:100%;background:var(--xd-surface);border:1px solid var(--xd-border);border-radius:var(--radius);overflow:hidden}
+.customer-table tr{cursor:pointer}
+.customer-table tr:hover td{background:var(--xd-gray-50)}
+.tier-badge{
+  display:inline-flex;padding:2px 8px;border-radius:100px;
+  font-size:.7rem;font-weight:700;text-transform:uppercase;
+}
+.tier-badge.tier1{background:#DBEAFE;color:#1E40AF}
+.tier-badge.tier2{background:#FEF3C7;color:#92400E}
+.tier-badge.tier3{background:var(--xd-gray-100);color:var(--xd-gray-600)}
+
+/* Pipeline Kanban */
+.kanban-board{
+  display:flex;gap:var(--sp-3);overflow-x:auto;
+  padding-bottom:var(--sp-4);min-height:calc(100vh - var(--topbar-h) - var(--subnav-h) - 120px);
+}
+.kanban-column{
+  flex:0 0 260px;background:var(--xd-gray-100);border-radius:var(--radius);
+  display:flex;flex-direction:column;max-height:100%;
+}
+.kanban-column-header{
+  padding:var(--sp-3) var(--sp-4);font-size:.85rem;font-weight:600;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:2px solid var(--xd-gray-300);
+}
+.kanban-column-header .col-count{
+  font-size:.75rem;color:var(--xd-muted);font-weight:400;
+}
+.kanban-column-header .col-amount{
+  font-size:.75rem;color:var(--xd-boost-dark);font-weight:600;
+}
+.kanban-column.won .kanban-column-header{border-bottom-color:var(--xd-success)}
+.kanban-column.lost .kanban-column-header{border-bottom-color:var(--xd-danger)}
+.kanban-cards{flex:1;overflow-y:auto;padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-2)}
+.kanban-card{
+  background:var(--xd-surface);border:1px solid var(--xd-border);
+  border-radius:var(--radius-sm);padding:var(--sp-3);cursor:grab;
+  transition:box-shadow .15s;
+}
+.kanban-card:hover{box-shadow:var(--shadow-md)}
+.kanban-card.dragging{opacity:.5;box-shadow:var(--shadow-lg)}
+.kanban-card .deal-name{font-weight:600;font-size:.85rem;margin-bottom:var(--sp-1)}
+.kanban-card .deal-customer{font-size:.75rem;color:var(--xd-muted);margin-bottom:var(--sp-2)}
+.kanban-card .deal-amount{font-size:.9rem;font-weight:700;font-family:'Inter',var(--font-sans)}
+.kanban-card .deal-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:var(--sp-2);padding-top:var(--sp-2);border-top:1px solid var(--xd-gray-100);
+}
+.kanban-card .deal-prob{font-size:.7rem;font-weight:600;padding:1px 6px;border-radius:100px}
+.kanban-card .deal-prob.low{background:#FEE2E2;color:#991B1B}
+.kanban-card .deal-prob.mid{background:#FEF3C7;color:#92400E}
+.kanban-card .deal-prob.high{background:#D1FAE5;color:#065F46}
+.kanban-card .deal-date{font-size:.7rem;color:var(--xd-muted)}
+
+/* Targets */
+.target-controls{
+  display:flex;align-items:center;gap:var(--sp-3);margin-bottom:var(--sp-6);
+}
+.target-controls .toggle-group{
+  display:flex;border:1px solid var(--xd-border);border-radius:var(--radius-sm);overflow:hidden;
+}
+.target-controls .toggle-btn{
+  padding:6px 16px;font-size:.8rem;font-weight:500;
+  background:var(--xd-surface);color:var(--xd-muted);cursor:pointer;
+  border-right:1px solid var(--xd-border);transition:all .15s;
+}
+.target-controls .toggle-btn:last-child{border-right:none}
+.target-controls .toggle-btn.active{background:var(--xd-boost);color:#fff}
+.target-chart{
+  background:var(--xd-surface);border:1px solid var(--xd-border);
+  border-radius:var(--radius);padding:var(--sp-6);margin-bottom:var(--sp-6);
+}
+.target-chart .chart-area{height:300px}
+
+@media(max-width:1024px){
+  .boost-stats{grid-template-columns:repeat(2,1fr)}
+  .boost-chart-row{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .boost-stats{grid-template-columns:1fr}
+  .kanban-board{padding-bottom:var(--sp-6)}
+  .kanban-column{flex:0 0 85vw}
+}

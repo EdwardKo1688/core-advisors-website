@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>芯智驅 XinDrive AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===== CSS RESET & VARIABLES ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --xd-primary:#1B3A5C;--xd-primary-light:#2a5580;--xd-accent:#00B4D8;
+  --xd-learn:#2563EB;--xd-coach:#10B981;--xd-boost:#F59E0B;
+  --xd-danger:#EF4444;--xd-bg:#F1F5F9;--xd-surface:#FFFFFF;
+  --xd-text:#1E293B;--xd-muted:#64748B;--xd-border:#E2E8F0;
+  --xd-sidebar-w:260px;--xd-topbar-h:56px;
+  --font-main:'Noto Sans TC','Inter',sans-serif;
+  --radius:8px;--shadow:0 1px 3px rgba(0,0,0,.1);
+}
+html{font-size:14px}
+body{font-family:var(--font-main);color:var(--xd-text);background:var(--xd-bg);min-height:100vh}
+a{color:var(--xd-accent);text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select,textarea{font-family:inherit;font-size:1rem;border:1px solid var(--xd-border);border-radius:var(--radius);padding:8px 12px;outline:none;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--xd-accent);box-shadow:0 0 0 3px rgba(0,180,216,.15)}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--xd-border)}
+th{background:#F8FAFC;font-weight:600;font-size:.85rem;color:var(--xd-muted);text-transform:uppercase;letter-spacing:.5px}
+
+/* ===== LOGIN PAGE ===== */
+.login-page{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--xd-primary) 0%,#0e2a45 100%)}
+.login-card{background:var(--xd-surface);border-radius:16px;padding:40px;width:400px;max-width:92vw;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-logo{text-align:center;margin-bottom:24px}
+.login-logo h1{font-size:1.8rem;color:var(--xd-primary)}
+.login-logo .sub{font-size:.9rem;color:var(--xd-muted);margin-top:4px}
+.login-logo .motto{font-size:.8rem;color:var(--xd-accent);margin-top:8px;font-style:italic}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-weight:500;margin-bottom:6px;font-size:.9rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 20px;border-radius:var(--radius);font-weight:600;font-size:.9rem;transition:all .2s}
+.btn-primary{background:var(--xd-primary);color:#fff}
+.btn-primary:hover{background:var(--xd-primary-light)}
+.btn-accent{background:var(--xd-accent);color:#fff}
+.btn-accent:hover{opacity:.9}
+.btn-learn{background:var(--xd-learn);color:#fff}
+.btn-coach{background:var(--xd-coach);color:#fff}
+.btn-boost{background:var(--xd-boost);color:#fff}
+.btn-danger{background:var(--xd-danger);color:#fff}
+.btn-outline{border:1px solid var(--xd-border);color:var(--xd-text);background:var(--xd-surface)}
+.btn-outline:hover{border-color:var(--xd-accent);color:var(--xd-accent)}
+.btn-sm{padding:6px 12px;font-size:.8rem}
+.btn-full{width:100%}
+.alert{padding:10px 14px;border-radius:var(--radius);font-size:.85rem;margin-bottom:12px}
+.alert-error{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA}
+.alert-success{background:#D1FAE5;color:#065F46;border:1px solid #A7F3D0}
+.demo-hint{text-align:center;margin-top:16px;font-size:.8rem;color:var(--xd-muted)}
+
+/* ===== APP LAYOUT ===== */
+.app-layout{display:flex;min-height:100vh}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--xd-sidebar-w);background:var(--xd-primary);color:#fff;display:flex;flex-direction:column;z-index:100;transition:transform .3s}
+.sidebar-logo{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px}
+.sidebar-logo h2{font-size:1.2rem;font-weight:700}
+.sidebar-logo .dot{font-size:.75rem;opacity:.7}
+.sidebar-nav{flex:1;overflow-y:auto;padding:12px 0}
+.nav-section{padding:8px 20px;font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.4);margin-top:8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,.75);font-size:.9rem;cursor:pointer;transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.12);color:#fff;border-left-color:var(--xd-accent)}
+.nav-item .icon{width:20px;text-align:center;font-size:1.1rem}
+.sidebar-footer{padding:12px 20px;border-top:1px solid rgba(255,255,255,.1);font-size:.75rem;color:rgba(255,255,255,.4);text-align:center}
+.main-area{margin-left:var(--xd-sidebar-w);flex:1;display:flex;flex-direction:column}
+.topbar{height:var(--xd-topbar-h);background:var(--xd-surface);border-bottom:1px solid var(--xd-border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:50}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.topbar-title{font-size:1.1rem;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.user-badge{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 10px;border-radius:20px;transition:background .2s}
+.user-badge:hover{background:var(--xd-bg)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--xd-accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+.content{flex:1;padding:24px;overflow-y:auto}
+.page-header{margin-bottom:24px}
+.page-header h1{font-size:1.5rem;font-weight:700}
+.page-header p{color:var(--xd-muted);margin-top:4px}
+
+/* ===== CARDS ===== */
+.card{background:var(--xd-surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:16px}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{background:var(--xd-surface);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border-left:4px solid var(--xd-accent)}
+.stat-card .label{font-size:.8rem;color:var(--xd-muted);text-transform:uppercase;letter-spacing:.5px}
+.stat-card .value{font-size:1.8rem;font-weight:700;margin-top:4px}
+.stat-card .change{font-size:.8rem;margin-top:4px}
+.stat-card .change.up{color:var(--xd-coach)}
+.stat-card .change.down{color:var(--xd-danger)}
+.stat-card.learn{border-left-color:var(--xd-learn)}
+.stat-card.coach{border-left-color:var(--xd-coach)}
+.stat-card.boost{border-left-color:var(--xd-boost)}
+
+/* ===== PIPELINE KANBAN ===== */
+.kanban{display:flex;gap:16px;overflow-x:auto;padding-bottom:16px;min-height:400px}
+.kanban-col{min-width:260px;flex:1;background:var(--xd-bg);border-radius:var(--radius);padding:12px}
+.kanban-col-header{font-weight:600;font-size:.9rem;padding:8px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.kanban-col-header .count{background:var(--xd-border);border-radius:10px;padding:2px 8px;font-size:.75rem}
+.kanban-card{background:var(--xd-surface);border-radius:var(--radius);padding:12px;margin-bottom:8px;box-shadow:var(--shadow);cursor:grab;transition:box-shadow .2s}
+.kanban-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.kanban-card .title{font-weight:600;font-size:.9rem;margin-bottom:4px}
+.kanban-card .customer{font-size:.8rem;color:var(--xd-muted)}
+.kanban-card .amount{font-size:.85rem;font-weight:600;color:var(--xd-boost);margin-top:6px}
+.kanban-card .tag{display:inline-block;padding:2px 6px;border-radius:4px;font-size:.7rem;font-weight:500}
+
+/* ===== TABS ===== */
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--xd-border);margin-bottom:20px}
+.tab{padding:10px 20px;font-weight:500;color:var(--xd-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;font-size:.9rem}
+.tab:hover{color:var(--xd-text)}
+.tab.active{color:var(--xd-primary);border-bottom-color:var(--xd-accent);font-weight:600}
+
+/* ===== COURSE CARDS ===== */
+.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.course-card{background:var(--xd-surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform .2s,box-shadow .2s}
+.course-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.course-thumb{height:140px;background:linear-gradient(135deg,var(--xd-learn),var(--xd-primary));display:flex;align-items:center;justify-content:center;color:#fff;font-size:2rem}
+.course-body{padding:16px}
+.course-body h3{font-size:1rem;margin-bottom:6px}
+.course-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:600}
+.badge-learn{background:#DBEAFE;color:var(--xd-learn)}
+.badge-coach{background:#D1FAE5;color:#047857}
+.badge-boost{background:#FEF3C7;color:#92400E}
+.badge-beginner{background:#E0E7FF;color:#3730A3}
+.badge-intermediate{background:#FEF3C7;color:#92400E}
+.badge-advanced{background:#FEE2E2;color:#991B1B}
+.progress-bar{height:6px;background:var(--xd-border);border-radius:3px;margin-top:10px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width .5s}
+
+/* ===== MODAL ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.show{opacity:1;pointer-events:auto}
+.modal{background:var(--xd-surface);border-radius:12px;padding:24px;width:560px;max-width:92vw;max-height:85vh;overflow-y:auto;transform:translateY(20px);transition:transform .2s}
+.modal-overlay.show .modal{transform:translateY(0)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.modal-header h2{font-size:1.2rem}
+.modal-close{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--xd-muted)}
+.modal-close:hover{background:var(--xd-bg)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ===== TIMELINE ===== */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--xd-border)}
+.timeline-item{position:relative;margin-bottom:20px}
+.timeline-dot{position:absolute;left:-20px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--xd-accent);border:2px solid var(--xd-surface)}
+.timeline-content{background:var(--xd-bg);border-radius:var(--radius);padding:12px}
+.timeline-date{font-size:.75rem;color:var(--xd-muted)}
+
+/* ===== RESPONSIVE ===== */
+.menu-toggle{display:none;font-size:1.5rem;cursor:pointer}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main-area{margin-left:0}
+  .menu-toggle{display:block}
+  .form-row{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .kanban{flex-direction:column}
+  .kanban-col{min-width:auto}
+}
+@media(max-width:480px){
+  .stat-grid{grid-template-columns:1fr}
+  .content{padding:16px}
+}
+
+/* ===== UTILITY ===== */
+.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-between{justify-content:space-between}.gap-2{gap:8px}.gap-4{gap:16px}
+.mt-2{margin-top:8px}.mt-4{margin-top:16px}.mb-2{margin-bottom:8px}.mb-4{margin-bottom:16px}
+.text-muted{color:var(--xd-muted)}.text-sm{font-size:.85rem}.text-xs{font-size:.75rem}.font-bold{font-weight:700}
+.hidden{display:none!important}
+.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.search-box{position:relative}
+.search-box input{padding-left:36px}
+.search-box::before{content:'🔍';position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.9rem}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ============================================================
+   芯智驅 XinDrive AI — Management Platform v1.0
+   SDD OpenSpec Implementation
+   Pure Vanilla JS — Zero External Dependencies
+   ============================================================ */
+
+// ===== DOM HELPER =====
+function h(tag, attrs, children) {
+  const el = document.createElement(tag);
+  if (attrs) Object.entries(attrs).forEach(([k, v]) => {
+    if (k === 'class') el.className = v;
+    else if (k === 'style' && typeof v === 'object') Object.assign(el.style, v);
+    else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2), v);
+    else if (k === 'html') el.innerHTML = v;
+    else el.setAttribute(k, v);
+  });
+  if (children != null) {
+    if (Array.isArray(children)) children.forEach(c => {
+      if (c != null) el.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+    });
+    else if (typeof children === 'string') el.textContent = children;
+    else el.appendChild(children);
+  }
+  return el;
+}
+
+// ===== STATE =====
+const state = {
+  user: null,
+  route: '',
+  sidebarOpen: false,
+  modal: null,
+  // Data stores (Demo mode — localStorage)
+  courses: [],
+  enrollments: [],
+  coachingPlans: [],
+  coachingSessions: [],
+  customers: [],
+  contacts: [],
+  opportunities: [],
+  activities: [],
+  targets: [],
+  notifications: []
+};
+
+// ===== STORAGE =====
+const DB = {
+  get(key) { try { return JSON.parse(localStorage.getItem('xd_' + key)) || []; } catch { return []; } },
+  set(key, data) { localStorage.setItem('xd_' + key, JSON.stringify(data)); },
+  getOne(key) { try { return JSON.parse(localStorage.getItem('xd_' + key)); } catch { return null; } },
+  setOne(key, val) { localStorage.setItem('xd_' + key, JSON.stringify(val)); }
+};
+
+function uuid() { return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); }); }
+function now() { return new Date().toISOString(); }
+function fmtDate(d) { if (!d) return '—'; const dt = new Date(d); return dt.toLocaleDateString('zh-TW'); }
+function fmtMoney(n) { return '$' + (Number(n) || 0).toLocaleString(); }
+
+// ===== DEMO DATA SEEDER =====
+function seedDemoData() {
+  if (DB.getOne('seeded')) return;
+
+  const courses = [
+    { id: uuid(), title: 'IC 通路業務基礎課程', description: '從零開始學習 IC 通路業務的核心知識', category: 'sales', pillar: 'learn', difficulty: 'beginner', duration_hours: 12, status: 'published', instructor_name: 'Edward Ko', tags: ['入門', '業務'], created_at: now() },
+    { id: uuid(), title: 'MEDDIC 銷售方法論實戰', description: '掌握 MEDDIC 框架，提升大客戶成交率', category: 'sales', pillar: 'learn', difficulty: 'intermediate', duration_hours: 8, status: 'published', instructor_name: 'Edward Ko', tags: ['MEDDIC', '方法論'], created_at: now() },
+    { id: uuid(), title: 'Challenger Sale 挑戰者銷售', description: '學習如何用洞見驅動客戶決策', category: 'sales', pillar: 'learn', difficulty: 'advanced', duration_hours: 10, status: 'published', instructor_name: 'Edward Ko', tags: ['Challenger', '進階'], created_at: now() },
+    { id: uuid(), title: 'SPIN Selling 提問式銷售', description: '用 SPIN 四類問題引導客戶需求', category: 'sales', pillar: 'learn', difficulty: 'intermediate', duration_hours: 6, status: 'published', instructor_name: 'Edward Ko', tags: ['SPIN', '業務技巧'], created_at: now() },
+    { id: uuid(), title: '供應鏈管理 SCOR 模型', description: '以 SCOR 模型優化供應鏈績效', category: 'supply_chain', pillar: 'learn', difficulty: 'intermediate', duration_hours: 8, status: 'published', instructor_name: 'Edward Ko', tags: ['SCOR', 'SCM'], created_at: now() },
+    { id: uuid(), title: 'S&OP 銷售與運營計畫', description: '建立有效的 S&OP 流程提升預測準確度', category: 'supply_chain', pillar: 'learn', difficulty: 'advanced', duration_hours: 10, status: 'published', instructor_name: 'Edward Ko', tags: ['S&OP', '需求預測'], created_at: now() },
+    { id: uuid(), title: 'IC 採購談判技巧', description: '從價格談判到長期合作策略', category: 'procurement', pillar: 'learn', difficulty: 'intermediate', duration_hours: 6, status: 'published', instructor_name: 'Edward Ko', tags: ['採購', '談判'], created_at: now() },
+    { id: uuid(), title: '通路經營者領導力', description: '從管理到領導，打造高效團隊', category: 'management', pillar: 'learn', difficulty: 'advanced', duration_hours: 14, status: 'published', instructor_name: 'Edward Ko', tags: ['領導力', '經營'], created_at: now() },
+  ];
+  DB.set('courses', courses);
+
+  const customers = [
+    { id: uuid(), name: '鴻海精密 Foxconn', industry: '電子代工', segment: 'tier1', region: '台北', annual_revenue: 5800000000, owner_name: '王大明', status: 'active', tags: ['EMS', '大客戶'], created_at: now() },
+    { id: uuid(), name: '台積電 TSMC', industry: '半導體製造', segment: 'tier1', region: '新竹', annual_revenue: 2200000000, owner_name: '王大明', status: 'active', tags: ['Foundry', '戰略客戶'], created_at: now() },
+    { id: uuid(), name: '廣達電腦 Quanta', industry: '筆電代工', segment: 'tier1', region: '桃園', annual_revenue: 1100000000, owner_name: '李小華', status: 'active', tags: ['ODM', 'NB'], created_at: now() },
+    { id: uuid(), name: '聯發科 MediaTek', industry: 'IC 設計', segment: 'tier1', region: '新竹', annual_revenue: 900000000, owner_name: '陳志明', status: 'active', tags: ['IC Design', '5G'], created_at: now() },
+    { id: uuid(), name: '仁寶電腦 Compal', industry: '筆電代工', segment: 'tier2', region: '台北', annual_revenue: 800000000, owner_name: '李小華', status: 'active', tags: ['ODM'], created_at: now() },
+    { id: uuid(), name: '和碩聯合 Pegatron', industry: '電子代工', segment: 'tier2', region: '台北', annual_revenue: 700000000, owner_name: '張美玲', status: 'active', tags: ['EMS'], created_at: now() },
+    { id: uuid(), name: '瑞昱半導體 Realtek', industry: 'IC 設計', segment: 'tier2', region: '新竹', annual_revenue: 300000000, owner_name: '陳志明', status: 'active', tags: ['IC Design', 'Ethernet'], created_at: now() },
+    { id: uuid(), name: '新創科技 StarTech', industry: 'IoT', segment: 'tier3', region: '台中', annual_revenue: 50000000, owner_name: '張美玲', status: 'prospect', tags: ['IoT', '新客戶'], created_at: now() },
+  ];
+  DB.set('customers', customers);
+
+  const stages = ['lead', 'qualified', 'proposal', 'negotiation', 'closed_won', 'closed_lost'];
+  const opportunities = [
+    { id: uuid(), customer_name: '鴻海精密', title: 'iPhone 17 主板 PMIC 方案', type: 'design_in', stage: 'negotiation', amount: 25000000, probability: 70, expected_close: '2026-06-30', owner_name: '王大明', status: 'open', created_at: now() },
+    { id: uuid(), customer_name: '台積電', title: 'N3 製程測試設備控制 IC', type: 'project', stage: 'proposal', amount: 18000000, probability: 50, expected_close: '2026-08-15', owner_name: '王大明', status: 'open', created_at: now() },
+    { id: uuid(), customer_name: '廣達電腦', title: 'AI Server 電源管理 IC', type: 'design_in', stage: 'qualified', amount: 32000000, probability: 40, expected_close: '2026-09-30', owner_name: '李小華', status: 'open', created_at: now() },
+    { id: uuid(), customer_name: '聯發科', title: 'Dimensity 9400 配套料件', type: 'contract', stage: 'negotiation', amount: 45000000, probability: 80, expected_close: '2026-04-30', owner_name: '陳志明', status: 'open', created_at: now() },
+    { id: uuid(), customer_name: '和碩聯合', title: 'AR 眼鏡驅動 IC', type: 'design_in', stage: 'lead', amount: 8000000, probability: 20, expected_close: '2026-12-31', owner_name: '張美玲', status: 'open', created_at: now() },
+    { id: uuid(), customer_name: '瑞昱半導體', title: 'Wi-Fi 7 模組量產供貨', type: 'contract', stage: 'proposal', amount: 15000000, probability: 60, expected_close: '2026-07-31', owner_name: '陳志明', status: 'open', created_at: now() },
+    { id: uuid(), customer_name: '新創科技', title: 'IoT Gateway MCU 方案', type: 'spot_buy', stage: 'lead', amount: 2000000, probability: 15, expected_close: '2026-10-31', owner_name: '張美玲', status: 'open', created_at: now() },
+    { id: uuid(), customer_name: '仁寶電腦', title: 'Chromebook 2026 BOM 供貨', type: 'contract', stage: 'closed_won', amount: 22000000, probability: 100, expected_close: '2026-03-01', owner_name: '李小華', status: 'won', won_amount: 22000000, closed_at: '2026-03-01', created_at: now() },
+  ];
+  DB.set('opportunities', opportunities);
+
+  const targets = [
+    { id: uuid(), user_name: '王大明', period: '2026-Q1', type: 'revenue', target_value: 30000000, actual_value: 22000000, unit: 'TWD' },
+    { id: uuid(), user_name: '李小華', period: '2026-Q1', type: 'revenue', target_value: 25000000, actual_value: 28000000, unit: 'TWD' },
+    { id: uuid(), user_name: '陳志明', period: '2026-Q1', type: 'revenue', target_value: 35000000, actual_value: 30000000, unit: 'TWD' },
+    { id: uuid(), user_name: '張美玲', period: '2026-Q1', type: 'revenue', target_value: 15000000, actual_value: 9000000, unit: 'TWD' },
+    { id: uuid(), user_name: '全團隊', period: '2026-Q1', type: 'new_customer', target_value: 5, actual_value: 3, unit: 'count' },
+    { id: uuid(), user_name: '全團隊', period: '2026-Q1', type: 'design_in', target_value: 10, actual_value: 7, unit: 'count' },
+  ];
+  DB.set('targets', targets);
+
+  const plans = [
+    { id: uuid(), coachee_name: '王大明', coach_name: 'Edward Ko', title: 'MEDDIC 實戰陪跑計畫', methodology: 'MEDDIC', status: 'active', start_date: '2026-01-15', end_date: '2026-06-15', goals: ['掌握 MEDDIC 6要素', 'Q2 成交率提升 20%', '獨立完成 3 個大案 Qualification'], created_at: now() },
+    { id: uuid(), coachee_name: '李小華', coach_name: 'Edward Ko', title: 'Challenger Sale 進階訓練', methodology: 'CHALLENGER', status: 'active', start_date: '2026-02-01', end_date: '2026-07-31', goals: ['建立 Teach-Tailor-Take Control 能力', '每月完成 2 次 Insight Presentation'], created_at: now() },
+    { id: uuid(), coachee_name: '張美玲', coach_name: 'Edward Ko', title: '新人業務 SPIN 入門', methodology: 'SPIN', status: 'active', start_date: '2026-03-01', end_date: '2026-08-31', goals: ['掌握 SPIN 四類提問', '獨立完成客戶拜訪', 'Q3 開發 3 個新客戶'], created_at: now() },
+  ];
+  DB.set('coaching_plans', plans);
+
+  DB.setOne('seeded', true);
+}
+
+// ===== AUTH =====
+function login(email, password) {
+  // Demo mode
+  if ((email === 'admin' || email === 'admin@xindrive.ai') && password === 'admin') {
+    const user = { id: uuid(), email: 'admin@xindrive.ai', full_name: 'Edward Ko', role: 'admin', department: '經營管理', title: '創辦人' };
+    state.user = user;
+    DB.setOne('current_user', user);
+    return { ok: true };
+  }
+  // Check stored users
+  const users = DB.get('users');
+  const found = users.find(u => u.email === email && u.password === password);
+  if (found) { state.user = found; DB.setOne('current_user', found); return { ok: true }; }
+  return { ok: false, error: '帳號或密碼錯誤' };
+}
+
+function logout() {
+  state.user = null;
+  localStorage.removeItem('xd_current_user');
+  navigate('#/login');
+}
+
+function checkAuth() {
+  const u = DB.getOne('current_user');
+  if (u) { state.user = u; return true; }
+  return false;
+}
+
+// ===== ROUTER =====
+function navigate(hash) { window.location.hash = hash; }
+
+function getRoute() {
+  const h = window.location.hash || '#/login';
+  return h.replace('#', '');
+}
+
+// ===== SVG HELPERS =====
+function miniBarChart(data, w = 200, ht = 80, color = 'var(--xd-accent)') {
+  if (!data.length) return h('div', {}, '—');
+  const max = Math.max(...data.map(d => d.value)) || 1;
+  const barW = Math.floor((w - (data.length - 1) * 4) / data.length);
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', w); svg.setAttribute('height', ht + 20);
+  svg.setAttribute('viewBox', `0 0 ${w} ${ht + 20}`);
+  data.forEach((d, i) => {
+    const barH = (d.value / max) * ht;
+    const x = i * (barW + 4);
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', x); rect.setAttribute('y', ht - barH);
+    rect.setAttribute('width', barW); rect.setAttribute('height', barH);
+    rect.setAttribute('rx', 3); rect.setAttribute('fill', d.color || color);
+    svg.appendChild(rect);
+    const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    txt.setAttribute('x', x + barW / 2); txt.setAttribute('y', ht + 14);
+    txt.setAttribute('text-anchor', 'middle'); txt.setAttribute('font-size', '9');
+    txt.setAttribute('fill', '#64748B'); txt.textContent = d.label;
+    svg.appendChild(txt);
+  });
+  return svg;
+}
+
+function radarSVG(labels, values, size = 200) {
+  const cx = size / 2, cy = size / 2, r = size * 0.38;
+  const n = labels.length;
+  const pts = (vals) => vals.map((v, i) => {
+    const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+    return [cx + r * v / 100 * Math.cos(angle), cy + r * v / 100 * Math.sin(angle)];
+  });
+  const gridPts = (pct) => pts(Array(n).fill(pct)).map(p => p.join(',')).join(' ');
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', size); svg.setAttribute('height', size);
+  svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+  [25, 50, 75, 100].forEach(pct => {
+    const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    poly.setAttribute('points', gridPts(pct));
+    poly.setAttribute('fill', 'none'); poly.setAttribute('stroke', '#E2E8F0');
+    svg.appendChild(poly);
+  });
+  const dataPts = pts(values);
+  const dataPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+  dataPoly.setAttribute('points', dataPts.map(p => p.join(',')).join(' '));
+  dataPoly.setAttribute('fill', 'rgba(0,180,216,0.2)');
+  dataPoly.setAttribute('stroke', 'var(--xd-accent)'); dataPoly.setAttribute('stroke-width', '2');
+  svg.appendChild(dataPoly);
+  dataPts.forEach((p, i) => {
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', p[0]); circle.setAttribute('cy', p[1]);
+    circle.setAttribute('r', 4); circle.setAttribute('fill', 'var(--xd-accent)');
+    svg.appendChild(circle);
+    const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+    const lx = cx + (r + 22) * Math.cos(angle);
+    const ly = cy + (r + 22) * Math.sin(angle);
+    const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    txt.setAttribute('x', lx); txt.setAttribute('y', ly);
+    txt.setAttribute('text-anchor', 'middle'); txt.setAttribute('font-size', '10');
+    txt.setAttribute('fill', '#64748B'); txt.textContent = labels[i];
+    svg.appendChild(txt);
+  });
+  return svg;
+}
+
+// ===== PAGES =====
+
+function LoginPage() {
+  let errorMsg = '';
+  const container = h('div', { class: 'login-page' });
+
+  function renderForm() {
+    container.innerHTML = '';
+    const card = h('div', { class: 'login-card' }, [
+      h('div', { class: 'login-logo' }, [
+        h('div', { style: { fontSize: '2.5rem' } }, '🚀'),
+        h('h1', {}, '芯智驅'),
+        h('div', { class: 'sub' }, 'XinDrive AI Management Platform'),
+        h('div', { class: 'motto' }, '不忘初心，AI倍增'),
+      ]),
+      errorMsg ? h('div', { class: 'alert alert-error' }, errorMsg) : null,
+      h('div', { class: 'form-group' }, [
+        h('label', {}, '電子郵件'),
+        h('input', { type: 'text', id: 'login-email', placeholder: 'admin@xindrive.ai', value: 'admin' })
+      ]),
+      h('div', { class: 'form-group' }, [
+        h('label', {}, '密碼'),
+        h('input', { type: 'password', id: 'login-pass', placeholder: '••••••••', value: 'admin',
+          onkeydown: (e) => { if (e.key === 'Enter') doLogin(); }
+        })
+      ]),
+      h('button', { class: 'btn btn-primary btn-full', onclick: doLogin, style: { marginTop: '8px' } }, '登入'),
+      h('div', { class: 'demo-hint' }, [
+        h('span', {}, 'Demo 模式：帳號 admin / 密碼 admin'),
+      ]),
+      h('div', { style: { textAlign: 'center', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--xd-border)' } }, [
+        h('div', { class: 'flex items-center justify-between', style: { fontSize: '.8rem', color: 'var(--xd-muted)' } }, [
+          h('span', {}, '驅・知 Learn'),
+          h('span', {}, '驅・伴 Coach'),
+          h('span', {}, '驅・效 Boost'),
+        ])
+      ])
+    ].filter(Boolean));
+    container.appendChild(card);
+  }
+
+  function doLogin() {
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-pass').value;
+    const result = login(email, pass);
+    if (result.ok) { navigate('#/dashboard'); }
+    else { errorMsg = result.error; renderForm(); }
+  }
+
+  renderForm();
+  return container;
+}
+
+function AppLayout(pageContent, activeNav) {
+  const layout = h('div', { class: 'app-layout' });
+
+  // Sidebar
+  const navItems = [
+    { section: '總覽' },
+    { id: 'dashboard', icon: '📊', label: '儀表板', route: '#/dashboard' },
+    { section: '驅・知 LEARN' },
+    { id: 'courses', icon: '📚', label: '課程管理', route: '#/learn' },
+    { id: 'progress', icon: '📈', label: '學習進度', route: '#/learn/progress' },
+    { section: '驅・伴 COACH' },
+    { id: 'coaching', icon: '🤝', label: '陪跑計畫', route: '#/coach' },
+    { id: 'sessions', icon: '💬', label: 'Session 管理', route: '#/coach/sessions' },
+    { id: 'assessment', icon: '🎯', label: '能力評估', route: '#/coach/assessment' },
+    { section: '驅・效 BOOST' },
+    { id: 'customers', icon: '🏢', label: '客戶管理', route: '#/boost/customers' },
+    { id: 'pipeline', icon: '🔄', label: '商機管道', route: '#/boost/pipeline' },
+    { id: 'targets', icon: '🎯', label: '業績目標', route: '#/boost/targets' },
+    { section: '系統' },
+    { id: 'settings', icon: '⚙️', label: '系統設定', route: '#/settings' },
+  ];
+
+  const sidebar = h('div', { class: 'sidebar' + (state.sidebarOpen ? ' open' : ''), id: 'sidebar' }, [
+    h('div', { class: 'sidebar-logo' }, [
+      h('span', { style: { fontSize: '1.5rem' } }, '🚀'),
+      h('div', {}, [
+        h('h2', {}, '芯智驅'),
+        h('div', { class: 'dot' }, 'XinDrive AI'),
+      ]),
+    ]),
+    h('nav', { class: 'sidebar-nav' },
+      navItems.map(item => {
+        if (item.section) return h('div', { class: 'nav-section' }, item.section);
+        return h('div', {
+          class: 'nav-item' + (activeNav === item.id ? ' active' : ''),
+          onclick: () => { state.sidebarOpen = false; navigate(item.route); }
+        }, [
+          h('span', { class: 'icon' }, item.icon),
+          h('span', {}, item.label),
+        ]);
+      })
+    ),
+    h('div', { class: 'sidebar-footer' }, '芯智驅 XinDrive AI v1.0'),
+  ]);
+
+  // Topbar
+  const topbar = h('div', { class: 'topbar' }, [
+    h('div', { class: 'topbar-left' }, [
+      h('button', { class: 'menu-toggle', onclick: () => {
+        state.sidebarOpen = !state.sidebarOpen;
+        document.getElementById('sidebar').classList.toggle('open');
+      } }, '☰'),
+      h('span', { class: 'topbar-title' }, getPageTitle(activeNav)),
+    ]),
+    h('div', { class: 'topbar-right' }, [
+      h('span', { class: 'text-sm text-muted' }, fmtDate(now())),
+      h('div', { class: 'user-badge', onclick: () => navigate('#/settings') }, [
+        h('div', { class: 'avatar' }, (state.user?.full_name || 'U')[0]),
+        h('span', { class: 'text-sm' }, state.user?.full_name || 'User'),
+      ]),
+      h('button', { class: 'btn btn-sm btn-outline', onclick: logout }, '登出'),
+    ]),
+  ]);
+
+  const mainArea = h('div', { class: 'main-area' }, [
+    topbar,
+    h('div', { class: 'content' }, [pageContent]),
+  ]);
+
+  layout.appendChild(sidebar);
+  layout.appendChild(mainArea);
+  return layout;
+}
+
+function getPageTitle(id) {
+  const map = { dashboard: '儀表板', courses: '驅・知 課程管理', progress: '學習進度',
+    coaching: '驅・伴 陪跑計畫', sessions: 'Session 管理', assessment: '能力評估',
+    customers: '驅・效 客戶管理', pipeline: '商機管道', targets: '業績目標', settings: '系統設定' };
+  return map[id] || '芯智驅';
+}
+
+// ===== DASHBOARD =====
+function DashboardPage() {
+  const opps = DB.get('opportunities');
+  const customers = DB.get('customers');
+  const courses = DB.get('courses');
+  const plans = DB.get('coaching_plans');
+  const targets = DB.get('targets');
+
+  const openOpps = opps.filter(o => o.status === 'open');
+  const weightedPipeline = openOpps.reduce((s, o) => s + (o.amount * o.probability / 100), 0);
+  const wonThisQ = opps.filter(o => o.status === 'won').reduce((s, o) => s + (o.won_amount || 0), 0);
+  const revTargets = targets.filter(t => t.type === 'revenue');
+  const totalTarget = revTargets.reduce((s, t) => s + t.target_value, 0);
+  const totalActual = revTargets.reduce((s, t) => s + t.actual_value, 0);
+
+  const page = h('div', {}, [
+    // KPI Cards
+    h('div', { class: 'stat-grid' }, [
+      statCard('本季營收', fmtMoney(totalActual), `目標 ${fmtMoney(totalTarget)}`, totalActual >= totalTarget ? 'up' : 'down', `${Math.round(totalActual/totalTarget*100)}%`, 'boost'),
+      statCard('活躍商機', openOpps.length + ' 件', `加權金額 ${fmtMoney(weightedPipeline)}`, 'up', '', ''),
+      statCard('課程數量', courses.length + ' 門', `已發佈 ${courses.filter(c=>c.status==='published').length}`, 'up', '', 'learn'),
+      statCard('陪跑計畫', plans.filter(p=>p.status==='active').length + ' 個', '進行中', 'up', '', 'coach'),
+    ]),
+
+    // Charts row
+    h('div', { class: 'grid-2', style: { marginBottom: '16px' } }, [
+      // Pipeline by stage
+      h('div', { class: 'card' }, [
+        h('div', { class: 'card-header' }, [h('h3', {}, 'Pipeline 分佈')]),
+        (() => {
+          const stageMap = {};
+          ['lead', 'qualified', 'proposal', 'negotiation'].forEach(s => stageMap[s] = 0);
+          openOpps.forEach(o => { if (stageMap[o.stage] !== undefined) stageMap[o.stage] += o.amount; });
+          const stageLabels = { lead: 'Lead', qualified: 'Qualified', proposal: 'Proposal', negotiation: 'Negotiation' };
+          const colors = { lead: '#94A3B8', qualified: 'var(--xd-learn)', proposal: 'var(--xd-boost)', negotiation: 'var(--xd-coach)' };
+          return miniBarChart(
+            Object.entries(stageMap).map(([k, v]) => ({ label: stageLabels[k], value: v, color: colors[k] })),
+            300, 120
+          );
+        })(),
+      ]),
+      // Revenue target chart
+      h('div', { class: 'card' }, [
+        h('div', { class: 'card-header' }, [h('h3', {}, '業績目標達成')]),
+        (() => {
+          const revT = targets.filter(t => t.type === 'revenue');
+          return miniBarChart(
+            revT.map(t => ({ label: t.user_name.slice(0, 3), value: t.actual_value, color: t.actual_value >= t.target_value ? 'var(--xd-coach)' : 'var(--xd-boost)' })),
+            300, 120
+          );
+        })(),
+      ]),
+    ]),
+
+    // Recent opportunities
+    h('div', { class: 'card' }, [
+      h('div', { class: 'card-header' }, [
+        h('h3', {}, '近期商機'),
+        h('button', { class: 'btn btn-sm btn-outline', onclick: () => navigate('#/boost/pipeline') }, '查看全部'),
+      ]),
+      h('table', {}, [
+        h('thead', {}, [h('tr', {}, [
+          h('th', {}, '商機'), h('th', {}, '客戶'), h('th', {}, '階段'), h('th', {}, '金額'), h('th', {}, '機率'),
+        ])]),
+        h('tbody', {},
+          openOpps.slice(0, 5).map(o => h('tr', {}, [
+            h('td', { class: 'font-bold' }, o.title),
+            h('td', {}, o.customer_name),
+            h('td', {}, stageBadge(o.stage)),
+            h('td', {}, fmtMoney(o.amount)),
+            h('td', {}, o.probability + '%'),
+          ]))
+        ),
+      ]),
+    ]),
+  ]);
+  return AppLayout(page, 'dashboard');
+}
+
+function statCard(label, value, sub, dir, pct, type) {
+  return h('div', { class: 'stat-card' + (type ? ' ' + type : '') }, [
+    h('div', { class: 'label' }, label),
+    h('div', { class: 'value' }, value),
+    h('div', { class: 'flex items-center gap-2' }, [
+      pct ? h('span', { class: 'change ' + dir }, (dir === 'up' ? '↑ ' : '↓ ') + pct) : null,
+      h('span', { class: 'text-xs text-muted' }, sub),
+    ].filter(Boolean)),
+  ]);
+}
+
+function stageBadge(stage) {
+  const map = { lead: ['Lead', '#94A3B8'], qualified: ['Qualified', 'var(--xd-learn)'], proposal: ['Proposal', 'var(--xd-boost)'], negotiation: ['談判中', 'var(--xd-coach)'], closed_won: ['已成交', 'var(--xd-coach)'], closed_lost: ['已失敗', 'var(--xd-danger)'] };
+  const [text, color] = map[stage] || [stage, '#94A3B8'];
+  return h('span', { class: 'tag', style: { background: color + '22', color: color } }, text);
+}
+
+// ===== LEARN — 課程管理 =====
+function CoursesPage() {
+  const courses = DB.get('courses');
+  const page = h('div', {}, [
+    h('div', { class: 'page-header flex justify-between items-center' }, [
+      h('div', {}, [
+        h('h1', {}, '驅・知 — 課程管理'),
+        h('p', {}, `共 ${courses.length} 門課程`),
+      ]),
+      h('button', { class: 'btn btn-learn', onclick: () => showCourseModal() }, '+ 新增課程'),
+    ]),
+    h('div', { class: 'course-grid' },
+      courses.map(c => {
+        const catIcons = { sales: '💼', procurement: '📋', supply_chain: '🔗', management: '👑' };
+        const diffClass = { beginner: 'badge-beginner', intermediate: 'badge-intermediate', advanced: 'badge-advanced' };
+        return h('div', { class: 'course-card' }, [
+          h('div', { class: 'course-thumb', style: { background: c.category === 'sales' ? 'linear-gradient(135deg,var(--xd-learn),#1e40af)' : c.category === 'supply_chain' ? 'linear-gradient(135deg,var(--xd-coach),#047857)' : c.category === 'procurement' ? 'linear-gradient(135deg,var(--xd-boost),#b45309)' : 'linear-gradient(135deg,var(--xd-primary),#0e2a45)' } }, catIcons[c.category] || '📚'),
+          h('div', { class: 'course-body' }, [
+            h('h3', {}, c.title),
+            h('p', { class: 'text-sm text-muted', style: { marginTop: '4px' } }, c.description),
+            h('div', { class: 'course-meta' }, [
+              h('span', { class: 'badge badge-learn' }, c.category),
+              h('span', { class: 'badge ' + (diffClass[c.difficulty] || '') }, c.difficulty),
+              h('span', { class: 'text-xs text-muted' }, c.duration_hours + ' 小時'),
+            ]),
+          ]),
+        ]);
+      })
+    ),
+  ]);
+  return AppLayout(page, 'courses');
+}
+
+function showCourseModal(existing) {
+  const overlay = h('div', { class: 'modal-overlay show', onclick: (e) => { if (e.target === overlay) overlay.remove(); } });
+  const isEdit = !!existing;
+  const c = existing || {};
+  overlay.appendChild(h('div', { class: 'modal' }, [
+    h('div', { class: 'modal-header' }, [
+      h('h2', {}, isEdit ? '編輯課程' : '新增課程'),
+      h('button', { class: 'modal-close', onclick: () => overlay.remove() }, '✕'),
+    ]),
+    h('div', { class: 'form-group' }, [h('label', {}, '課程名稱'), h('input', { id: 'mc-title', value: c.title || '' })]),
+    h('div', { class: 'form-group' }, [h('label', {}, '課程說明'), h('textarea', { id: 'mc-desc', rows: '3' }, c.description || '')]),
+    h('div', { class: 'form-row' }, [
+      h('div', { class: 'form-group' }, [h('label', {}, '分類'), h('select', { id: 'mc-cat' }, [
+        h('option', { value: 'sales' }, '銷售 Sales'), h('option', { value: 'procurement' }, '採購 Procurement'),
+        h('option', { value: 'supply_chain' }, '供應鏈 Supply Chain'), h('option', { value: 'management' }, '經營管理'),
+      ])]),
+      h('div', { class: 'form-group' }, [h('label', {}, '難度'), h('select', { id: 'mc-diff' }, [
+        h('option', { value: 'beginner' }, '入門'), h('option', { value: 'intermediate' }, '中階'), h('option', { value: 'advanced' }, '進階'),
+      ])]),
+    ]),
+    h('div', { class: 'form-group' }, [h('label', {}, '預估時數'), h('input', { id: 'mc-hours', type: 'number', value: c.duration_hours || '8' })]),
+    h('button', { class: 'btn btn-learn btn-full', style: { marginTop: '12px' }, onclick: () => {
+      const courses = DB.get('courses');
+      const newC = {
+        id: c.id || uuid(), title: document.getElementById('mc-title').value,
+        description: document.getElementById('mc-desc').value,
+        category: document.getElementById('mc-cat').value,
+        difficulty: document.getElementById('mc-diff').value,
+        duration_hours: Number(document.getElementById('mc-hours').value),
+        pillar: 'learn', status: 'published', instructor_name: state.user?.full_name || 'Admin',
+        tags: [], created_at: c.created_at || now()
+      };
+      if (isEdit) { const idx = courses.findIndex(x => x.id === c.id); if (idx >= 0) courses[idx] = newC; }
+      else courses.push(newC);
+      DB.set('courses', courses);
+      overlay.remove();
+      render();
+    } }, isEdit ? '更新' : '建立課程'),
+  ]));
+  document.body.appendChild(overlay);
+  if (c.category) setTimeout(() => { document.getElementById('mc-cat').value = c.category; document.getElementById('mc-diff').value = c.difficulty; }, 0);
+}
+
+// ===== LEARN — 學習進度 =====
+function ProgressPage() {
+  const labels = ['產品知識', '銷售技巧', '客戶管理', '談判能力', '供應鏈', '市場分析', '財務知識', '領導力'];
+  const values = [75, 60, 80, 55, 70, 45, 50, 65];
+  const page = h('div', {}, [
+    h('div', { class: 'page-header' }, [h('h1', {}, '學習進度'), h('p', {}, '追蹤您的技能成長')]),
+    h('div', { class: 'grid-2' }, [
+      h('div', { class: 'card', style: { textAlign: 'center' } }, [
+        h('h3', { style: { marginBottom: '12px' } }, '技能雷達圖'),
+        radarSVG(labels, values, 280),
+      ]),
+      h('div', { class: 'card' }, [
+        h('h3', { style: { marginBottom: '12px' } }, '技能詳情'),
+        ...labels.map((l, i) => h('div', { style: { marginBottom: '10px' } }, [
+          h('div', { class: 'flex justify-between text-sm', style: { marginBottom: '4px' } }, [
+            h('span', {}, l), h('span', { class: 'font-bold' }, values[i] + '%'),
+          ]),
+          h('div', { class: 'progress-bar' }, [
+            h('div', { class: 'progress-fill', style: { width: values[i] + '%', background: values[i] >= 70 ? 'var(--xd-coach)' : values[i] >= 50 ? 'var(--xd-boost)' : 'var(--xd-danger)' } }),
+          ]),
+        ])),
+      ]),
+    ]),
+  ]);
+  return AppLayout(page, 'progress');
+}
+
+// ===== COACH — 陪跑計畫 =====
+function CoachingPage() {
+  const plans = DB.get('coaching_plans');
+  const page = h('div', {}, [
+    h('div', { class: 'page-header flex justify-between items-center' }, [
+      h('div', {}, [h('h1', {}, '驅・伴 — 陪跑計畫'), h('p', {}, `共 ${plans.length} 個計畫`)]),
+      h('button', { class: 'btn btn-coach', onclick: () => showCoachingModal() }, '+ 新增計畫'),
+    ]),
+    ...plans.map(p => h('div', { class: 'card' }, [
+      h('div', { class: 'flex justify-between items-center' }, [
+        h('div', {}, [
+          h('h3', {}, p.title),
+          h('div', { class: 'text-sm text-muted mt-2' }, `教練：${p.coach_name} → 學員：${p.coachee_name}`),
+        ]),
+        h('div', { class: 'flex gap-2 items-center' }, [
+          h('span', { class: 'badge badge-coach' }, p.methodology),
+          h('span', { class: 'badge', style: { background: p.status === 'active' ? '#D1FAE5' : '#E2E8F0', color: p.status === 'active' ? '#047857' : '#64748B' } }, p.status === 'active' ? '進行中' : '已完成'),
+        ]),
+      ]),
+      h('div', { class: 'mt-4' }, [
+        h('div', { class: 'text-sm font-bold mb-2' }, '目標：'),
+        h('ul', { style: { paddingLeft: '20px' } },
+          (p.goals || []).map(g => h('li', { class: 'text-sm', style: { marginBottom: '4px' } }, g))
+        ),
+      ]),
+      h('div', { class: 'flex justify-between items-center mt-4 text-xs text-muted' }, [
+        h('span', {}, `${fmtDate(p.start_date)} ~ ${fmtDate(p.end_date)}`),
+      ]),
+    ])),
+  ]);
+  return AppLayout(page, 'coaching');
+}
+
+function showCoachingModal() {
+  const overlay = h('div', { class: 'modal-overlay show', onclick: (e) => { if (e.target === overlay) overlay.remove(); } });
+  overlay.appendChild(h('div', { class: 'modal' }, [
+    h('div', { class: 'modal-header' }, [h('h2', {}, '新增陪跑計畫'), h('button', { class: 'modal-close', onclick: () => overlay.remove() }, '✕')]),
+    h('div', { class: 'form-group' }, [h('label', {}, '計畫名稱'), h('input', { id: 'mp-title' })]),
+    h('div', { class: 'form-row' }, [
+      h('div', { class: 'form-group' }, [h('label', {}, '學員姓名'), h('input', { id: 'mp-coachee' })]),
+      h('div', { class: 'form-group' }, [h('label', {}, '教練姓名'), h('input', { id: 'mp-coach', value: state.user?.full_name || '' })]),
+    ]),
+    h('div', { class: 'form-group' }, [h('label', {}, '方法論'), h('select', { id: 'mp-method' }, [
+      h('option', { value: 'GROW' }, 'GROW Model'), h('option', { value: 'MEDDIC' }, 'MEDDIC'),
+      h('option', { value: 'SPIN' }, 'SPIN Selling'), h('option', { value: 'CHALLENGER' }, 'Challenger Sale'),
+    ])]),
+    h('div', { class: 'form-row' }, [
+      h('div', { class: 'form-group' }, [h('label', {}, '開始日期'), h('input', { id: 'mp-start', type: 'date' })]),
+      h('div', { class: 'form-group' }, [h('label', {}, '結束日期'), h('input', { id: 'mp-end', type: 'date' })]),
+    ]),
+    h('button', { class: 'btn btn-coach btn-full mt-4', onclick: () => {
+      const plans = DB.get('coaching_plans');
+      plans.push({
+        id: uuid(), title: document.getElementById('mp-title').value,
+        coachee_name: document.getElementById('mp-coachee').value,
+        coach_name: document.getElementById('mp-coach').value,
+        methodology: document.getElementById('mp-method').value,
+        start_date: document.getElementById('mp-start').value,
+        end_date: document.getElementById('mp-end').value,
+        status: 'active', goals: [], created_at: now()
+      });
+      DB.set('coaching_plans', plans);
+      overlay.remove(); render();
+    } }, '建立計畫'),
+  ]));
+  document.body.appendChild(overlay);
+}
+
+// ===== COACH — Session 管理 =====
+function SessionsPage() {
+  const page = h('div', {}, [
+    h('div', { class: 'page-header' }, [h('h1', {}, 'Session 管理'), h('p', {}, '管理 1對1 教練 Session')]),
+    h('div', { class: 'card' }, [
+      h('div', { class: 'card-header' }, [h('h3', {}, '即將到來的 Sessions'), h('button', { class: 'btn btn-sm btn-coach' }, '+ 排程')]),
+      h('div', { class: 'text-muted', style: { padding: '40px', textAlign: 'center' } }, '尚無排定的 Session，點擊「+ 排程」開始'),
+    ]),
+  ]);
+  return AppLayout(page, 'sessions');
+}
+
+// ===== COACH — 能力評估 =====
+function AssessmentPage() {
+  const labels = ['MEDDIC', 'SPIN', 'Challenger', '談判力', '簡報力', '客戶洞察', '產品知識', '策略思維'];
+  const page = h('div', {}, [
+    h('div', { class: 'page-header' }, [h('h1', {}, '能力評估'), h('p', {}, '團隊技能評估與成長追蹤')]),
+    h('div', { class: 'grid-2' }, [
+      teamMemberCard('王大明', [85, 60, 50, 75, 70, 80, 90, 65], labels),
+      teamMemberCard('李小華', [70, 75, 80, 65, 85, 70, 75, 60], labels),
+      teamMemberCard('陳志明', [90, 70, 65, 80, 60, 85, 95, 75], labels),
+      teamMemberCard('張美玲', [40, 55, 35, 45, 50, 40, 60, 30], labels),
+    ]),
+  ]);
+  return AppLayout(page, 'assessment');
+}
+
+function teamMemberCard(name, values, labels) {
+  const avg = Math.round(values.reduce((a, b) => a + b, 0) / values.length);
+  return h('div', { class: 'card', style: { textAlign: 'center' } }, [
+    h('h3', {}, name),
+    h('div', { class: 'text-sm text-muted mb-2' }, `平均分數：${avg}`),
+    radarSVG(labels, values, 220),
+  ]);
+}
+
+// ===== BOOST — 客戶管理 =====
+function CustomersPage() {
+  const customers = DB.get('customers');
+  const page = h('div', {}, [
+    h('div', { class: 'page-header flex justify-between items-center' }, [
+      h('div', {}, [h('h1', {}, '驅・效 — 客戶管理'), h('p', {}, `共 ${customers.length} 家客戶`)]),
+      h('button', { class: 'btn btn-boost', onclick: () => showCustomerModal() }, '+ 新增客戶'),
+    ]),
+    h('table', {}, [
+      h('thead', {}, [h('tr', {}, [
+        h('th', {}, '客戶名稱'), h('th', {}, '產業'), h('th', {}, '等級'), h('th', {}, '負責人'), h('th', {}, '狀態'), h('th', {}, '年營收'),
+      ])]),
+      h('tbody', {},
+        customers.map(c => h('tr', { style: { cursor: 'pointer' } }, [
+          h('td', { class: 'font-bold' }, c.name),
+          h('td', {}, c.industry),
+          h('td', {}, h('span', { class: 'badge badge-boost' }, c.segment?.toUpperCase())),
+          h('td', {}, c.owner_name),
+          h('td', {}, h('span', { class: 'badge', style: { background: c.status === 'active' ? '#D1FAE5' : '#FEF3C7', color: c.status === 'active' ? '#047857' : '#92400E' } }, c.status === 'active' ? '活躍' : '潛在')),
+          h('td', {}, c.annual_revenue ? fmtMoney(c.annual_revenue) : '—'),
+        ]))
+      ),
+    ]),
+  ]);
+  return AppLayout(page, 'customers');
+}
+
+function showCustomerModal() {
+  const overlay = h('div', { class: 'modal-overlay show', onclick: (e) => { if (e.target === overlay) overlay.remove(); } });
+  overlay.appendChild(h('div', { class: 'modal' }, [
+    h('div', { class: 'modal-header' }, [h('h2', {}, '新增客戶'), h('button', { class: 'modal-close', onclick: () => overlay.remove() }, '✕')]),
+    h('div', { class: 'form-group' }, [h('label', {}, '客戶名稱'), h('input', { id: 'mc2-name' })]),
+    h('div', { class: 'form-row' }, [
+      h('div', { class: 'form-group' }, [h('label', {}, '產業'), h('input', { id: 'mc2-ind' })]),
+      h('div', { class: 'form-group' }, [h('label', {}, '等級'), h('select', { id: 'mc2-seg' }, [
+        h('option', { value: 'tier1' }, 'Tier 1'), h('option', { value: 'tier2' }, 'Tier 2'), h('option', { value: 'tier3' }, 'Tier 3'),
+      ])]),
+    ]),
+    h('div', { class: 'form-row' }, [
+      h('div', { class: 'form-group' }, [h('label', {}, '地區'), h('input', { id: 'mc2-region' })]),
+      h('div', { class: 'form-group' }, [h('label', {}, '負責人'), h('input', { id: 'mc2-owner', value: state.user?.full_name || '' })]),
+    ]),
+    h('button', { class: 'btn btn-boost btn-full mt-4', onclick: () => {
+      const custs = DB.get('customers');
+      custs.push({
+        id: uuid(), name: document.getElementById('mc2-name').value,
+        industry: document.getElementById('mc2-ind').value,
+        segment: document.getElementById('mc2-seg').value,
+        region: document.getElementById('mc2-region').value,
+        owner_name: document.getElementById('mc2-owner').value,
+        status: 'prospect', annual_revenue: 0, tags: [], created_at: now()
+      });
+      DB.set('customers', custs);
+      overlay.remove(); render();
+    } }, '建立客戶'),
+  ]));
+  document.body.appendChild(overlay);
+}
+
+// ===== BOOST — PIPELINE =====
+function PipelinePage() {
+  const opps = DB.get('opportunities');
+  const stages = [
+    { id: 'lead', name: 'Lead', color: '#94A3B8' },
+    { id: 'qualified', name: 'Qualified', color: 'var(--xd-learn)' },
+    { id: 'proposal', name: 'Proposal', color: 'var(--xd-boost)' },
+    { id: 'negotiation', name: 'Negotiation', color: 'var(--xd-coach)' },
+  ];
+
+  const page = h('div', {}, [
+    h('div', { class: 'page-header flex justify-between items-center' }, [
+      h('div', {}, [h('h1', {}, '驅・效 — 商機管道'), h('p', {}, 'Pipeline Kanban 看板')]),
+      h('button', { class: 'btn btn-boost', onclick: () => showOppModal() }, '+ 新增商機'),
+    ]),
+    h('div', { class: 'kanban' },
+      stages.map(s => {
+        const stageOpps = opps.filter(o => o.stage === s.id && o.status === 'open');
+        const total = stageOpps.reduce((sum, o) => sum + (o.amount || 0), 0);
+        return h('div', { class: 'kanban-col' }, [
+          h('div', { class: 'kanban-col-header', style: { borderBottom: `3px solid ${s.color}` } }, [
+            h('span', {}, s.name),
+            h('span', { class: 'count' }, stageOpps.length + ''),
+          ]),
+          h('div', { class: 'text-xs text-muted mb-2' }, fmtMoney(total)),
+          ...stageOpps.map(o => h('div', { class: 'kanban-card', draggable: 'true',
+            ondragstart: (e) => e.dataTransfer.setData('text/plain', o.id),
+          }, [
+            h('div', { class: 'title' }, o.title),
+            h('div', { class: 'customer' }, o.customer_name),
+            h('div', { class: 'flex justify-between items-center' }, [
+              h('span', { class: 'amount' }, fmtMoney(o.amount)),
+              h('span', { class: 'text-xs text-muted' }, o.probability + '%'),
+            ]),
+            h('div', { class: 'text-xs text-muted mt-2' }, '預計：' + fmtDate(o.expected_close)),
+          ])),
+        ]);
+      })
+    ),
+    // Won deals
+    h('div', { class: 'card mt-4' }, [
+      h('h3', { class: 'mb-2' }, '已成交'),
+      ...opps.filter(o => o.status === 'won').map(o => h('div', { class: 'flex justify-between items-center', style: { padding: '8px 0', borderBottom: '1px solid var(--xd-border)' } }, [
+        h('div', {}, [h('span', { class: 'font-bold' }, o.title), h('span', { class: 'text-sm text-muted' }, ' — ' + o.customer_name)]),
+        h('span', { class: 'font-bold', style: { color: 'var(--xd-coach)' } }, fmtMoney(o.won_amount)),
+      ])),
+    ]),
+  ]);
+  return AppLayout(page, 'pipeline');
+}
+
+function showOppModal() {
+  const overlay = h('div', { class: 'modal-overlay show', onclick: (e) => { if (e.target === overlay) overlay.remove(); } });
+  overlay.appendChild(h('div', { class: 'modal' }, [
+    h('div', { class: 'modal-header' }, [h('h2', {}, '新增商機'), h('button', { class: 'modal-close', onclick: () => overlay.remove() }, '✕')]),
+    h('div', { class: 'form-group' }, [h('label', {}, '商機名稱'), h('input', { id: 'mo-title' })]),
+    h('div', { class: 'form-row' }, [
+      h('div', { class: 'form-group' }, [h('label', {}, '客戶名稱'), h('input', { id: 'mo-cust' })]),
+      h('div', { class: 'form-group' }, [h('label', {}, '類型'), h('select', { id: 'mo-type' }, [
+        h('option', { value: 'design_in' }, 'Design-in'), h('option', { value: 'contract' }, 'Contract'),
+        h('option', { value: 'spot_buy' }, 'Spot Buy'), h('option', { value: 'project' }, 'Project'),
+      ])]),
+    ]),
+    h('div', { class: 'form-row' }, [
+      h('div', { class: 'form-group' }, [h('label', {}, '預估金額'), h('input', { id: 'mo-amount', type: 'number' })]),
+      h('div', { class: 'form-group' }, [h('label', {}, '成交機率 %'), h('input', { id: 'mo-prob', type: 'number', value: '30' })]),
+    ]),
+    h('div', { class: 'form-group' }, [h('label', {}, '預計成交日'), h('input', { id: 'mo-close', type: 'date' })]),
+    h('button', { class: 'btn btn-boost btn-full mt-4', onclick: () => {
+      const opps = DB.get('opportunities');
+      opps.push({
+        id: uuid(), title: document.getElementById('mo-title').value,
+        customer_name: document.getElementById('mo-cust').value,
+        type: document.getElementById('mo-type').value,
+        stage: 'lead', amount: Number(document.getElementById('mo-amount').value),
+        probability: Number(document.getElementById('mo-prob').value),
+        expected_close: document.getElementById('mo-close').value,
+        owner_name: state.user?.full_name || '', status: 'open', created_at: now()
+      });
+      DB.set('opportunities', opps);
+      overlay.remove(); render();
+    } }, '建立商機'),
+  ]));
+  document.body.appendChild(overlay);
+}
+
+// ===== BOOST — 業績目標 =====
+function TargetsPage() {
+  const targets = DB.get('targets');
+  const revTargets = targets.filter(t => t.type === 'revenue');
+  const otherTargets = targets.filter(t => t.type !== 'revenue');
+
+  const page = h('div', {}, [
+    h('div', { class: 'page-header' }, [h('h1', {}, '驅・效 — 業績目標'), h('p', {}, '2026 Q1 目標達成狀況')]),
+    h('div', { class: 'card' }, [
+      h('h3', { class: 'mb-4' }, '營收目標'),
+      h('table', {}, [
+        h('thead', {}, [h('tr', {}, [h('th', {}, '人員'), h('th', {}, '期間'), h('th', {}, '目標'), h('th', {}, '實績'), h('th', {}, '達成率'), h('th', {}, '進度')])]),
+        h('tbody', {},
+          revTargets.map(t => {
+            const pct = t.target_value ? Math.round(t.actual_value / t.target_value * 100) : 0;
+            return h('tr', {}, [
+              h('td', { class: 'font-bold' }, t.user_name),
+              h('td', {}, t.period),
+              h('td', {}, fmtMoney(t.target_value)),
+              h('td', {}, fmtMoney(t.actual_value)),
+              h('td', {}, h('span', { style: { color: pct >= 100 ? 'var(--xd-coach)' : pct >= 70 ? 'var(--xd-boost)' : 'var(--xd-danger)', fontWeight: '700' } }, pct + '%')),
+              h('td', { style: { width: '120px' } }, h('div', { class: 'progress-bar' }, [
+                h('div', { class: 'progress-fill', style: { width: Math.min(pct, 100) + '%', background: pct >= 100 ? 'var(--xd-coach)' : pct >= 70 ? 'var(--xd-boost)' : 'var(--xd-danger)' } }),
+              ])),
+            ]);
+          })
+        ),
+      ]),
+    ]),
+    h('div', { class: 'card mt-4' }, [
+      h('h3', { class: 'mb-4' }, '其他 KPI'),
+      h('table', {}, [
+        h('thead', {}, [h('tr', {}, [h('th', {}, '指標'), h('th', {}, '期間'), h('th', {}, '類型'), h('th', {}, '目標'), h('th', {}, '實績'), h('th', {}, '達成率')])]),
+        h('tbody', {},
+          otherTargets.map(t => {
+            const pct = t.target_value ? Math.round(t.actual_value / t.target_value * 100) : 0;
+            const typeLabel = { new_customer: '新客戶', design_in: 'Design-in', margin: '毛利率' };
+            return h('tr', {}, [
+              h('td', { class: 'font-bold' }, t.user_name),
+              h('td', {}, t.period), h('td', {}, typeLabel[t.type] || t.type),
+              h('td', {}, t.target_value + (t.unit === 'count' ? ' 個' : '')),
+              h('td', {}, t.actual_value + (t.unit === 'count' ? ' 個' : '')),
+              h('td', {}, h('span', { style: { color: pct >= 100 ? 'var(--xd-coach)' : 'var(--xd-boost)', fontWeight: '700' } }, pct + '%')),
+            ]);
+          })
+        ),
+      ]),
+    ]),
+  ]);
+  return AppLayout(page, 'targets');
+}
+
+// ===== SETTINGS =====
+function SettingsPage() {
+  const page = h('div', {}, [
+    h('div', { class: 'page-header' }, [h('h1', {}, '系統設定')]),
+    h('div', { class: 'card' }, [
+      h('h3', { class: 'mb-4' }, '個人資料'),
+      h('div', { class: 'form-row' }, [
+        h('div', { class: 'form-group' }, [h('label', {}, '姓名'), h('input', { value: state.user?.full_name || '' })]),
+        h('div', { class: 'form-group' }, [h('label', {}, 'Email'), h('input', { value: state.user?.email || '' })]),
+      ]),
+      h('div', { class: 'form-row' }, [
+        h('div', { class: 'form-group' }, [h('label', {}, '部門'), h('input', { value: state.user?.department || '' })]),
+        h('div', { class: 'form-group' }, [h('label', {}, '職稱'), h('input', { value: state.user?.title || '' })]),
+      ]),
+    ]),
+    h('div', { class: 'card' }, [
+      h('h3', { class: 'mb-4' }, '系統資訊'),
+      h('div', { class: 'text-sm' }, [
+        h('p', {}, '平台：芯智驅 XinDrive AI v1.0.0'),
+        h('p', { class: 'mt-2' }, '模式：Demo（localStorage）'),
+        h('p', { class: 'mt-2' }, '架構：SDD OpenSpec — Pure Vanilla JS SPA'),
+      ]),
+      h('button', { class: 'btn btn-danger btn-sm mt-4', onclick: () => {
+        if (confirm('確定要清除所有 Demo 資料？')) {
+          Object.keys(localStorage).filter(k => k.startsWith('xd_')).forEach(k => localStorage.removeItem(k));
+          seedDemoData(); render();
+        }
+      } }, '重置 Demo 資料'),
+    ]),
+  ]);
+  return AppLayout(page, 'settings');
+}
+
+// ===== MAIN RENDER =====
+function render() {
+  const route = getRoute();
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+  if (route === '/login' || !checkAuth()) {
+    app.appendChild(LoginPage());
+    return;
+  }
+
+  let page;
+  switch (route) {
+    case '/dashboard': page = DashboardPage(); break;
+    case '/learn': page = CoursesPage(); break;
+    case '/learn/progress': page = ProgressPage(); break;
+    case '/coach': page = CoachingPage(); break;
+    case '/coach/sessions': page = SessionsPage(); break;
+    case '/coach/assessment': page = AssessmentPage(); break;
+    case '/boost/customers': page = CustomersPage(); break;
+    case '/boost/pipeline': page = PipelinePage(); break;
+    case '/boost/targets': page = TargetsPage(); break;
+    case '/settings': page = SettingsPage(); break;
+    default: page = DashboardPage();
+  }
+  app.appendChild(page);
+}
+
+// ===== INIT =====
+seedDemoData();
+window.addEventListener('hashchange', render);
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent 企業智能化技術架構藍圖</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', -apple-system, sans-serif;
+    background: #0F172A;
+    color: #E2E8F0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+  }
+
+  /* HEADER */
+  .header {
+    margin-bottom: 1.8rem;
+    border-bottom: 1px solid #1E293B;
+    padding-bottom: 1rem;
+  }
+  .header h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #06B6D4, #8B5CF6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.4rem;
+  }
+  .header p {
+    font-size: 0.9rem;
+    color: #64748B;
+  }
+
+  /* MAIN LAYOUT */
+  .main-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+  }
+
+  /* LAYERS */
+  .layers {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    position: relative;
+  }
+
+  .layer-card {
+    display: grid;
+    grid-template-columns: 50px 1fr 1fr 180px;
+    align-items: center;
+    background: #1A253C;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    border-left: 4px solid;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .layer-card:hover {
+    transform: translateX(6px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .layer-card.active {
+    background: #1E2D4A;
+  }
+
+  .layer-icon {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  .layer-info h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #F8FAFC;
+    margin-bottom: 0.15rem;
+  }
+  .layer-info .subtitle {
+    font-size: 0.72rem;
+    color: #64748B;
+  }
+
+  .layer-desc {
+    font-size: 0.78rem;
+    color: #94A3B8;
+    line-height: 1.5;
+    padding: 0 1rem;
+  }
+
+  .phase-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #fff;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* Mini Gantt */
+  .mini-gantt {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 160px;
+  }
+  .gantt-months {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.55rem;
+    color: #475569;
+    padding: 0 1px;
+  }
+  .gantt-track {
+    position: relative;
+    height: 8px;
+    background: #334055;
+    border-radius: 4px;
+    overflow: visible;
+  }
+  .gantt-bar {
+    position: absolute;
+    top: -2px;
+    height: 12px;
+    border-radius: 6px;
+    transition: all 0.3s;
+  }
+  .layer-card:hover .gantt-bar {
+    filter: brightness(1.3);
+    box-shadow: 0 0 8px currentColor;
+  }
+  .gantt-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* ARROW connectors */
+  .arrow-connector {
+    text-align: center;
+    color: #334055;
+    font-size: 1rem;
+    margin: -0.15rem 0;
+    padding-left: 50px;
+  }
+
+  /* Colors */
+  .c-purple { border-color: #8B5CF6; }
+  .c-cyan { border-color: #06B6D4; }
+  .c-blue { border-color: #3882F6; }
+  .c-green { border-color: #10B981; }
+  .c-orange { border-color: #F59E0B; }
+  .c-pink { border-color: #EC4899; }
+
+  .bg-purple { background: #8B5CF6; }
+  .bg-cyan { background: #06B6D4; }
+  .bg-blue { background: #3882F6; }
+  .bg-green { background: #10B981; }
+  .bg-orange { background: #F59E0B; }
+  .bg-pink { background: #EC4899; }
+
+  /* RIGHT PANEL */
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .panel-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #F8FAFC;
+    margin-bottom: 0.3rem;
+  }
+
+  /* PHASES */
+  .phase-card {
+    background: #1A253C;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    border-left: 3px solid;
+    transition: all 0.3s;
+  }
+  .phase-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .phase-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .phase-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #F8FAFC;
+  }
+
+  .phase-timeline {
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: auto;
+  }
+
+  .phase-items {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    line-height: 1.6;
+    padding-left: 0.3rem;
+  }
+
+  /* BOTTOM INSIGHTS */
+  .insights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+    grid-column: 1 / -1;
+  }
+
+  .insight-card {
+    background: #1A253C;
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    transition: all 0.3s;
+  }
+  .insight-card:hover {
+    background: #1E2D4A;
+  }
+
+  .insight-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .insight-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #06B6D4;
+    margin-bottom: 0.2rem;
+  }
+
+  .insight-desc {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    line-height: 1.5;
+  }
+
+  /* DETAIL TOOLTIP */
+  .detail-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 2rem;
+    width: 500px;
+    max-width: 90vw;
+    z-index: 1000;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+  }
+  .detail-popup.show { display: block; }
+  .detail-popup h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  .detail-popup .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: #94A3B8;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  .detail-popup .close-btn:hover { color: #fff; }
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 999;
+  }
+  .overlay.show { display: block; }
+
+  .detail-section { margin-top: 1rem; }
+  .detail-section h4 {
+    font-size: 0.85rem;
+    color: #06B6D4;
+    margin-bottom: 0.3rem;
+  }
+  .detail-section p {
+    font-size: 0.82rem;
+    color: #94A3B8;
+    line-height: 1.6;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.7rem;
+    color: #475569;
+    grid-column: 1 / -1;
+  }
+
+  @media print {
+    body { background: #fff; color: #1a1a1a; }
+    .layer-card { background: #f8f9fa; border: 1px solid #ddd; }
+    .phase-card { background: #f8f9fa; border: 1px solid #ddd; }
+    .insight-card { background: #f8f9fa; }
+    .header h1 { -webkit-text-fill-color: #1a1a1a; color: #1a1a1a; }
+    .detail-popup, .overlay { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="header">
+    <h1>AI Agent 企業智能化技術架構藍圖</h1>
+    <p>給 C-Level 的一頁式技術素養指南 — 雙軌並行 × MVP 快速驗證 × 12 個月落地（點擊任一層級查看詳細說明）</p>
+  </div>
+
+  <div class="main-layout">
+    <!-- LEFT: Architecture Layers -->
+    <div class="layers">
+      <div class="layer-card c-purple" onclick="showDetail(0)">
+        <div class="layer-icon">🤖</div>
+        <div class="layer-info">
+          <h3>OpenClaw 框架</h3>
+          <div class="subtitle">開源 AI Agent 開發框架</div>
+        </div>
+        <div class="layer-desc">開源自主 AI 代理框架，透過即時通訊操作，支援排程任務、多代理協作、13,700+ 技能插件</div>
+        <div class="mini-gantt">
+          <div class="gantt-months"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span></div>
+          <div class="gantt-track"><div class="gantt-bar" style="left:75%;width:25%;background:#8B5CF6;color:#8B5CF6"></div></div>
+          <div class="gantt-label" style="color:#8B5CF6">規模化部署</div>
+        </div>
+      </div>
+
+      <div class="arrow-connector">▼</div>
+
+      <div class="layer-card c-cyan" onclick="showDetail(1)">
+        <div class="layer-icon">🧠</div>
+        <div class="layer-info">
+          <h3>AI Agent 智能代理</h3>
+          <div class="subtitle">自主任務規劃與執行引擎</div>
+        </div>
+        <div class="layer-desc">從「回答問題」進化到「完成任務」— 自主規劃、調用工具、執行、回報結果</div>
+        <div class="mini-gantt">
+          <div class="gantt-months"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span></div>
+          <div class="gantt-track"><div class="gantt-bar" style="left:0%;width:100%;background:#06B6D4;color:#06B6D4"></div></div>
+          <div class="gantt-label" style="color:#06B6D4">M0 即 POC → 持續擴展</div>
+        </div>
+      </div>
+
+      <div class="arrow-connector">▼</div>
+
+      <div class="layer-card c-blue" onclick="showDetail(2)">
+        <div class="layer-icon">🔌</div>
+        <div class="layer-info">
+          <h3>MCP 模型上下文協議</h3>
+          <div class="subtitle">AI 與工具的統一連接標準</div>
+        </div>
+        <div class="layer-desc">Anthropic 發起的開放標準（已捐贈 Linux 基金會），97M+ 月下載、AI 界的「USB 接口」</div>
+        <div class="mini-gantt">
+          <div class="gantt-months"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span></div>
+          <div class="gantt-track"><div class="gantt-bar" style="left:25%;width:50%;background:#3882F6;color:#3882F6"></div></div>
+          <div class="gantt-label" style="color:#3882F6">接口串接 → 全面覆蓋</div>
+        </div>
+      </div>
+
+      <div class="arrow-connector">▼</div>
+
+      <div class="layer-card c-green" onclick="showDetail(3)">
+        <div class="layer-icon">📊</div>
+        <div class="layer-info">
+          <h3>數據中台</h3>
+          <div class="subtitle">企業數據整合・治理・服務平台</div>
+        </div>
+        <div class="layer-desc">統一數據標準、打破資訊孤島、建立數據資產目錄，為 AI 提供可信賴的數據基礎</div>
+        <div class="mini-gantt">
+          <div class="gantt-months"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span></div>
+          <div class="gantt-track"><div class="gantt-bar" style="left:25%;width:75%;background:#10B981;color:#10B981"></div></div>
+          <div class="gantt-label" style="color:#10B981">MVP 先行 → 逐步擴展</div>
+        </div>
+      </div>
+
+      <div class="arrow-connector">▼</div>
+
+      <div class="layer-card c-orange" onclick="showDetail(4)">
+        <div class="layer-icon">⚙️</div>
+        <div class="layer-info">
+          <h3>企業應用系統</h3>
+          <div class="subtitle">ERP・CRM・SCM・MES・HR 等</div>
+        </div>
+        <div class="layer-desc">現有業務系統是數據的生產者與消費者，需盤點並標準化 API 接口</div>
+        <div class="mini-gantt">
+          <div class="gantt-months"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span></div>
+          <div class="gantt-track"><div class="gantt-bar" style="left:0%;width:50%;background:#F59E0B;color:#F59E0B"></div></div>
+          <div class="gantt-label" style="color:#F59E0B">盤點 + API 標準化</div>
+        </div>
+      </div>
+
+      <div class="arrow-connector">▼</div>
+
+      <div class="layer-card c-pink" onclick="showDetail(5)">
+        <div class="layer-icon">💾</div>
+        <div class="layer-info">
+          <h3>資料庫</h3>
+          <div class="subtitle">關聯式・NoSQL・向量・時序資料庫</div>
+        </div>
+        <div class="layer-desc">企業數據的根基，需確保資料品質與安全性，並引入向量資料庫支援語意搜尋</div>
+        <div class="mini-gantt">
+          <div class="gantt-months"><span>0</span><span>3</span><span>6</span><span>9</span><span>12</span></div>
+          <div class="gantt-track"><div class="gantt-bar" style="left:0%;width:50%;background:#EC4899;color:#EC4899"></div></div>
+          <div class="gantt-label" style="color:#EC4899">清洗 + 向量 DB 評估</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Phase Roadmap -->
+    <div class="right-panel">
+      <div class="panel-title">🚀 加速導入路徑（12 個月）</div>
+
+      <div class="phase-card c-orange">
+        <div class="phase-header">
+          <div class="phase-num bg-orange">1</div>
+          <div class="phase-title">雙軌啟動＋素養工作坊</div>
+          <div class="phase-timeline" style="color:#F59E0B">Month 0-3</div>
+        </div>
+        <div class="phase-items">
+          C 軌：AI 素養工作坊（高階→全員）<br>
+          A 軌：數據盤點＋資料清洗<br>
+          B 軌：選 1 場景跑 AI Agent POC
+        </div>
+      </div>
+
+      <div class="phase-card c-green">
+        <div class="phase-header">
+          <div class="phase-num bg-green">2</div>
+          <div class="phase-title">MVP 整合</div>
+          <div class="phase-timeline" style="color:#10B981">Month 3-6</div>
+        </div>
+        <div class="phase-items">
+          ▸ 數據中台 MVP（核心數據先行）<br>
+          ▸ MCP 接口串接 POC 場景<br>
+          ▸ 驗證 AI ↔ 系統端到端可行性
+        </div>
+      </div>
+
+      <div class="phase-card c-blue">
+        <div class="phase-header">
+          <div class="phase-num bg-blue">3</div>
+          <div class="phase-title">場景擴展</div>
+          <div class="phase-timeline" style="color:#3882F6">Month 6-9</div>
+        </div>
+        <div class="phase-items">
+          ▸ 複製成功 POC 到 3-5 場景<br>
+          ▸ 數據中台覆蓋擴大<br>
+          ▸ 建立 AI 治理與安全規範
+        </div>
+      </div>
+
+      <div class="phase-card c-purple">
+        <div class="phase-header">
+          <div class="phase-num bg-purple">4</div>
+          <div class="phase-title">規模化營運</div>
+          <div class="phase-timeline" style="color:#8B5CF6">Month 9-12</div>
+        </div>
+        <div class="phase-items">
+          ▸ 全面部署 OpenClaw / 自建框架<br>
+          ▸ 多代理協作與自動化流程<br>
+          ▸ 持續優化 ROI 與擴展應用
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM INSIGHTS -->
+    <div class="insights">
+      <div class="insight-card">
+        <div class="insight-icon">💡</div>
+        <div>
+          <div class="insight-title">核心思維</div>
+          <div class="insight-desc">不等數據完美才啟動 AI，用 MVP + POC 雙軌並行加速驗證</div>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">⚡</div>
+        <div>
+          <div class="insight-title">加速原則</div>
+          <div class="insight-desc">選最痛的 1 個場景先 POC，12 個月內從驗證走到規模化</div>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">🎯</div>
+        <div>
+          <div class="insight-title">成功關鍵</div>
+          <div class="insight-desc">數據治理與 AI 實驗同步推進，邊做邊學、快速迭代優於完美規劃</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      2026 AI Agent 企業智能化技術架構藍圖 — 一頁式 C-Level 素養指南
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL POPUP OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeDetail()"></div>
+<div class="detail-popup" id="detailPopup">
+  <button class="close-btn" onclick="closeDetail()">&times;</button>
+  <h2 id="detailTitle"></h2>
+  <div id="detailContent"></div>
+</div>
+
+<script>
+const details = [
+  {
+    title: "🤖 OpenClaw 框架",
+    color: "#8B5CF6",
+    sections: [
+      { h: "是什麼？", p: "OpenClaw 是一個開源的自主 AI 代理框架，由 Peter Steinberger 於 2025 年 11 月創建。使用者可以透過 WhatsApp、Slack、Telegram 等即時通訊平台操作 AI 代理來完成各種任務。" },
+      { h: "為什麼重要？", p: "GitHub 星標數在一天內突破 25,000，兩個月內超越 React。截至 2026 年 3 月已有 30-40 萬用戶、13,700+ 技能插件。代表 AI Agent 已從實驗走向主流。" },
+      { h: "對企業的意義", p: "提供了快速建構 AI Agent 的開源選項，但需注意：目前已發現 21,000+ 個暴露在公網的實例，安全性仍需企業自行強化。可作為內部 AI Agent 的參考架構或快速原型工具。" },
+      { h: "C-Level 決策要點", p: "評估是否採用開源框架 vs 自建 vs 採購商業方案。關鍵考量：安全性、可控性、與現有系統的整合難度。" }
+    ]
+  },
+  {
+    title: "🧠 AI Agent 智能代理",
+    color: "#06B6D4",
+    sections: [
+      { h: "是什麼？", p: "AI Agent 是新一代的 AI 應用模式。不同於傳統 AI 聊天機器人的「一問一答」，AI Agent 能自主規劃任務步驟、調用各種工具、執行操作、並回報結果。本質上是從「被動回答」進化到「主動執行」。" },
+      { h: "為什麼重要？", p: "這是 AI 從「輔助工具」走向「數位員工」的關鍵轉變。AI Agent 可以 7×24 不間斷工作，處理重複性流程，讓人類專注於高價值決策。" },
+      { h: "對企業的意義", p: "可應用於：自動化客服、智能供應鏈管理、財務報表生成、合規檢查、業務數據分析等。每個部門都可能因 AI Agent 而重新定義工作流程。" },
+      { h: "C-Level 決策要點", p: "先選擇 1-2 個高重複性、規則明確的業務流程作為試點。避免一開始就「全面 AI 化」，以免組織抗拒和風險失控。" }
+    ]
+  },
+  {
+    title: "🔌 MCP 模型上下文協議",
+    color: "#3882F6",
+    sections: [
+      { h: "是什麼？", p: "MCP（Model Context Protocol）是由 Anthropic 於 2024 年 11 月發起的開放標準，用於建立 AI 模型與外部工具/數據源之間的統一連接。已於 2025 年 12 月捐贈給 Linux 基金會旗下的 Agentic AI Foundation。" },
+      { h: "為什麼重要？", p: "就像 USB 統一了各種設備的連接方式，MCP 統一了 AI 與工具的連接方式。目前月下載量超過 9,700 萬次，超過 10,000 個 MCP 伺服器，已被 ChatGPT、Gemini、VS Code 等主流工具採用。" },
+      { h: "對企業的意義", p: "採用 MCP 標準意味著企業的 AI 投資不會被鎖定在單一供應商。一次建好 MCP 接口，未來可以自由切換不同的 AI 模型和工具，大幅降低技術債務。" },
+      { h: "C-Level 決策要點", p: "在選擇 AI 相關技術供應商時，優先考慮支援 MCP 標準的方案。這是避免供應商鎖定、保護長期投資的關鍵策略。" }
+    ]
+  },
+  {
+    title: "📊 數據中台",
+    color: "#10B981",
+    sections: [
+      { h: "是什麼？", p: "數據中台是企業內部的「數據服務中心」，負責統一收集、清洗、治理、存儲和服務各業務系統的數據。它不是一個單一產品，而是一套數據管理的架構理念和實踐。" },
+      { h: "為什麼重要？", p: "大多數企業的數據分散在幾十甚至上百個系統中，形成「數據孤島」。沒有數據中台，AI 只能看到片面資訊，無法做出全局性的智能決策。" },
+      { h: "對企業的意義", p: "數據中台是 AI Agent 能否成功的基礎設施。它提供統一的數據資產目錄、標準化的數據接口、以及數據品質保障機制。這是「AI 就緒」的前提條件。" },
+      { h: "C-Level 決策要點", p: "數據中台建設是最耗時但最關鍵的環節。建議先從核心業務數據（客戶、訂單、庫存）開始，逐步擴展。預算應佔整體 AI 投資的 40-60%。" }
+    ]
+  },
+  {
+    title: "⚙️ 企業應用系統",
+    color: "#F59E0B",
+    sections: [
+      { h: "是什麼？", p: "企業應用系統包括 ERP（企業資源規劃）、CRM（客戶關係管理）、SCM（供應鏈管理）、MES（製造執行系統）、HR 系統等。這些是企業日常營運的骨幹。" },
+      { h: "為什麼重要？", p: "這些系統產生企業 80% 以上的業務數據，也是 AI Agent 未來要操作和服務的對象。系統的開放程度（API 品質）直接決定了 AI 整合的難度和成本。" },
+      { h: "對企業的意義", p: "在 AI 時代，企業系統需要從「封閉運行」轉向「開放連接」。需要盤點每個系統的 API 能力、數據品質、以及系統間的連接狀態。" },
+      { h: "C-Level 決策要點", p: "盤點現有系統時重點關注：哪些系統有開放 API？哪些數據品質最差？哪些系統之間的數據不互通？這些都是 AI 化的瓶頸所在。" }
+    ]
+  },
+  {
+    title: "💾 資料庫",
+    color: "#EC4899",
+    sections: [
+      { h: "是什麼？", p: "資料庫是所有數據的最底層存儲。在 AI 時代，除了傳統的關聯式資料庫（如 MySQL、PostgreSQL）和 NoSQL 資料庫（如 MongoDB）外，還需要向量資料庫（如 Pinecone、Weaviate）來支援 AI 的語意搜尋能力。" },
+      { h: "為什麼重要？", p: "「垃圾進、垃圾出」——如果底層數據品質差、結構混亂、缺乏治理，再先進的 AI 也無法產生可靠的結果。資料庫的健康度直接決定 AI 的表現。" },
+      { h: "對企業的意義", p: "AI 時代對資料庫提出新需求：1）向量資料庫用於語意搜尋；2）更高的數據品質標準；3）更完善的數據安全與備份機制；4）即時數據同步能力。" },
+      { h: "C-Level 決策要點", p: "投資數據品質治理的回報率遠高於投資 AI 工具本身。建議先進行「數據健康檢查」，找出最嚴重的品質問題，再決定技術升級方向。" }
+    ]
+  }
+];
+
+function showDetail(idx) {
+  const d = details[idx];
+  document.getElementById('detailTitle').textContent = d.title;
+  document.getElementById('detailTitle').style.color = d.color;
+  let html = '';
+  d.sections.forEach(s => {
+    html += `<div class="detail-section"><h4>${s.h}</h4><p>${s.p}</p></div>`;
+  });
+  document.getElementById('detailContent').innerHTML = html;
+  document.getElementById('detailPopup').classList.add('show');
+  document.getElementById('overlay').classList.add('show');
+}
+
+function closeDetail() {
+  document.getElementById('detailPopup').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+</script>
+
+</body>
+</html>

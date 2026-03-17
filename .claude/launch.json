@@ -1,0 +1,68 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "static-server",
+      "runtimeExecutable": "/opt/homebrew/bin/python3",
+      "runtimeArgs": ["-m", "http.server", "8080"],
+      "port": 8080
+    },
+    {
+      "name": "cilt-server",
+      "runtimeExecutable": "/opt/homebrew/bin/node",
+      "runtimeArgs": ["server.js"],
+      "port": 3001,
+      "cwd": "cilt-website",
+      "autoPort": false
+    },
+    {
+      "name": "projecthub-dev",
+      "runtimeExecutable": "/opt/homebrew/opt/node@22/bin/node",
+      "runtimeArgs": ["node_modules/vite/bin/vite.js", "--port", "3000", "--host"],
+      "port": 3000,
+      "cwd": "projecthub-frontend"
+    },
+    {
+      "name": "xindrive-dev",
+      "runtimeExecutable": "/opt/homebrew/bin/python3",
+      "runtimeArgs": ["-m", "http.server", "8081"],
+      "port": 8081,
+      "cwd": "xindrive-platform/src"
+    },
+    {
+      "name": "fusheng-dev",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8082"],
+      "port": 8082,
+      "cwd": "fusheng-platform"
+    },
+    {
+      "name": "jaya-dev",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8083"],
+      "port": 8083,
+      "cwd": "jaya-website-v2"
+    },
+    {
+      "name": "fusheng-promo",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3002"],
+      "port": 3002,
+      "cwd": "."
+    },
+    {
+      "name": "hr-demo",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8090", "-d", "/Users/m1/Desktop/00 Musk/人力仲介/hr-agency-platform/demo"],
+      "port": 8090
+    },
+    {
+      "name": "fusheng-consultant-dev",
+      "runtimeExecutable": "/Users/m1/.nvm/versions/node/v20.20.1/bin/node",
+      "runtimeArgs": ["node_modules/.bin/next", "dev", "--webpack", "--port", "3003"],
+      "port": 3003,
+      "cwd": "fusheng-consultant",
+      "autoPort": true
+    }
+  ]
+}

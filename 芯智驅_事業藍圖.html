@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1400">
+<title>芯智驅 XinDrive AI — 事業藍圖 Business Blueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --navy2: #111f38;
+  --navy3: #1a2e50;
+  --teal: #2dd4a8;
+  --teal-dk: #0d9b8a;
+  --learn: #2563EB;
+  --coach: #10B981;
+  --boost: #F59E0B;
+  --cyan: #00B4D8;
+  --purple: #8B5CF6;
+  --orange: #E87B35;
+  --red: #EF4444;
+  --ice: #CADCFC;
+  --mint: #B0F0E0;
+  --text-dk: #1E293B;
+  --muted: #8B9DAF;
+  --bg: #F1F5F9;
+  --border: #E2E8F0;
+  --white: #FFFFFF;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Noto Sans TC', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* ===== HEADER ===== */
+.header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy3) 50%, var(--teal-dk) 100%);
+  padding: 60px 80px 50px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -10%;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(45,212,168,0.15) 0%, transparent 70%);
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--learn), var(--teal), var(--coach), var(--boost));
+}
+.header-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 1; }
+.brand h1 { font-size: 52px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; }
+.brand h1 span { color: var(--teal); }
+.brand .tagline { font-size: 18px; color: var(--muted); margin-top: 12px; font-weight: 500; }
+.brand .tagline em { color: var(--teal); font-style: normal; font-weight: 700; }
+.header-badge {
+  background: rgba(45,212,168,0.1);
+  border: 1px solid rgba(45,212,168,0.3);
+  border-radius: 12px;
+  padding: 20px 30px;
+  text-align: right;
+}
+.header-badge .year { font-size: 48px; font-weight: 900; color: var(--teal); line-height: 1; }
+.header-badge .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* Pillar pills */
+.pillars { display: flex; gap: 16px; margin-top: 30px; position: relative; z-index: 1; }
+.pill {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--navy2);
+  border-radius: 8px;
+  padding: 12px 20px;
+  border-left: 4px solid;
+  font-weight: 600;
+  font-size: 15px;
+}
+.pill.learn { border-color: var(--learn); }
+.pill.coach { border-color: var(--coach); }
+.pill.boost { border-color: var(--boost); }
+.pill .dot { width: 10px; height: 10px; border-radius: 50%; }
+.pill.learn .dot { background: var(--learn); }
+.pill.coach .dot { background: var(--coach); }
+.pill.boost .dot { background: var(--boost); }
+
+/* ===== MAIN GRID ===== */
+.blueprint {
+  padding: 40px 80px 60px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+/* Section titles */
+.section-tag {
+  font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 6px;
+}
+.section-title {
+  font-size: 28px; font-weight: 800; color: var(--white); margin-bottom: 20px;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
+/* ===== ROW: VISION ===== */
+.vision-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.vision-box {
+  background: var(--navy2);
+  border-radius: 12px;
+  padding: 28px 32px;
+  border-left: 4px solid;
+  position: relative;
+}
+.vision-box.v { border-color: var(--teal); }
+.vision-box.m { border-color: var(--learn); }
+.vision-box .label {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  margin-bottom: 10px; text-transform: uppercase;
+}
+.vision-box.v .label { color: var(--teal); }
+.vision-box.m .label { color: var(--learn); }
+.vision-box p { font-size: 16px; line-height: 1.6; color: var(--ice); font-family: 'Noto Sans TC', sans-serif; }
+
+/* ===== LEAP FRAMEWORK ===== */
+.leap-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.leap-card {
+  background: var(--navy2);
+  border-radius: 12px;
+  padding: 24px;
+  border-top: 4px solid;
+  position: relative;
+}
+.leap-card .letter {
+  font-size: 48px; font-weight: 900; line-height: 1; margin-bottom: 4px;
+}
+.leap-card .en { font-size: 16px; font-weight: 700; color: var(--white); }
+.leap-card .zh { font-size: 13px; margin-top: 2px; margin-bottom: 12px; }
+.leap-card ul { list-style: none; }
+.leap-card ul li { font-size: 12px; color: var(--ice); padding: 3px 0; font-family: 'Noto Sans TC', sans-serif; }
+.leap-card ul li::before { content: '▸ '; opacity: 0.5; }
+.leap-card:nth-child(1) { border-color: var(--learn); }
+.leap-card:nth-child(1) .letter, .leap-card:nth-child(1) .zh { color: var(--learn); }
+.leap-card:nth-child(2) { border-color: var(--teal-dk); }
+.leap-card:nth-child(2) .letter, .leap-card:nth-child(2) .zh { color: var(--teal); }
+.leap-card:nth-child(3) { border-color: var(--boost); }
+.leap-card:nth-child(3) .letter, .leap-card:nth-child(3) .zh { color: var(--boost); }
+.leap-card:nth-child(4) { border-color: var(--coach); }
+.leap-card:nth-child(4) .letter, .leap-card:nth-child(4) .zh { color: var(--coach); }
+.arrow-between {
+  display: flex; align-items: center; font-size: 24px; color: var(--muted);
+  position: absolute; right: -12px; top: 50%; transform: translateY(-50%); z-index: 2;
+}
+
+/* ===== ARCHITECTURE ===== */
+.arch-section { }
+.arch-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.super-admin-bar {
+  background: var(--navy3);
+  border-radius: 12px;
+  padding: 16px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(45,212,168,0.2);
+}
+.super-admin-bar .sa-title { font-size: 15px; font-weight: 700; }
+.super-admin-bar .sa-desc { font-size: 12px; color: var(--muted); }
+.company-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.company-card {
+  background: var(--navy2);
+  border-radius: 10px;
+  padding: 20px;
+  border-top: 3px solid;
+}
+.company-card .cc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.company-card .cc-name { font-size: 15px; font-weight: 700; font-family: 'Noto Sans TC', sans-serif; }
+.company-card .cc-tag {
+  font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; color: var(--white);
+}
+.company-card .cc-info { font-size: 11px; color: var(--muted); margin-bottom: 10px; font-family: 'Noto Sans TC', sans-serif; }
+.company-card .cc-modules { display: flex; gap: 6px; }
+.company-card .cc-mod {
+  font-size: 9px; font-weight: 700; padding: 3px 10px; border-radius: 4px; color: var(--white);
+}
+.cc1 { border-color: var(--learn); }
+.cc2 { border-color: var(--coach); }
+.cc3 { border-color: var(--boost); }
+.cc4 { border-color: var(--purple); }
+
+/* ===== BUSINESS MODEL ===== */
+.bm-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.bm-card {
+  background: var(--navy2);
+  border-radius: 12px;
+  padding: 24px;
+  border-top: 4px solid;
+  position: relative;
+}
+.bm-card .bm-pct {
+  position: absolute; top: 16px; right: 16px;
+  font-size: 28px; font-weight: 900; opacity: 0.3;
+}
+.bm-card .bm-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; font-family: 'Noto Sans TC', sans-serif; }
+.bm-card .bm-sub { font-size: 11px; margin-bottom: 12px; }
+.bm-card ul { list-style: none; }
+.bm-card ul li { font-size: 12px; color: var(--ice); padding: 3px 0; font-family: 'Noto Sans TC', sans-serif; }
+.bm-card ul li::before { content: '▸ '; opacity: 0.5; }
+.bm-card:nth-child(1) { border-color: var(--learn); }
+.bm-card:nth-child(1) .bm-sub, .bm-card:nth-child(1) .bm-pct { color: var(--learn); }
+.bm-card:nth-child(2) { border-color: var(--coach); }
+.bm-card:nth-child(2) .bm-sub, .bm-card:nth-child(2) .bm-pct { color: var(--coach); }
+.bm-card:nth-child(3) { border-color: var(--boost); }
+.bm-card:nth-child(3) .bm-sub, .bm-card:nth-child(3) .bm-pct { color: var(--boost); }
+
+/* ===== FINANCIALS ===== */
+.fin-row { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+.fin-table {
+  background: var(--navy2);
+  border-radius: 12px;
+  padding: 24px;
+  overflow: hidden;
+}
+.fin-table table { width: 100%; border-collapse: collapse; }
+.fin-table th {
+  text-align: left; font-size: 11px; color: var(--muted); font-weight: 600;
+  padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.fin-table td {
+  font-size: 14px; padding: 8px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-family: 'Noto Sans TC', sans-serif;
+}
+.fin-table tr.total td { font-weight: 700; border-top: 2px solid rgba(45,212,168,0.3); }
+.fin-kpi {
+  background: var(--navy2);
+  border-radius: 12px;
+  padding: 24px;
+}
+.fin-kpi .kpi-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.fin-kpi .kpi-label { font-size: 12px; color: var(--muted); font-family: 'Noto Sans TC', sans-serif; }
+.fin-kpi .kpi-val { font-size: 14px; font-weight: 700; }
+
+/* ===== ROADMAP ===== */
+.roadmap-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; position: relative; }
+.roadmap-row::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 5%; right: 5%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--learn), var(--teal), var(--boost), var(--coach));
+  border-radius: 2px;
+}
+.rm-card {
+  background: var(--navy2);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  border-top: 3px solid;
+}
+.rm-card .rm-period {
+  display: inline-block;
+  font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 4px;
+  color: var(--white); margin-bottom: 8px;
+}
+.rm-card .rm-name { font-size: 16px; font-weight: 700; margin-bottom: 10px; font-family: 'Noto Sans TC', sans-serif; }
+.rm-card ul { list-style: none; }
+.rm-card ul li { font-size: 11px; color: var(--ice); padding: 3px 0; font-family: 'Noto Sans TC', sans-serif; }
+.rm-card ul li::before { content: '▸ '; opacity: 0.5; }
+.rm-card:nth-child(1) { border-color: var(--learn); }
+.rm-card:nth-child(1) .rm-period { background: var(--learn); }
+.rm-card:nth-child(2) { border-color: var(--teal-dk); }
+.rm-card:nth-child(2) .rm-period { background: var(--teal-dk); }
+.rm-card:nth-child(3) { border-color: var(--boost); }
+.rm-card:nth-child(3) .rm-period { background: var(--boost); }
+.rm-card:nth-child(4) { border-color: var(--coach); }
+.rm-card:nth-child(4) .rm-period { background: var(--coach); }
+
+/* ROI bar */
+.roi-bar {
+  background: var(--navy3);
+  border-radius: 10px;
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 16px;
+}
+.roi-item { text-align: center; }
+.roi-item .roi-period { font-size: 14px; font-weight: 700; }
+.roi-item .roi-val { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* ===== TEAM ===== */
+.team-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.team-card {
+  background: var(--navy2);
+  border-radius: 12px;
+  padding: 24px;
+}
+.team-member {
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.team-member:last-child { border: none; }
+.team-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; color: var(--white); flex-shrink: 0;
+}
+.team-info .ti-name { font-size: 14px; font-weight: 700; }
+.team-info .ti-role { font-size: 11px; margin-top: 2px; }
+.team-info .ti-desc { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: 'Noto Sans TC', sans-serif; }
+
+.moat-card { background: var(--navy2); border-radius: 12px; padding: 24px; }
+.moat-item {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex; gap: 12px;
+}
+.moat-item:last-child { border: none; }
+.moat-bar { width: 4px; border-radius: 2px; flex-shrink: 0; }
+.moat-item .mi-title { font-size: 13px; font-weight: 700; font-family: 'Noto Sans TC', sans-serif; }
+.moat-item .mi-desc { font-size: 11px; color: var(--muted); margin-top: 3px; font-family: 'Noto Sans TC', sans-serif; }
+
+/* ===== CTA ===== */
+.cta-section {
+  background: linear-gradient(135deg, var(--teal-dk) 0%, var(--navy3) 100%);
+  border-radius: 16px;
+  padding: 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -20%;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(45,212,168,0.2) 0%, transparent 70%);
+}
+.cta-section h2 {
+  font-size: 36px; font-weight: 900; margin-bottom: 8px; position: relative;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+.cta-section h2 span { color: var(--teal); }
+.cta-section .cta-sub {
+  font-size: 16px; color: var(--mint); margin-bottom: 24px; position: relative;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+.cta-contact {
+  display: flex; justify-content: center; gap: 40px; position: relative;
+  flex-wrap: wrap;
+}
+.cta-contact .cc-item { text-align: center; }
+.cta-contact .cc-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.cta-contact .cc-val { font-size: 14px; font-weight: 600; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 11px;
+  color: var(--muted);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
+/* Stats bar */
+.stats-bar {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+}
+.stat-card {
+  background: var(--navy2);
+  border-radius: 10px;
+  padding: 20px 24px;
+  border-left: 4px solid;
+}
+.stat-card .sc-val { font-size: 32px; font-weight: 900; line-height: 1; }
+.stat-card .sc-label { font-size: 12px; color: var(--muted); margin-top: 4px; font-family: 'Noto Sans TC', sans-serif; }
+.stat-card:nth-child(1) { border-color: var(--teal); }
+.stat-card:nth-child(1) .sc-val { color: var(--teal); }
+.stat-card:nth-child(2) { border-color: var(--learn); }
+.stat-card:nth-child(2) .sc-val { color: var(--learn); }
+.stat-card:nth-child(3) { border-color: var(--boost); }
+.stat-card:nth-child(3) .sc-val { color: var(--boost); }
+.stat-card:nth-child(4) { border-color: var(--coach); }
+.stat-card:nth-child(4) .sc-val { color: var(--coach); }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <div class="header-top">
+    <div class="brand">
+      <h1>芯智驅 <span>XinDrive AI</span></h1>
+      <div class="tagline">
+        <em>不忘初心，AI倍增</em> &nbsp;|&nbsp; From IC Knowledge to Results — Powered by AI
+      </div>
+    </div>
+    <div class="header-badge">
+      <div class="year">2026</div>
+      <div class="sub">事業藍圖 Business Blueprint</div>
+    </div>
+  </div>
+  <div class="pillars">
+    <div class="pill learn"><div class="dot"></div>驅・知 XinDrive Learn</div>
+    <div class="pill coach"><div class="dot"></div>驅・伴 XinDrive Coach</div>
+    <div class="pill boost"><div class="dot"></div>驅・效 XinDrive Boost</div>
+  </div>
+</div>
+
+<!-- ===== BLUEPRINT ===== -->
+<div class="blueprint">
+
+  <!-- STATS -->
+  <div>
+    <div class="section-tag">MARKET OPPORTUNITY</div>
+    <div class="stats-bar">
+      <div class="stat-card"><div class="sc-val">$380B</div><div class="sc-label">全球企業培訓市場 (2028E)</div></div>
+      <div class="stat-card"><div class="sc-val">87%</div><div class="sc-label">企業面臨數位技能短缺</div></div>
+      <div class="stat-card"><div class="sc-val">250%</div><div class="sc-label">12 個月投資回報率</div></div>
+      <div class="stat-card"><div class="sc-val">10萬+</div><div class="sc-label">半導體人才缺口</div></div>
+    </div>
+  </div>
+
+  <!-- VISION & MISSION -->
+  <div>
+    <div class="section-tag">VISION & MISSION</div>
+    <div class="vision-row">
+      <div class="vision-box v">
+        <div class="label">願 景</div>
+        <p>成為亞太區 IC 通路與製造業「AI 驅動人才發展 + 業績管理」的首選 SaaS 平台</p>
+      </div>
+      <div class="vision-box m">
+        <div class="label">使 命</div>
+        <p>透過 LEAP 方法論 × OpenClaw AI 引擎 × 芯智驅三支柱，讓每一位員工都成為數位時代的超級戰力</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEAP FRAMEWORK -->
+  <div>
+    <div class="section-tag">INTEGRATED FRAMEWORK</div>
+    <div class="section-title">LEAP × 芯智驅：雙引擎發展模型</div>
+    <div class="leap-row">
+      <div class="leap-card">
+        <div class="letter">L</div>
+        <div class="en">Learn</div>
+        <div class="zh">學習診斷</div>
+        <ul><li>技能差距分析</li><li>職能矩陣建立</li><li>個人發展計畫</li></ul>
+      </div>
+      <div class="leap-card">
+        <div class="letter">E</div>
+        <div class="en">Engage</div>
+        <div class="zh">參與設計</div>
+        <ul><li>個人化學習路徑</li><li>互動式培訓課程</li><li>實戰演練模擬</li></ul>
+      </div>
+      <div class="leap-card">
+        <div class="letter">A</div>
+        <div class="en">Accelerate</div>
+        <div class="zh">加速培訓</div>
+        <ul><li>密集技能衝刺</li><li>AI 輔助學習</li><li>跨部門協作</li></ul>
+      </div>
+      <div class="leap-card">
+        <div class="letter">P</div>
+        <div class="en">Perform</div>
+        <div class="zh">績效驗證</div>
+        <ul><li>ROI 量化分析</li><li>能力認證考核</li><li>持續改善循環</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARCHITECTURE -->
+  <div class="arch-section">
+    <div class="section-tag">PLATFORM ARCHITECTURE</div>
+    <div class="section-title">多公司 SaaS 架構</div>
+    <div class="arch-grid">
+      <div class="super-admin-bar">
+        <div>
+          <div class="sa-title">集團管理控制台 &nbsp;Super Admin</div>
+        </div>
+        <div class="sa-desc">統一儀表板 · 跨公司報表 · 權限管理 · 計費管理</div>
+      </div>
+      <div class="company-row">
+        <div class="company-card cc1">
+          <div class="cc-head">
+            <div class="cc-name">公司 A</div>
+            <div class="cc-tag" style="background:var(--learn)">IC 通路商</div>
+          </div>
+          <div class="cc-info">員工 120 人 · 課程 15 門</div>
+          <div class="cc-modules">
+            <div class="cc-mod" style="background:var(--learn)">培訓</div>
+            <div class="cc-mod" style="background:var(--coach)">教練</div>
+            <div class="cc-mod" style="background:var(--boost)">CRM</div>
+          </div>
+        </div>
+        <div class="company-card cc2">
+          <div class="cc-head">
+            <div class="cc-name">公司 B</div>
+            <div class="cc-tag" style="background:var(--coach)">智慧物流</div>
+          </div>
+          <div class="cc-info">員工 80 人 · 課程 12 門</div>
+          <div class="cc-modules">
+            <div class="cc-mod" style="background:var(--learn)">培訓</div>
+            <div class="cc-mod" style="background:var(--coach)">教練</div>
+            <div class="cc-mod" style="background:var(--boost)">CRM</div>
+          </div>
+        </div>
+        <div class="company-card cc3">
+          <div class="cc-head">
+            <div class="cc-name">公司 C</div>
+            <div class="cc-tag" style="background:var(--boost)">製造業</div>
+          </div>
+          <div class="cc-info">員工 200 人 · 課程 18 門</div>
+          <div class="cc-modules">
+            <div class="cc-mod" style="background:var(--learn)">培訓</div>
+            <div class="cc-mod" style="background:var(--coach)">教練</div>
+            <div class="cc-mod" style="background:var(--boost)">CRM</div>
+          </div>
+        </div>
+        <div class="company-card cc4">
+          <div class="cc-head">
+            <div class="cc-name">公司 D</div>
+            <div class="cc-tag" style="background:var(--purple)">科技新創</div>
+          </div>
+          <div class="cc-info">員工 35 人 · 課程 8 門</div>
+          <div class="cc-modules">
+            <div class="cc-mod" style="background:var(--learn)">培訓</div>
+            <div class="cc-mod" style="background:var(--coach)">教練</div>
+            <div class="cc-mod" style="background:var(--boost)">CRM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUSINESS MODEL -->
+  <div>
+    <div class="section-tag">BUSINESS MODEL</div>
+    <div class="section-title">三重營收引擎</div>
+    <div class="bm-row">
+      <div class="bm-card">
+        <div class="bm-pct">40%</div>
+        <div class="bm-title">培訓授權</div>
+        <div class="bm-sub">驅・知 XinDrive Learn</div>
+        <ul><li>課程設計 × 授權費</li><li>企業培訓專案</li><li>每人每月 $15-30</li><li>定期內容更新</li></ul>
+      </div>
+      <div class="bm-card">
+        <div class="bm-pct">35%</div>
+        <div class="bm-title">陪跑教練</div>
+        <div class="bm-sub">驅・伴 XinDrive Coach</div>
+        <ul><li>1:1 / 團隊教練</li><li>AI Agent 月訂閱</li><li>績效導向計費</li><li>長期顧問合約</li></ul>
+      </div>
+      <div class="bm-card">
+        <div class="bm-pct">25%</div>
+        <div class="bm-title">平台訂閱</div>
+        <div class="bm-sub">驅・效 XinDrive Boost</div>
+        <ul><li>SaaS 月/年訂閱</li><li>按模組 × 人數計費</li><li>API / 整合加值</li><li>數據分析加值服務</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINANCIALS -->
+  <div>
+    <div class="section-tag">FINANCIAL PROJECTIONS</div>
+    <div class="section-title">三年財務預測</div>
+    <div class="fin-row">
+      <div class="fin-table">
+        <table>
+          <thead>
+            <tr><th>營收來源</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>培訓授權</td><td style="color:var(--learn)">$600K</td><td style="color:var(--learn)">$1.8M</td><td style="color:var(--learn)">$4.2M</td></tr>
+            <tr><td>陪跑教練</td><td style="color:var(--coach)">$420K</td><td style="color:var(--coach)">$1.2M</td><td style="color:var(--coach)">$3.0M</td></tr>
+            <tr><td>平台訂閱</td><td style="color:var(--boost)">$180K</td><td style="color:var(--boost)">$800K</td><td style="color:var(--boost)">$2.8M</td></tr>
+            <tr class="total"><td>總營收</td><td style="color:var(--teal)">$1.2M</td><td style="color:var(--teal)">$3.8M</td><td style="color:var(--teal)">$10M</td></tr>
+            <tr><td>毛利率</td><td>55%</td><td>65%</td><td>72%</td></tr>
+            <tr><td>淨利率</td><td style="color:var(--red)">-15%</td><td style="color:var(--coach)">18%</td><td style="color:var(--coach)">32%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fin-kpi">
+        <div style="font-size:14px;font-weight:700;margin-bottom:12px;font-family:'Noto Sans TC',sans-serif;">關鍵指標</div>
+        <div class="kpi-item"><span class="kpi-label">首年客戶</span><span class="kpi-val" style="color:var(--learn)">30 家</span></div>
+        <div class="kpi-item"><span class="kpi-label">Y3 客戶</span><span class="kpi-val" style="color:var(--teal)">200+ 家</span></div>
+        <div class="kpi-item"><span class="kpi-label">平均客單</span><span class="kpi-val" style="color:var(--boost)">$40K/年</span></div>
+        <div class="kpi-item"><span class="kpi-label">客戶 LTV</span><span class="kpi-val" style="color:var(--coach)">$180K</span></div>
+        <div class="kpi-item"><span class="kpi-label">LTV / CAC</span><span class="kpi-val" style="color:var(--teal)">22.5x</span></div>
+        <div class="kpi-item"><span class="kpi-label">Churn Rate</span><span class="kpi-val" style="color:var(--red)">&lt;5%</span></div>
+        <div class="kpi-item"><span class="kpi-label">NPS</span><span class="kpi-val" style="color:var(--purple)">70+</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROADMAP -->
+  <div>
+    <div class="section-tag">IMPLEMENTATION ROADMAP</div>
+    <div class="section-title">12 個月分階段實施路線圖</div>
+    <div class="roadmap-row">
+      <div class="rm-card">
+        <div class="rm-period">Week 1-2</div>
+        <div class="rm-name">啟動期</div>
+        <ul><li>需求訪談與職能盤點</li><li>技能診斷系統部署</li><li>多公司帳號建立</li><li>LEAP 框架導入</li></ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-period">Week 3-12</div>
+        <div class="rm-name">導入期</div>
+        <ul><li>首批培訓課程上線</li><li>OpenClaw 平台啟用</li><li>AI Agent 教練配對</li><li>驅・知模組上線</li></ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-period">Week 13-24</div>
+        <div class="rm-name">深化期</div>
+        <ul><li>進階課程 + 陪跑執行</li><li>CRM / Pipeline 整合</li><li>中期 ROI 評估</li><li>驅・伴 + 驅・效上線</li></ul>
+      </div>
+      <div class="rm-card">
+        <div class="rm-period">Week 25-52</div>
+        <div class="rm-name">成熟期</div>
+        <ul><li>技能躍昇計畫啟動</li><li>跨公司對標分析</li><li>持續優化循環</li><li>年度 ROI 結算</li></ul>
+      </div>
+    </div>
+    <div class="roi-bar">
+      <div class="roi-item"><div class="roi-period" style="color:var(--learn)">3M</div><div class="roi-val">+15% 效率</div></div>
+      <div class="roi-item"><div class="roi-period" style="color:var(--teal)">6M</div><div class="roi-val">+120% ROI</div></div>
+      <div class="roi-item"><div class="roi-period" style="color:var(--boost)">9M</div><div class="roi-val">+180% ROI</div></div>
+      <div class="roi-item"><div class="roi-period" style="color:var(--coach)">12M</div><div class="roi-val">+250% ROI</div></div>
+    </div>
+  </div>
+
+  <!-- TEAM & MOAT -->
+  <div>
+    <div class="section-tag">TEAM & COMPETITIVE ADVANTAGE</div>
+    <div class="section-title">核心團隊與競爭壁壘</div>
+    <div class="team-row">
+      <div class="team-card">
+        <div style="font-size:14px;font-weight:700;margin-bottom:12px;font-family:'Noto Sans TC',sans-serif;">核心團隊</div>
+        <div class="team-member">
+          <div class="team-avatar" style="background:var(--learn)">E</div>
+          <div class="team-info">
+            <div class="ti-name">Alvin</div>
+            <div class="ti-role" style="color:var(--learn)">創辦人 / CEO</div>
+            <div class="ti-desc">IC 產業 30 年 · AI 轉型專家 · OpenClaw 首席策略師</div>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="team-avatar" style="background:var(--teal-dk)">CT</div>
+          <div class="team-info">
+            <div class="ti-name">CTO</div>
+            <div class="ti-role" style="color:var(--teal)">技術長</div>
+            <div class="ti-desc">Full-stack × AI/ML · Supabase / SPA 架構師</div>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="team-avatar" style="background:var(--boost)">VP</div>
+          <div class="team-info">
+            <div class="ti-name">VP Sales</div>
+            <div class="ti-role" style="color:var(--boost)">業務副總</div>
+            <div class="ti-desc">IC 通路業務 20 年 · 客戶關係網絡</div>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="team-avatar" style="background:var(--purple)">AI</div>
+          <div class="team-info">
+            <div class="ti-name">Head of AI</div>
+            <div class="ti-role" style="color:var(--purple)">AI 研發主管</div>
+            <div class="ti-desc">NLP × 推薦系統 · OpenClaw 引擎開發</div>
+          </div>
+        </div>
+      </div>
+      <div class="moat-card">
+        <div style="font-size:14px;font-weight:700;margin-bottom:12px;font-family:'Noto Sans TC',sans-serif;">五大競爭壁壘</div>
+        <div class="moat-item">
+          <div class="moat-bar" style="background:var(--learn)"></div>
+          <div><div class="mi-title">產業知識壁壘</div><div class="mi-desc">30 年 IC 通路深耕，非通用 AI 可取代</div></div>
+        </div>
+        <div class="moat-item">
+          <div class="moat-bar" style="background:var(--teal)"></div>
+          <div><div class="mi-title">AI 技術壁壘</div><div class="mi-desc">OpenClaw 自研引擎：智能匹配 + 自適應學習飛輪</div></div>
+        </div>
+        <div class="moat-item">
+          <div class="moat-bar" style="background:var(--boost)"></div>
+          <div><div class="mi-title">網絡效應</div><div class="mi-desc">多公司匿名化最佳實踐共享，產業生態圈</div></div>
+        </div>
+        <div class="moat-item">
+          <div class="moat-bar" style="background:var(--coach)"></div>
+          <div><div class="mi-title">轉換成本</div><div class="mi-desc">深度整合企業 HR/CRM/ERP，數據遷移成本高</div></div>
+        </div>
+        <div class="moat-item">
+          <div class="moat-bar" style="background:var(--purple)"></div>
+          <div><div class="mi-title">先發優勢</div><div class="mi-desc">IC 通路培訓 + AI 平台市場空白，搶占心智</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>讓每位員工都成為<span>數位時代的超級戰力</span></h2>
+    <div class="cta-sub">技能躍昇 · 業績倍增 · 從今天開始</div>
+    <div class="cta-contact">
+      <div class="cc-item"><div class="cc-label">創辦人</div><div class="cc-val">Alvin</div></div>
+      <div class="cc-item"><div class="cc-label">Email</div><div class="cc-val">edwardko1688@gmail.com</div></div>
+      <div class="cc-item"><div class="cc-label">平台</div><div class="cc-val">芯智驅 XinDrive AI × OpenClaw</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  &copy; 2026 芯智驅 XinDrive AI — 不忘初心，AI倍增 &nbsp;|&nbsp; Alvin &nbsp;|&nbsp; All Rights Reserved
+</div>
+
+</body>
+</html>

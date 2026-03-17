@@ -207,13 +207,13 @@
         wrapper.innerHTML = `
             <div style="text-align:center; padding:120px 20px;">
                 <div style="font-size:64px; margin-bottom:24px;">📋</div>
-                <h2 style="color:#0a1628; margin-bottom:16px;">尚未完成診斷問卷</h2>
+                <h2 style="color:#212121; margin-bottom:16px; font-family:'Noto Serif TC',Georgia,serif;">尚未完成診斷問卷</h2>
                 <p style="color:#64748b; font-size:1.1rem; margin-bottom:32px; line-height:1.8;">
                     此報告頁面需要先完成 AI 智慧導入診斷問卷，<br>
                     系統將根據您的回答自動產出專屬診斷報告。
                 </p>
-                <div style="background:#f0fdf9; border:1px solid #00d4aa; border-radius:12px; padding:24px; max-width:500px; margin:0 auto 32px; text-align:left;">
-                    <h4 style="color:#0a1628; margin-bottom:12px;">報告將包含：</h4>
+                <div style="background:rgba(0,51,102,0.03); border:1px solid rgba(0,51,102,0.15); border-radius:4px; padding:24px; max-width:500px; margin:0 auto 32px; text-align:left;">
+                    <h4 style="color:#212121; margin-bottom:12px;">報告將包含：</h4>
                     <ul style="color:#475569; line-height:2; list-style:none; padding:0;">
                         <li>✅ 六大構面 AI 成熟度評分與雷達圖</li>
                         <li>✅ 依據產業特性的 AI 自動診斷分析</li>
@@ -299,14 +299,14 @@
             if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
         });
         ctx.closePath();
-        ctx.fillStyle = 'rgba(0, 212, 170, 0.15)'; ctx.fill();
-        ctx.strokeStyle = '#00d4aa'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = 'rgba(0, 51, 102, 0.12)'; ctx.fill();
+        ctx.strokeStyle = '#003366'; ctx.lineWidth = 2; ctx.stroke();
 
         // Points
         scores.forEach((d, i) => {
             const p = getPoint(i, d * r / 100);
             ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-            ctx.fillStyle = '#00d4aa'; ctx.fill();
+            ctx.fillStyle = '#003366'; ctx.fill();
             ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
         });
 
@@ -546,7 +546,7 @@
                 <h4>${s.title}</h4>
                 <div class="result-scenario-meta">
                     <span class="result-scenario-tag tag-difficulty-${s.difficulty === '低' ? 'low' : s.difficulty === '中' ? 'mid' : 'high'}">難度：${s.difficulty}</span>
-                    <span class="result-scenario-tag" style="background:var(--teal-dim);color:var(--teal)">時程：${s.timeline}</span>
+                    <span class="result-scenario-tag" style="background:rgba(0,51,102,0.06);color:var(--navy, #003366)">時程：${s.timeline}</span>
                 </div>
                 <p>${s.desc}</p>
                 <div class="result-scenario-kpi">預期 KPI：${s.kpi}</div>
