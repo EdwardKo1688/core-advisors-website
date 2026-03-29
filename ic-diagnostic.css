@@ -1384,6 +1384,30 @@ body:has(#viewResult.active) .icd-footer { display: none; }
     flex-wrap: wrap;
 }
 
+/* Back links */
+.icd-sidebar-back {
+    display: inline-block;
+    margin-bottom: 12px;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+.icd-sidebar-back:hover { opacity: 1; color: var(--navy); }
+
+.icd-result-back-link {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+.icd-result-back-link:hover { opacity: 1; color: var(--navy); }
+
 /* Toast */
 .icd-toast {
     position: fixed;

@@ -19,7 +19,7 @@
     <meta name="twitter:title"       content="IC 產業人才轉型診斷 | 核心顧問">
     <meta name="twitter:description" content="IC 通路商人才轉型診斷工具。三角色 × 五模型，免費線上診斷，約 15 分鐘取得成熟度報告。">
     <link rel="stylesheet" href="style.css?v=20260329">
-    <link rel="stylesheet" href="ic-diagnostic.css?v=20260329">
+    <link rel="stylesheet" href="ic-diagnostic.css?v=20260330">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&family=Noto+Serif+TC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -277,6 +277,7 @@
                     <!-- Populated by JS -->
                 </nav>
                 <div class="icd-sidebar-footer">
+                    <a href="javascript:void(0)" onclick="ICD.showView('intro')" class="icd-sidebar-back">&#8592; 返回介紹頁</a>
                     <p>有問題？</p>
                     <a href="booking.html">預約顧問諮詢</a>
                 </div>
@@ -629,6 +630,7 @@
                 <button class="btn btn-outline" onclick="ICD.copySummary()">複製診斷摘要</button>
                 <button class="btn btn-outline" onclick="ICD.restart()">重新診斷</button>
             </div>
+            <a href="javascript:void(0)" onclick="ICD.showView('intro')" class="icd-result-back-link">&#8592; 返回介紹頁</a>
         </div>
     </div>
 
