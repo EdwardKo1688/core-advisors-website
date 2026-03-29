@@ -1153,7 +1153,7 @@ ${rulesText}
             const prompt = buildDiagnosticPrompt(state.result);
             const res = await fetch(proxyUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({ prompt: prompt, max_tokens: 2000, action: 'analyze' })
             });
 
@@ -1225,7 +1225,7 @@ ${rulesText}
         try {
             const res = await fetch(proxyUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({
                     action: 'email',
                     email: email,
