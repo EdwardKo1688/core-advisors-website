@@ -1,0 +1,36 @@
+cilt-website/
+fusheng-consultant/
+
+# 個人文件與簡報
+*.pptx
+*.docx
+*.xlsx
+*.pdf
+*.DS_Store
+
+# 其他專案（獨立 repo）
+fusheng-platform/
+jaya-website-v2/
+xindrive-platform/
+deploy/
+deploy-trilogy/
+projecthub-frontend/
+
+# 開發工具
+.claude/
+openspec/
+docs/
+bluesheet.html
+bluesheet.css
+bluesheet.js
+lark-proxy-v2.js
+lark-webhook-proxy.js
+ikqtek-ai-strategy.html
+strategic-cooperation.html
+ic-training-assistant.html
+ic-training-assistant.jsx
+*.skill
+
+# 暫存
+_test_deploy.txt
+~$*
