@@ -4,6 +4,52 @@
 (function () {
     'use strict';
 
+    // Blue Sheet AI 診斷摘要隨行導流：接收 bs_ URL params
+    (function prefillBlueSheetSummary() {
+        const params = new URLSearchParams(window.location.search);
+        const scenario = params.get('bs_scenario');
+        const health = params.get('bs_health');
+        const flags = params.get('bs_flags');
+        if (scenario || health || flags) {
+            const msgEl = document.getElementById('bkMessage');
+            if (msgEl) {
+                const lines = ['【Blue Sheet AI 診斷摘要】'];
+                if (scenario) lines.push('情境：' + scenario);
+                if (health) lines.push('健康度：' + health);
+                if (flags) lines.push('紅旗：' + flags);
+                msgEl.value = lines.join('\n');
+            }
+        }
+    })();
+
+    // IC 產業人才轉型診斷隨行導流：接收 ic_ URL params
+    (function prefillICDiagnosticSummary() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('source') !== 'ic-diagnostic') return;
+
+        const scenario = params.get('ic_scenario');
+        const health   = params.get('ic_health');
+        const risks    = params.get('ic_risks');
+
+        // 帶入備註
+        const msgEl = document.getElementById('bkMessage');
+        if (msgEl) {
+            const roleLabels = { sales: 'Sales 業務開發', pm: 'PM 產品經理', fae: 'FAE 技術支援' };
+            const lines = ['【IC 人才轉型診斷摘要（自動帶入）】'];
+            if (scenario) lines.push('診斷角色：' + (roleLabels[scenario] || scenario));
+            if (health)   lines.push('成熟度等級：Level ' + health);
+            if (risks)    lines.push('主要風險：' + risks);
+            lines.push('（歡迎補充您的具體需求或想深入討論的面向）');
+            msgEl.value = lines.join('\n');
+        }
+
+        // 自動選取主題
+        const topicEl = document.getElementById('bkTopic');
+        if (topicEl) {
+            topicEl.value = 'IC 人才轉型顧問諮詢';
+        }
+    })();
+
     let currentYear, currentMonth;
     let selectedDate = null;
     let selectedSlot = null;

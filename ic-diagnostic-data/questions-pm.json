@@ -1,0 +1,274 @@
+[
+  {
+    "id": "P-REV-01",
+    "role": "pm",
+    "model": "revenue",
+    "category": "result",
+    "question_text": "過去一年，您負責的產品線營收目標達成率為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "120% 以上", "value": 5 },
+      { "label": "100%–119%", "value": 4 },
+      { "label": "80%–99%", "value": 3 },
+      { "label": "60%–79%", "value": 2 },
+      { "label": "60% 以下", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-REV-02",
+    "role": "pm",
+    "model": "revenue",
+    "category": "quality",
+    "question_text": "您的產品線營收來源多元性如何？（前三大客戶佔比）",
+    "answer_type": "single",
+    "options": [
+      { "label": "< 30%（健康分散）", "value": 5 },
+      { "label": "30%–49%", "value": 4 },
+      { "label": "50%–69%", "value": 3 },
+      { "label": "70%–84%", "value": 2 },
+      { "label": "85% 以上", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-REV-03",
+    "role": "pm",
+    "model": "revenue",
+    "category": "trend",
+    "question_text": "您負責的產品線近兩年營收趨勢為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "穩定成長 > 15%", "value": 5 },
+      { "label": "穩定成長 5%–15%", "value": 4 },
+      { "label": "持平", "value": 3 },
+      { "label": "微幅衰退", "value": 2 },
+      { "label": "明顯衰退", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-REV-04",
+    "role": "pm",
+    "model": "revenue",
+    "category": "synergy",
+    "question_text": "您與 Sales 在產品線推廣與客戶切入策略上的協同程度為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "密切協同，共同制定客戶攻略", "value": 5 },
+      { "label": "經常合作", "value": 4 },
+      { "label": "偶爾對齊", "value": 3 },
+      { "label": "很少溝通", "value": 2 },
+      { "label": "幾乎無協同", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-GP-01",
+    "role": "pm",
+    "model": "grossprofit",
+    "category": "result",
+    "question_text": "您負責的產品線整體毛利率為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "高於公司目標 5% 以上", "value": 5 },
+      { "label": "高於公司目標 1%–5%", "value": 4 },
+      { "label": "接近公司目標", "value": 3 },
+      { "label": "低於公司目標 1%–5%", "value": 2 },
+      { "label": "低於公司目標 5% 以上", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-GP-02",
+    "role": "pm",
+    "model": "grossprofit",
+    "category": "quality",
+    "question_text": "您是否建立了完整的產品定價與折扣管理機制？",
+    "answer_type": "single",
+    "options": [
+      { "label": "有完整定價策略與折扣審核流程", "value": 5 },
+      { "label": "有基本定價規則", "value": 4 },
+      { "label": "部分產品有規則", "value": 3 },
+      { "label": "主要靠經驗判斷", "value": 2 },
+      { "label": "無系統化管理", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-GP-03",
+    "role": "pm",
+    "model": "grossprofit",
+    "category": "trend",
+    "question_text": "近一年產品線毛利率趨勢為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "持續改善", "value": 5 },
+      { "label": "略有改善", "value": 4 },
+      { "label": "持平", "value": 3 },
+      { "label": "略有下滑", "value": 2 },
+      { "label": "明顯惡化", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-GP-04",
+    "role": "pm",
+    "model": "grossprofit",
+    "category": "synergy",
+    "question_text": "您與原廠在價格保護與成本管理上的協同程度為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "密切合作，有定期 review", "value": 5 },
+      { "label": "經常溝通", "value": 4 },
+      { "label": "偶爾討論", "value": 3 },
+      { "label": "很少互動", "value": 2 },
+      { "label": "幾乎無互動", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-EXP-01",
+    "role": "pm",
+    "model": "expense",
+    "category": "result",
+    "question_text": "您的產品線行銷與推廣費用相對營收的投入產出比為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "投入低，效果顯著", "value": 5 },
+      { "label": "投入合理，效果符合預期", "value": 4 },
+      { "label": "投入與效果大致持平", "value": 3 },
+      { "label": "投入偏高，效果不明顯", "value": 2 },
+      { "label": "投入高且無明顯效果", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-EXP-02",
+    "role": "pm",
+    "model": "expense",
+    "category": "quality",
+    "question_text": "您是否有 forecast accuracy（預測準確率）追蹤機制？",
+    "answer_type": "single",
+    "options": [
+      { "label": "有完整追蹤，準確率 > 85%", "value": 5 },
+      { "label": "有追蹤，準確率 70%–85%", "value": 4 },
+      { "label": "有基本追蹤，準確率 50%–70%", "value": 3 },
+      { "label": "偶爾追蹤", "value": 2 },
+      { "label": "無追蹤機制", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-EXP-03",
+    "role": "pm",
+    "model": "expense",
+    "category": "synergy",
+    "question_text": "您的庫存管理與 Sales 訂單預測的對齊程度為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "高度對齊，庫存週轉良好", "value": 5 },
+      { "label": "大致對齊", "value": 4 },
+      { "label": "偶有落差", "value": 3 },
+      { "label": "常有落差，庫存問題頻繁", "value": 2 },
+      { "label": "嚴重不對齊", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-CTB-01",
+    "role": "pm",
+    "model": "contribution",
+    "category": "result",
+    "question_text": "過去一年，您成功引入或推動的新產品線 / 新原廠合作數量為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "5 個以上", "value": 5 },
+      { "label": "3–4 個", "value": 4 },
+      { "label": "1–2 個", "value": 3 },
+      { "label": "有嘗試但未成功", "value": 2 },
+      { "label": "無", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-CTB-02",
+    "role": "pm",
+    "model": "contribution",
+    "category": "quality",
+    "question_text": "您與原廠的關係深度如何？（QBR、roadmap sharing、聯合推廣）",
+    "answer_type": "single",
+    "options": [
+      { "label": "策略夥伴級，有定期 QBR 與聯合計畫", "value": 5 },
+      { "label": "良好合作，有定期回顧", "value": 4 },
+      { "label": "一般業務往來", "value": 3 },
+      { "label": "較為被動", "value": 2 },
+      { "label": "幾乎只有下單關係", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-CTB-03",
+    "role": "pm",
+    "model": "contribution",
+    "category": "synergy",
+    "question_text": "您推動的 design-in 從評估到 design-win 的平均轉換率為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "> 60%", "value": 5 },
+      { "label": "40%–60%", "value": 4 },
+      { "label": "20%–39%", "value": 3 },
+      { "label": "10%–19%", "value": 2 },
+      { "label": "< 10%", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-CAP-01",
+    "role": "pm",
+    "model": "capability",
+    "category": "result",
+    "question_text": "您對負責產品線的技術 roadmap 與市場趨勢掌握程度為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "深入掌握，能預判市場變化", "value": 5 },
+      { "label": "了解主要趨勢", "value": 4 },
+      { "label": "了解基本方向", "value": 3 },
+      { "label": "僅了解現有產品", "value": 2 },
+      { "label": "不太了解", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-CAP-02",
+    "role": "pm",
+    "model": "capability",
+    "category": "quality",
+    "question_text": "您是否建立了結構化的產品線經營 dashboard 或追蹤機制？",
+    "answer_type": "single",
+    "options": [
+      { "label": "有完整 dashboard，定期更新", "value": 5 },
+      { "label": "有基本追蹤表", "value": 4 },
+      { "label": "有 Excel 記錄但不系統", "value": 3 },
+      { "label": "偶爾整理", "value": 2 },
+      { "label": "無追蹤機制", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "P-CAP-03",
+    "role": "pm",
+    "model": "capability",
+    "category": "synergy",
+    "question_text": "您與 Sales 和 FAE 之間的資訊同步頻率與品質為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "每週同步，資訊透明完整", "value": 5 },
+      { "label": "每兩週同步", "value": 4 },
+      { "label": "每月同步", "value": 3 },
+      { "label": "很少主動同步", "value": 2 },
+      { "label": "幾乎不同步", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  }
+]

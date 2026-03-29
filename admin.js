@@ -160,11 +160,22 @@
             document.getElementById('tab-' + tabId).classList.add('active');
 
             // Load tab data
-            if (tabId === 'dashboard') loadDashboard();
+            if (tabId === 'dashboard') { loadDashboard(); loadICDashboardStats(); }
             else if (tabId === 'records') loadRecords();
             else if (tabId === 'bookings') loadBookings();
             else if (tabId === 'cms') loadCms();
             else if (tabId === 'settings') loadSettings();
+            else if (tabId === 'ic-sessions') loadICSessions();
+            else if (tabId === 'ic-leads') loadICLeads();
+            else if (tabId === 'ic-uploads') loadICUploads();
+            else if (tabId === 'ic-questions') loadICQuestions();
+            else if (tabId === 'ic-weights') loadICWeights();
+            else if (tabId === 'ic-rules') loadICRules();
+            else if (tabId === 'ic-templates') loadICTemplates();
+            else if (tabId === 'ic-fieldmapping') loadICFieldMapping();
+            else if (tabId === 'ic-cases') loadICCases();
+            else if (tabId === 'ic-export') loadICExport();
+            else if (tabId === 'ic-permissions') { /* static content, no load needed */ }
 
             // Close mobile sidebar
             document.getElementById('adminSidebar').classList.remove('open');
@@ -621,5 +632,547 @@
         const d = new Date(dateStr);
         return d.getFullYear() + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + String(d.getDate()).padStart(2, '0');
     }
+
+    // ===== IC Diagnostic — Data Helpers =====
+    const IC_ROLE_LABELS = { sales: 'Sales', pm: 'PM', fae: 'FAE' };
+    const IC_MODEL_LABELS = {
+        revenue: '營收', grossprofit: '毛利', expense: '費效', contribution: '貢獻', capability: '能力協同'
+    };
+
+    /** 取得診斷 Session 清單（優先使用 ICDService.DataStore，fallback 至 localStorage 直讀） */
+    function getICSessionsFromStorage() {
+        if (typeof ICDService !== 'undefined') {
+            const sessions = ICDService.DataStore.getSessions();
+            if (sessions.length > 0) return sessions;
+            // 相容舊 icd_last_result 單筆寫入格式
+            const last = ICDService.DataStore.getLastSession();
+            return last ? [last] : [];
+        }
+        try {
+            const sessions = JSON.parse(localStorage.getItem('icd_sessions') || 'null');
+            if (sessions && sessions.length > 0) return sessions;
+            const last = localStorage.getItem('icd_last_result');
+            if (!last) return [];
+            return [JSON.parse(last)];
+        } catch (e) { return []; }
+    }
+
+    /** 取得留資名單（優先使用 ICDService.DataStore） */
+    function getICLeadsFromStorage() {
+        if (typeof ICDService !== 'undefined') {
+            return ICDService.DataStore.getLeads();
+        }
+        try {
+            return JSON.parse(localStorage.getItem('icd_leads') || '[]');
+        } catch (e) { return []; }
+    }
+
+    // ===== IC Dashboard Stats =====
+    function loadICDashboardStats() {
+        let stats;
+        if (typeof ICDService !== 'undefined') {
+            stats = ICDService.DataStore.getDashboardStats();
+        } else {
+            const sessions = getICSessionsFromStorage();
+            const leads    = getICLeadsFromStorage();
+            stats = {
+                totalSessions: sessions.length,
+                totalLeads   : leads.length,
+                avgScore     : sessions.length > 0
+                    ? Math.round(sessions.reduce((s, r) => s + (r.overallScore || 0), 0) / sessions.length)
+                    : 0,
+                highRisk: sessions.filter(s => (s.triggeredRules || []).some(r => r.severity === 'high')).length
+            };
+        }
+
+        const el = id => document.getElementById(id);
+        if (el('icStatSessions')) el('icStatSessions').textContent = stats.totalSessions;
+        if (el('icStatLeads'))    el('icStatLeads').textContent    = stats.totalLeads;
+        if (el('icStatAvg'))      el('icStatAvg').textContent      = stats.totalSessions ? stats.avgScore : '--';
+        if (el('icStatHighRisk')) el('icStatHighRisk').textContent = stats.highRisk;
+    }
+
+    // ===== IC Sessions Tab =====
+    function loadICSessions() {
+        const sessions = getICSessionsFromStorage();
+        const roleFilter = document.getElementById('icFilterRole')?.value || 'all';
+        const levelFilter = document.getElementById('icFilterLevel')?.value || 'all';
+        const search = (document.getElementById('icSearchInput')?.value || '').toLowerCase();
+
+        let data = sessions.filter(s => {
+            const matchRole = roleFilter === 'all' || s.role === roleFilter;
+            const matchLevel = levelFilter === 'all' || s.maturity?.level === levelFilter;
+            const matchSearch = !search ||
+                (s.info?.company || '').toLowerCase().includes(search) ||
+                (s.info?.name || '').toLowerCase().includes(search);
+            return matchRole && matchLevel && matchSearch;
+        });
+
+        const tbody = document.getElementById('icSessionsBody');
+        if (!tbody) return;
+
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="9" class="empty-state">尚無診斷紀錄（完成前台診斷後顯示）</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = data.map(s => {
+            const riskCount = (s.triggeredRules || []).length;
+            const riskBadge = riskCount > 0
+                ? `<span class="ic-risk-badge">${riskCount} 個風險</span>`
+                : '<span class="ic-ok-badge">無風險</span>';
+            return `<tr>
+                <td>${formatDate(s.timestamp)}</td>
+                <td><strong>${s.info?.company || '-'}</strong></td>
+                <td>${s.info?.name || '-'}</td>
+                <td><span class="ic-role-tag">${IC_ROLE_LABELS[s.role] || s.role}</span></td>
+                <td><strong>${s.overallScore || '-'}</strong></td>
+                <td><span class="ic-level-badge level-${s.maturity?.level || 'D'}">${s.maturity?.level ? 'Level ' + s.maturity.level : '-'}</span></td>
+                <td>${riskBadge}</td>
+                <td>${s.completeness || 0}%</td>
+                <td><button class="btn-action" onclick="window._viewICSession()">詳情</button></td>
+            </tr>`;
+        }).join('');
+    }
+
+    window._viewICSession = function () {
+        const sessions = getICSessionsFromStorage();
+        if (sessions.length === 0) return;
+        const s = sessions[0];
+        showICSessionModal(s);
+    };
+
+    function showICSessionModal(s) {
+        const modal = document.getElementById('icSessionModal');
+        const title = document.getElementById('icModalTitle');
+        const body = document.getElementById('icModalBody');
+        if (!modal || !body) return;
+
+        title.textContent = (s.info?.company || '未知公司') + ' — 診斷詳情';
+
+        const modelScores = s.modelScores || {};
+        const modelRows = Object.entries(IC_MODEL_LABELS).map(([key, label]) =>
+            `<div class="detail-item"><label>${label}</label><span>${modelScores[key]?.score ?? '-'}</span></div>`
+        ).join('');
+
+        const riskItems = (s.triggeredRules || []).map(r =>
+            `<li><strong>[${(r.severity || '').toUpperCase()}]</strong> ${r.flag || r.name}: ${r.insight || r.message || ''}</li>`
+        ).join('');
+
+        const actionItems = (s.topActions || []).map(a =>
+            `<li>[${a.priority}] ${a.text} <em>(${a.timeframe})</em></li>`
+        ).join('');
+
+        body.innerHTML = `
+            <div class="detail-grid">
+                <div class="detail-item"><label>公司</label><span>${s.info?.company || '-'}</span></div>
+                <div class="detail-item"><label>姓名</label><span>${s.info?.name || '-'}</span></div>
+                <div class="detail-item"><label>角色</label><span>${IC_ROLE_LABELS[s.role] || s.role}</span></div>
+                <div class="detail-item"><label>總分</label><span><strong>${s.overallScore}</strong></span></div>
+                <div class="detail-item"><label>成熟度</label><span>Level ${s.maturity?.level} — ${s.maturity?.label || ''}</span></div>
+                <div class="detail-item"><label>完備度</label><span>${s.completeness || 0}%</span></div>
+                <div class="detail-item"><label>診斷時間</label><span>${formatDate(s.timestamp)}</span></div>
+                <div class="detail-item"><label>公司規模</label><span>${s.info?.size || '-'}</span></div>
+            </div>
+            <h4 style="margin:16px 0 8px;font-family:var(--font-heading)">五模型分數</h4>
+            <div class="detail-grid">${modelRows}</div>
+            ${riskItems ? `<h4 style="margin:16px 0 8px;font-family:var(--font-heading)">風險紅旗</h4><ul class="ic-modal-list">${riskItems}</ul>` : ''}
+            ${actionItems ? `<h4 style="margin:16px 0 8px;font-family:var(--font-heading)">優先行動建議</h4><ul class="ic-modal-list">${actionItems}</ul>` : ''}
+        `;
+
+        modal.style.display = 'flex';
+    }
+
+    // Filters for sessions
+    document.getElementById('icSearchInput')?.addEventListener('input', () => loadICSessions());
+    document.getElementById('icFilterRole')?.addEventListener('change', () => loadICSessions());
+    document.getElementById('icFilterLevel')?.addEventListener('change', () => loadICSessions());
+
+    // Export sessions CSV
+    document.getElementById('btnExportSessions')?.addEventListener('click', () => {
+        const sessions = getICSessionsFromStorage();
+        const headers = ['日期', '公司', '姓名', '角色', '總分', '成熟度', '風險數', '完備度'];
+        const rows = sessions.map(s => [
+            formatDate(s.timestamp), s.info?.company, s.info?.name,
+            IC_ROLE_LABELS[s.role] || s.role, s.overallScore,
+            `Level ${s.maturity?.level}`, (s.triggeredRules || []).length, s.completeness + '%'
+        ].join(','));
+        downloadCSV('\uFEFF' + headers.join(',') + '\n' + rows.join('\n'), 'ic-sessions');
+    });
+
+    // ===== IC Leads Tab =====
+    function loadICLeads() {
+        const leads = getICLeadsFromStorage();
+        const search = (document.getElementById('leadSearchInput')?.value || '').toLowerCase();
+        const statusFilter = document.getElementById('leadFilterStatus')?.value || 'all';
+
+        let data = leads.filter(l => {
+            const matchStatus = statusFilter === 'all' || (l.status || 'new') === statusFilter;
+            const matchSearch = !search ||
+                (l.name || '').toLowerCase().includes(search) ||
+                (l.email || '').toLowerCase().includes(search);
+            return matchStatus && matchSearch;
+        });
+
+        const tbody = document.getElementById('icLeadsBody');
+        if (!tbody) return;
+
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="empty-state">尚無留資名單</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = data.map((l, i) => `<tr>
+            <td>${formatDate(l.timestamp)}</td>
+            <td>${l.name || '-'}</td>
+            <td>${l.email || '-'}</td>
+            <td>${l.phone || '-'}</td>
+            <td>${l.company || '-'}</td>
+            <td><span class="ic-role-tag">${IC_ROLE_LABELS[l.role] || l.role || '-'}</span></td>
+            <td>${l.maturity ? 'Level ' + l.maturity : '-'}</td>
+            <td>
+                <select class="status-select" onchange="window._updateLeadStatus(${i}, this.value)">
+                    <option value="new" ${(l.status||'new')==='new'?'selected':''}>新提交</option>
+                    <option value="contacted" ${l.status==='contacted'?'selected':''}>已聯繫</option>
+                    <option value="closed" ${l.status==='closed'?'selected':''}>已結案</option>
+                </select>
+            </td>
+        </tr>`).join('');
+    }
+
+    window._updateLeadStatus = function (index, status) {
+        const leads = getICLeadsFromStorage();
+        const lead  = leads[index];
+        if (!lead) return;
+
+        if (typeof ICDService !== 'undefined' && lead.id) {
+            // 使用 DataStore（依 id 更新）
+            ICDService.DataStore.updateLeadStatus(lead.id, status);
+        } else {
+            // fallback：依 index 直接修改 localStorage
+            lead.status = status;
+            try { localStorage.setItem('icd_leads', JSON.stringify(leads)); } catch (e) {}
+        }
+    };
+
+    document.getElementById('leadSearchInput')?.addEventListener('input', () => loadICLeads());
+    document.getElementById('leadFilterStatus')?.addEventListener('change', () => loadICLeads());
+
+    document.getElementById('btnExportLeads')?.addEventListener('click', () => {
+        const leads = getICLeadsFromStorage();
+        const headers = ['日期', '姓名', 'Email', '電話', '公司', '角色', '診斷等級', '狀態'];
+        const rows = leads.map(l => [
+            formatDate(l.timestamp), l.name, l.email, l.phone, l.company,
+            IC_ROLE_LABELS[l.role] || l.role, l.maturity ? 'Level ' + l.maturity : '-', l.status || 'new'
+        ].join(','));
+        downloadCSV('\uFEFF' + headers.join(',') + '\n' + rows.join('\n'), 'ic-leads');
+    });
+
+    // ===== IC Questions Tab =====
+    async function loadICQuestions() {
+        const roleFilter = document.getElementById('qFilterRole')?.value || 'all';
+        const modelFilter = document.getElementById('qFilterModel')?.value || 'all';
+        const tbody = document.getElementById('icQuestionsBody');
+        if (!tbody) return;
+
+        const roles = roleFilter === 'all' ? ['sales', 'pm', 'fae'] : [roleFilter];
+        let allQuestions = [];
+        for (const role of roles) {
+            try {
+                const res = await fetch(`ic-diagnostic-data/questions-${role}.json`);
+                const qs = await res.json();
+                allQuestions = allQuestions.concat(qs);
+            } catch (e) { /* skip */ }
+        }
+
+        if (modelFilter !== 'all') {
+            allQuestions = allQuestions.filter(q => q.model === modelFilter);
+        }
+
+        if (allQuestions.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="empty-state">無題目</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = allQuestions.map(q => `<tr>
+            <td><code style="font-size:0.75rem">${q.id}</code></td>
+            <td><span class="ic-role-tag">${IC_ROLE_LABELS[q.role] || q.role}</span></td>
+            <td>${IC_MODEL_LABELS[q.model] || q.model}</td>
+            <td>${q.category || '-'}</td>
+            <td style="max-width:280px;font-size:0.82rem">${q.question_text}</td>
+            <td>${q.answer_type || 'single'}</td>
+            <td>${q.required ? '是' : '否'}</td>
+            <td><span class="ic-status-badge ${q.active !== false ? 'ic-status-active' : 'ic-status-inactive'}">${q.active !== false ? '啟用' : '停用'}</span></td>
+        </tr>`).join('');
+    }
+
+    document.getElementById('qFilterRole')?.addEventListener('change', () => loadICQuestions());
+    document.getElementById('qFilterModel')?.addEventListener('change', () => loadICQuestions());
+
+    // ===== IC Weights Tab =====
+    async function loadICWeights() {
+        const container = document.getElementById('icWeightsContent');
+        if (!container) return;
+
+        let config;
+        try {
+            const res = await fetch('ic-diagnostic-data/scoring-config.json');
+            config = await res.json();
+        } catch (e) {
+            container.innerHTML = '<p class="empty-state">載入失敗</p>';
+            return;
+        }
+
+        const roles = ['sales', 'pm', 'fae'];
+        const roleLabels = { sales: 'Sales 業務開發', pm: 'PM 產品經理', fae: 'FAE 技術支援' };
+        const models = ['revenue', 'grossprofit', 'expense', 'contribution', 'capability'];
+        const modelFull = { revenue: '營收模型', grossprofit: '毛利模型', expense: '費效模型', contribution: '貢獻模型', capability: '能力與協同' };
+
+        let html = '<div class="ic-weights-grid">';
+        roles.forEach(role => {
+            const weights = config.roleWeights[role] || {};
+            html += `<div class="ic-weight-card">
+                <h4>${roleLabels[role]}</h4>
+                <table class="ic-weight-table">
+                    <thead><tr><th>模型</th><th>權重</th><th>佔比</th></tr></thead>
+                    <tbody>`;
+            models.forEach(m => {
+                const w = weights[m] || 0;
+                html += `<tr>
+                    <td>${modelFull[m]}</td>
+                    <td>${w}</td>
+                    <td>
+                        <div class="ic-weight-bar">
+                            <div class="ic-weight-bar-fill" style="width:${w * 100}%"></div>
+                        </div>
+                        ${Math.round(w * 100)}%
+                    </td>
+                </tr>`;
+            });
+            html += `</tbody></table>`;
+
+            const subW = config.subScoreWeights || {};
+            html += `<div class="ic-sub-weights">
+                <p style="font-size:0.78rem;color:var(--text-light);margin:8px 0 4px">子分數權重</p>
+                ${Object.entries(subW).map(([k, v]) => `<span class="ic-sub-w-tag">${k}: ${Math.round(v*100)}%</span>`).join('')}
+            </div>`;
+            html += '</div>';
+        });
+        html += '</div>';
+
+        // Maturity levels
+        html += `<h3 style="margin:24px 0 12px;font-family:var(--font-heading)">成熟度分級</h3>
+            <div class="ic-maturity-row">`;
+        (config.maturityLevels || []).forEach(l => {
+            html += `<div class="ic-maturity-item" style="border-left-color:${l.color}">
+                <strong style="color:${l.color}">Level ${l.level}</strong>
+                <span>${l.label}</span>
+                <small>${l.min}–${l.max} 分</small>
+            </div>`;
+        });
+        html += '</div>';
+
+        container.innerHTML = html;
+    }
+
+    // ===== IC Rules Tab =====
+    async function loadICRules() {
+        const container = document.getElementById('icRulesContent');
+        if (!container) return;
+
+        let rules;
+        try {
+            const res = await fetch('ic-diagnostic-data/diagnostic-rules.json');
+            const data = await res.json();
+            rules = data.rules || [];
+        } catch (e) {
+            container.innerHTML = '<p class="empty-state">載入失敗</p>';
+            return;
+        }
+
+        const sevColors = { high: '#dc2626', medium: '#d97706', low: '#0284c7' };
+
+        container.innerHTML = `<div class="records-table-wrap"><table class="records-table">
+            <thead><tr><th>ID</th><th>名稱</th><th>類別</th><th>適用角色</th><th>嚴重度</th><th>優先級</th><th>觸發條件數</th><th>行動數</th></tr></thead>
+            <tbody>
+            ${rules.map(r => `<tr>
+                <td><code style="font-size:0.75rem">${r.id}</code></td>
+                <td><strong>${r.name}</strong><br><small style="color:var(--text-light)">${r.flag || ''}</small></td>
+                <td>${r.category || '-'}</td>
+                <td>${(r.roleScope || []).map(s => `<span class="ic-role-tag">${IC_ROLE_LABELS[s] || s}</span>`).join(' ')}</td>
+                <td><span class="ic-sev-badge" style="color:${sevColors[r.severity] || '#666'}">${(r.severity || '').toUpperCase()}</span></td>
+                <td>P${r.priority || '-'}</td>
+                <td>${(r.condition?.checks || []).length}</td>
+                <td>${(r.actions || []).length}</td>
+            </tr>`).join('')}
+            </tbody>
+        </table></div>`;
+    }
+
+    // ===== IC Templates Tab =====
+    async function loadICTemplates() {
+        const tbody = document.getElementById('icTemplatesBody');
+        if (!tbody) return;
+
+        let templates;
+        try {
+            const res = await fetch('ic-diagnostic-data/upload-templates.json');
+            const data = await res.json();
+            templates = data.templates || [];
+        } catch (e) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">載入失敗</td></tr>';
+            return;
+        }
+
+        if (templates.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">無模板</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = templates.map(t => {
+            const reqFields = (t.required_fields || []).map(f => f.field || f).join(', ');
+            const optFields = (t.optional_fields || []).map(f => f.field || f);
+            const optDisplay = optFields.slice(0, 3).join(', ') + (optFields.length > 3 ? ` +${optFields.length - 3}` : '');
+            return `<tr>
+                <td><code style="font-size:0.75rem">${t.id}</code></td>
+                <td><strong>${t.name}</strong></td>
+                <td>${(t.role_scope || []).join(', ') || '全角色'}</td>
+                <td><small>${reqFields || '-'}</small></td>
+                <td><small style="color:var(--text-light)">${optDisplay || '-'}</small></td>
+                <td style="font-size:0.82rem">${t.description || '-'}</td>
+                <td><button class="btn-sm" onclick="downloadTemplateCSV('${t.id}')">下載 CSV</button></td>
+            </tr>`;
+        }).join('');
+    }
+
+    // ===== CSV Download Helper =====
+    function downloadCSV(csv, name) {
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = name + '-' + new Date().toISOString().slice(0, 10) + '.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // ===== Download Template CSV (12.4) =====
+    window.downloadTemplateCSV = async function(templateId) {
+        let templates;
+        try {
+            const res = await fetch('ic-diagnostic-data/upload-templates.json');
+            const data = await res.json();
+            templates = data.templates || [];
+        } catch (e) { alert('載入模板失敗'); return; }
+
+        const tpl = templates.find(t => t.id === templateId);
+        if (!tpl) { alert('找不到模板 ' + templateId); return; }
+
+        const allFields = [
+            ...(tpl.required_fields || []).map(f => ({ ...f, required: true })),
+            ...(tpl.optional_fields || []).map(f => ({ ...f, required: false }))
+        ];
+
+        const headers = allFields.map(f => f.label || f.field).join(',');
+        const comment = `# 模板: ${tpl.name} | 說明: ${tpl.description || ''}`;
+        const requiredRow = allFields.map(f => f.required ? '【必填】' : '（選填）').join(',');
+        const csvContent = '\uFEFF' + comment + '\n' + headers + '\n' + requiredRow + '\n';
+        downloadCSV(csvContent, 'template-' + tpl.id.toLowerCase());
+    };
+
+    // ===== IC Field Mapping Tab (12.5) =====
+    async function loadICFieldMapping() {
+        const tbody = document.getElementById('fieldMappingBody');
+        const filterTpl = document.getElementById('fmFilterTemplate');
+        const filterReq = document.getElementById('fmFilterRequired');
+        if (!tbody) return;
+
+        let templates;
+        try {
+            const res = await fetch('ic-diagnostic-data/upload-templates.json');
+            const data = await res.json();
+            templates = data.templates || [];
+        } catch (e) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">載入失敗</td></tr>';
+            return;
+        }
+
+        // Populate template filter
+        if (filterTpl && filterTpl.options.length === 1) {
+            templates.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.id;
+                opt.textContent = t.name;
+                filterTpl.appendChild(opt);
+            });
+        }
+
+        // Build flat field list
+        let allFields = [];
+        templates.forEach(tpl => {
+            (tpl.required_fields || []).forEach(f => {
+                allFields.push({ ...f, templateId: tpl.id, templateName: tpl.name, required: true });
+            });
+            (tpl.optional_fields || []).forEach(f => {
+                allFields.push({ ...f, templateId: tpl.id, templateName: tpl.name, required: false });
+            });
+        });
+
+        // Apply filters
+        const tplFilter = filterTpl?.value || 'all';
+        const reqFilter = filterReq?.value || 'all';
+        let filtered = allFields;
+        if (tplFilter !== 'all') filtered = filtered.filter(f => f.templateId === tplFilter);
+        if (reqFilter === 'required') filtered = filtered.filter(f => f.required);
+        if (reqFilter === 'optional') filtered = filtered.filter(f => !f.required);
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">無欄位資料</td></tr>';
+            return;
+        }
+
+        const validationLabels = {
+            non_empty: '非空值', positive_integer: '正整數', positive_number: '正數',
+            percentage: '百分比 (0-100)', year_range: '年份', in_list: '枚舉值', email: 'Email 格式', phone: '電話格式'
+        };
+
+        tbody.innerHTML = filtered.map(f => `<tr>
+            <td><code style="font-size:0.75rem">${f.field}</code></td>
+            <td>${f.label || '-'}</td>
+            <td><span class="ic-type-tag">${f.type || 'text'}</span></td>
+            <td><small>${validationLabels[f.validation] || f.validation || '-'}</small></td>
+            <td>${f.required ? '<span class="ic-status-badge ic-status-active">必填</span>' : '<span style="color:var(--text-light);font-size:0.78rem">選填</span>'}</td>
+            <td><small style="color:var(--text-light)">${f.templateName}</small></td>
+            <td><span class="p2-tag" style="font-size:0.7rem">Phase 2</span></td>
+        </tr>`).join('');
+    }
+
+    // Wire up field mapping filters
+    document.getElementById('fmFilterTemplate')?.addEventListener('change', () => loadICFieldMapping());
+    document.getElementById('fmFilterRequired')?.addEventListener('change', () => loadICFieldMapping());
+
+    // ===== IC Cases Tab (12.6) - Phase 2 Stub =====
+    function loadICCases() {
+        // Static preview content — no dynamic data in Phase 1
+        // The tab HTML already has the full design preview
+    }
+
+    // ===== IC Export Tab (12.7) - Phase 2 Stub =====
+    function loadICExport() {
+        // Static preview content — no dynamic data in Phase 1
+        // The tab HTML already has the full design preview
+    }
+
+    // IC tab loading is handled in the main navItems click handler above
+
+    // ===== IC Uploads (placeholder) =====
+    function loadICUploads() {
+        const tbody = document.getElementById('icUploadsBody');
+        if (!tbody) return;
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">尚無上傳紀錄（MVP 版本：上傳記錄於前台完成後顯示）</td></tr>';
+    }
+
+    // ===== Load IC stats on initial dashboard =====
+    loadICDashboardStats();
 
 })();

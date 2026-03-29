@@ -74,6 +74,56 @@
                         <span class="nav-icon">&#x1F4DD;</span>
                         <span class="nav-label">內容管理</span>
                     </button>
+                    <div class="admin-nav-divider">IC 診斷管理</div>
+                    <button class="admin-nav-item" data-tab="ic-sessions">
+                        <span class="nav-icon">&#x1F4C2;</span>
+                        <span class="nav-label">診斷紀錄</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="ic-leads">
+                        <span class="nav-icon">&#x1F464;</span>
+                        <span class="nav-label">留資名單</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="ic-uploads">
+                        <span class="nav-icon">&#x1F4E4;</span>
+                        <span class="nav-label">上傳資料</span>
+                    </button>
+                    <div class="admin-nav-divider">工具設定</div>
+                    <button class="admin-nav-item" data-tab="ic-questions">
+                        <span class="nav-icon">&#x2753;</span>
+                        <span class="nav-label">題庫管理</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="ic-weights">
+                        <span class="nav-icon">&#x2696;</span>
+                        <span class="nav-label">權重設定</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="ic-rules">
+                        <span class="nav-icon">&#x1F6A8;</span>
+                        <span class="nav-label">診斷規則</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="ic-templates">
+                        <span class="nav-icon">&#x1F4C4;</span>
+                        <span class="nav-label">上傳模板</span>
+                    </button>
+                    <button class="admin-nav-item" data-tab="ic-fieldmapping">
+                        <span class="nav-icon">&#x1F500;</span>
+                        <span class="nav-label">欄位映射</span>
+                    </button>
+                    <div class="admin-nav-divider">Phase 2 預覽</div>
+                    <button class="admin-nav-item admin-nav-item--p2" data-tab="ic-cases">
+                        <span class="nav-icon">&#x1F4C1;</span>
+                        <span class="nav-label">顧問案件</span>
+                        <span class="nav-p2-tag">P2</span>
+                    </button>
+                    <button class="admin-nav-item admin-nav-item--p2" data-tab="ic-export">
+                        <span class="nav-icon">&#x1F4CA;</span>
+                        <span class="nav-label">報告匯出</span>
+                        <span class="nav-p2-tag">P2</span>
+                    </button>
+                    <button class="admin-nav-item admin-nav-item--p2" data-tab="ic-permissions">
+                        <span class="nav-icon">&#x1F510;</span>
+                        <span class="nav-label">角色權限</span>
+                        <span class="nav-p2-tag">P2</span>
+                    </button>
                     <button class="admin-nav-item" data-tab="settings">
                         <span class="nav-icon">&#x2699;</span>
                         <span class="nav-label">設定</span>
@@ -103,6 +153,26 @@
                         <div class="stat-card">
                             <div class="stat-value" id="statBookings">--</div>
                             <div class="stat-label">待處理預約</div>
+                        </div>
+                    </div>
+                    <!-- IC Diagnostic Summary -->
+                    <h3 class="section-subtitle">IC 通路診斷摘要</h3>
+                    <div class="stats-grid ic-stats-grid">
+                        <div class="stat-card stat-card-sm">
+                            <div class="stat-value" id="icStatSessions">--</div>
+                            <div class="stat-label">IC 診斷總數</div>
+                        </div>
+                        <div class="stat-card stat-card-sm">
+                            <div class="stat-value" id="icStatLeads">--</div>
+                            <div class="stat-label">留資名單</div>
+                        </div>
+                        <div class="stat-card stat-card-sm">
+                            <div class="stat-value" id="icStatAvg">--</div>
+                            <div class="stat-label">平均診斷分數</div>
+                        </div>
+                        <div class="stat-card stat-card-sm">
+                            <div class="stat-value" id="icStatHighRisk">--</div>
+                            <div class="stat-label">高風險案件</div>
                         </div>
                     </div>
                     <div class="charts-grid">
@@ -236,6 +306,402 @@
                     </div>
                 </div>
 
+                <!-- Tab: IC Sessions -->
+                <div class="admin-tab" id="tab-ic-sessions">
+                    <div class="tab-header">
+                        <h2 class="tab-title">IC 診斷紀錄</h2>
+                        <button class="btn-export" id="btnExportSessions">匯出 CSV</button>
+                    </div>
+                    <div class="filter-bar">
+                        <input type="text" class="filter-search" id="icSearchInput" placeholder="搜尋公司、姓名...">
+                        <select class="filter-select" id="icFilterRole">
+                            <option value="all">所有角色</option>
+                            <option value="sales">Sales</option>
+                            <option value="pm">PM</option>
+                            <option value="fae">FAE</option>
+                        </select>
+                        <select class="filter-select" id="icFilterLevel">
+                            <option value="all">所有等級</option>
+                            <option value="A">Level A — 成熟領先</option>
+                            <option value="B">Level B — 穩定可優化</option>
+                            <option value="C">Level C — 轉型起步</option>
+                            <option value="D">Level D — 高風險待改善</option>
+                        </select>
+                    </div>
+                    <div class="records-table-wrap">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>日期</th>
+                                    <th>公司</th>
+                                    <th>姓名</th>
+                                    <th>角色</th>
+                                    <th>總分</th>
+                                    <th>等級</th>
+                                    <th>風險數</th>
+                                    <th>完備度</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="icSessionsBody">
+                                <tr><td colspan="9" class="empty-state">載入中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- IC Session Detail Modal -->
+                    <div class="modal-overlay" id="icSessionModal" style="display:none;">
+                        <div class="modal-content modal-content-lg">
+                            <div class="modal-header">
+                                <h3 id="icModalTitle">診斷詳情</h3>
+                                <button class="modal-close" onclick="document.getElementById('icSessionModal').style.display='none'">&times;</button>
+                            </div>
+                            <div class="modal-body" id="icModalBody"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: IC Leads -->
+                <div class="admin-tab" id="tab-ic-leads">
+                    <div class="tab-header">
+                        <h2 class="tab-title">留資名單</h2>
+                        <button class="btn-export" id="btnExportLeads">匯出 CSV</button>
+                    </div>
+                    <div class="filter-bar">
+                        <input type="text" class="filter-search" id="leadSearchInput" placeholder="搜尋姓名、Email...">
+                        <select class="filter-select" id="leadFilterStatus">
+                            <option value="all">所有狀態</option>
+                            <option value="new">新提交</option>
+                            <option value="contacted">已聯繫</option>
+                            <option value="closed">已結案</option>
+                        </select>
+                    </div>
+                    <div class="records-table-wrap">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>日期</th>
+                                    <th>姓名</th>
+                                    <th>Email</th>
+                                    <th>電話</th>
+                                    <th>公司</th>
+                                    <th>角色</th>
+                                    <th>診斷等級</th>
+                                    <th>狀態</th>
+                                </tr>
+                            </thead>
+                            <tbody id="icLeadsBody">
+                                <tr><td colspan="8" class="empty-state">載入中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab: IC Uploads -->
+                <div class="admin-tab" id="tab-ic-uploads">
+                    <h2 class="tab-title">上傳資料紀錄</h2>
+                    <div class="records-table-wrap">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>上傳時間</th>
+                                    <th>公司</th>
+                                    <th>角色</th>
+                                    <th>檔案名稱</th>
+                                    <th>狀態</th>
+                                    <th>完備度提升</th>
+                                </tr>
+                            </thead>
+                            <tbody id="icUploadsBody">
+                                <tr><td colspan="6" class="empty-state">尚無上傳紀錄</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab: IC Questions -->
+                <div class="admin-tab" id="tab-ic-questions">
+                    <div class="tab-header">
+                        <h2 class="tab-title">題庫管理</h2>
+                        <div class="tab-header-actions">
+                            <span class="tab-version-badge" id="questionsVersion">v1.0.0</span>
+                            <button class="btn-p2-hint" disabled title="Phase 2：新增/編輯題目">+ 新增題目 <span class="p2-tag">Phase 2</span></button>
+                        </div>
+                    </div>
+                    <p class="tab-desc">所有角色診斷題目（唯讀，Phase 2 開放編輯與版本管理）。</p>
+                    <div class="filter-bar">
+                        <select class="filter-select" id="qFilterRole">
+                            <option value="all">所有角色</option>
+                            <option value="sales">Sales</option>
+                            <option value="pm">PM</option>
+                            <option value="fae">FAE</option>
+                        </select>
+                        <select class="filter-select" id="qFilterModel">
+                            <option value="all">所有模型</option>
+                            <option value="revenue">營收模型</option>
+                            <option value="grossprofit">毛利模型</option>
+                            <option value="expense">費效模型</option>
+                            <option value="contribution">貢獻模型</option>
+                            <option value="capability">能力與協同</option>
+                        </select>
+                    </div>
+                    <div class="records-table-wrap">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>角色</th>
+                                    <th>模型</th>
+                                    <th>子分類</th>
+                                    <th>題目</th>
+                                    <th>題型</th>
+                                    <th>必填</th>
+                                    <th>狀態</th>
+                                </tr>
+                            </thead>
+                            <tbody id="icQuestionsBody">
+                                <tr><td colspan="8" class="empty-state">載入中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab: IC Weights -->
+                <div class="admin-tab" id="tab-ic-weights">
+                    <div class="tab-header">
+                        <h2 class="tab-title">角色權重設定</h2>
+                        <div class="tab-header-actions">
+                            <span class="tab-version-badge" id="weightsVersion">v1.0.0</span>
+                            <button class="btn-p2-hint" disabled title="Phase 2：直接編輯並儲存權重">儲存變更 <span class="p2-tag">Phase 2</span></button>
+                        </div>
+                    </div>
+                    <p class="tab-desc">各角色五模型評分權重（唯讀，Phase 2 開放線上調整）。若需修改，請直接編輯 <code>ic-diagnostic-data/scoring-config.json</code>。</p>
+                    <div id="icWeightsContent">
+                        <p class="empty-state">載入中...</p>
+                    </div>
+                </div>
+
+                <!-- Tab: IC Rules -->
+                <div class="admin-tab" id="tab-ic-rules">
+                    <div class="tab-header">
+                        <h2 class="tab-title">診斷規則</h2>
+                        <div class="tab-header-actions">
+                            <span class="tab-version-badge" id="rulesVersion">v1.0.0</span>
+                            <button class="btn-p2-hint" disabled title="Phase 2：新增/編輯診斷規則">+ 新增規則 <span class="p2-tag">Phase 2</span></button>
+                        </div>
+                    </div>
+                    <p class="tab-desc">智慧診斷規則引擎設定，依嚴重度與優先級排序（唯讀，Phase 2 開放 CRUD）。</p>
+                    <div id="icRulesContent">
+                        <p class="empty-state">載入中...</p>
+                    </div>
+                </div>
+
+                <!-- Tab: IC Templates -->
+                <div class="admin-tab" id="tab-ic-templates">
+                    <div class="tab-header">
+                        <h2 class="tab-title">上傳模板管理</h2>
+                        <div class="tab-header-actions">
+                            <span class="tab-version-badge" id="templatesVersion">v1.0.0</span>
+                            <button class="btn-p2-hint" disabled title="Phase 2：新增/編輯模板定義">+ 新增模板 <span class="p2-tag">Phase 2</span></button>
+                        </div>
+                    </div>
+                    <p class="tab-desc">標準資料上傳模板定義。點擊「下載 CSV」可取得空白模板供用戶填寫。</p>
+                    <div class="records-table-wrap">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>模板 ID</th>
+                                    <th>名稱</th>
+                                    <th>適用角色</th>
+                                    <th>必填欄位</th>
+                                    <th>選填欄位</th>
+                                    <th>說明</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="icTemplatesBody">
+                                <tr><td colspan="7" class="empty-state">載入中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab: IC Field Mapping (12.5) -->
+                <div class="admin-tab" id="tab-ic-fieldmapping">
+                    <div class="tab-header">
+                        <h2 class="tab-title">欄位映射管理</h2>
+                        <div class="tab-header-actions">
+                            <button class="btn-p2-hint" disabled title="Phase 2：新增自定義欄位別名">+ 新增別名 <span class="p2-tag">Phase 2</span></button>
+                        </div>
+                    </div>
+                    <p class="tab-desc">各上傳模板的欄位定義與驗證規則。Phase 2 開放後可新增中文別名，讓用戶使用自定義欄位名稱上傳。</p>
+                    <div class="filter-bar">
+                        <select class="filter-select" id="fmFilterTemplate">
+                            <option value="all">所有模板</option>
+                        </select>
+                        <select class="filter-select" id="fmFilterRequired">
+                            <option value="all">必填 + 選填</option>
+                            <option value="required">僅必填欄位</option>
+                            <option value="optional">僅選填欄位</option>
+                        </select>
+                    </div>
+                    <div class="records-table-wrap">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>欄位名稱 (英)</th>
+                                    <th>顯示標籤 (中)</th>
+                                    <th>類型</th>
+                                    <th>驗證規則</th>
+                                    <th>必填</th>
+                                    <th>所屬模板</th>
+                                    <th>可接受別名 <span class="p2-tag">Phase 2</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="fieldMappingBody">
+                                <tr><td colspan="7" class="empty-state">載入中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab: IC Cases (12.6) - Phase 2 Stub -->
+                <div class="admin-tab" id="tab-ic-cases">
+                    <div class="tab-header">
+                        <h2 class="tab-title">顧問案件列表 <span class="p2-badge-title">Phase 2</span></h2>
+                    </div>
+                    <p class="tab-desc">將 IC 診斷紀錄與顧問服務案件整合，追蹤從診斷到諮詢的完整漏斗。</p>
+                    <div class="p2-preview-box">
+                        <h3>&#x1F4CB; Phase 2 功能設計</h3>
+                        <div class="p2-feature-grid">
+                            <div class="p2-feature-card">
+                                <div class="p2-feature-icon">&#x1F195;</div>
+                                <strong>12.6.1 案件建立</strong>
+                                <p>從診斷紀錄或留資名單一鍵建立顧問案件，自動帶入診斷結果與風險標記。</p>
+                            </div>
+                            <div class="p2-feature-card">
+                                <div class="p2-feature-icon">&#x1F4CA;</div>
+                                <strong>12.6.2 漏斗追蹤</strong>
+                                <p>診斷完成 → 留資 → 預約確認 → 服務進行中 → 完案，全程可視化。</p>
+                            </div>
+                            <div class="p2-feature-card">
+                                <div class="p2-feature-icon">&#x1F4DD;</div>
+                                <strong>12.6.3 案件備注</strong>
+                                <p>每個案件可記錄顧問備注、行動清單完成度、下次跟進時間。</p>
+                            </div>
+                            <div class="p2-feature-card">
+                                <div class="p2-feature-icon">&#x1F4C8;</div>
+                                <strong>12.6.4 轉換率分析</strong>
+                                <p>診斷→留資→預約→成案轉換漏斗，協助優化諮詢轉化效率。</p>
+                            </div>
+                        </div>
+                        <div class="p2-schema-preview">
+                            <h4>資料結構設計</h4>
+                            <pre class="p2-code-block">{
+  "caseId"        : "CASE-2026-001",
+  "sessionId"     : "ICD-...",
+  "leadId"        : "LEAD-...",
+  "bookingId"     : "BK-...",
+  "status"        : "in_progress",  // new | contacted | booked | in_progress | closed
+  "maturityLevel" : "C",
+  "score"         : 62,
+  "topRisks"      : ["RULE-01", "RULE-03"],
+  "consultantNote": "...",
+  "nextFollowUp"  : "2026-04-15",
+  "createdAt"     : "2026-03-29T..."
+}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: IC Export (12.7) - Phase 2 Stub -->
+                <div class="admin-tab" id="tab-ic-export">
+                    <div class="tab-header">
+                        <h2 class="tab-title">報告匯出 <span class="p2-badge-title">Phase 2</span></h2>
+                    </div>
+                    <p class="tab-desc">將診斷結果匯出為格式化 PDF 或 Excel 報告，供顧問與客戶使用。</p>
+                    <div class="p2-preview-box">
+                        <h3>&#x1F4CA; Phase 2 功能設計</h3>
+                        <div class="p2-feature-grid">
+                            <div class="p2-feature-card">
+                                <div class="p2-feature-icon">&#x1F4C4;</div>
+                                <strong>12.7.1 PDF 診斷報告</strong>
+                                <p>含公司名稱、成熟度等級、雷達圖、Top-3 風險、Top-5 行動建議的完整診斷報告。</p>
+                            </div>
+                            <div class="p2-feature-card">
+                                <div class="p2-feature-icon">&#x1F4CA;</div>
+                                <strong>12.7.2 Excel 資料匯出</strong>
+                                <p>批次匯出所有 IC 診斷紀錄含各模型分數明細，支援後續資料分析。</p>
+                            </div>
+                            <div class="p2-feature-card">
+                                <div class="p2-feature-icon">&#x1F4C8;</div>
+                                <strong>12.7.3 管理儀表板報告</strong>
+                                <p>週期性（月/季）診斷統計報告，含角色分佈、平均分數、常見風險趨勢。</p>
+                            </div>
+                            <div class="p2-feature-card">
+                                <div class="p2-feature-icon">&#x1F4E7;</div>
+                                <strong>12.7.4 自動寄送</strong>
+                                <p>診斷完成後自動 Email 報告摘要給填答者（需 GAS SendMail 整合）。</p>
+                            </div>
+                        </div>
+                        <div class="p2-schema-preview">
+                            <h4>PDF 報告結構設計</h4>
+                            <pre class="p2-code-block">第 1 頁：封面（公司名、日期、角色、等級徽章）
+第 2 頁：成熟度概覽（雷達圖 + 五模型分數條）
+第 3 頁：Top-3 風險分析（詳細說明 + 觸發條件）
+第 4 頁：Top-5 行動建議（P1/P2/P3 + 建議時程）
+第 5 頁：附錄（評分方法說明、版本資訊）</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: IC Permissions (12.8) - Phase 2 Stub -->
+                <div class="admin-tab" id="tab-ic-permissions">
+                    <div class="tab-header">
+                        <h2 class="tab-title">角色權限設定 <span class="p2-badge-title">Phase 2</span></h2>
+                    </div>
+                    <p class="tab-desc">細分後台管理員權限，支援顧問、主管、系統管理員三層角色。</p>
+                    <div class="p2-preview-box">
+                        <h3>&#x1F510; Phase 2 角色權限設計 (12.8)</h3>
+                        <div class="records-table-wrap">
+                            <table class="records-table">
+                                <thead>
+                                    <tr>
+                                        <th>功能模組</th>
+                                        <th>系統管理員</th>
+                                        <th>資深顧問</th>
+                                        <th>顧問</th>
+                                        <th>檢視者</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>儀表板</td><td>&#x2705; 完整</td><td>&#x2705; 完整</td><td>&#x2705; 完整</td><td>&#x2705; 唯讀</td></tr>
+                                    <tr><td>診斷紀錄（AI/IC）</td><td>&#x2705; CRUD</td><td>&#x2705; 讀 + 備注</td><td>&#x2705; 唯讀</td><td>&#x274C;</td></tr>
+                                    <tr><td>留資名單</td><td>&#x2705; CRUD</td><td>&#x2705; 讀 + 狀態更新</td><td>&#x2705; 唯讀</td><td>&#x274C;</td></tr>
+                                    <tr><td>預約管理</td><td>&#x2705; CRUD</td><td>&#x2705; CRUD</td><td>&#x2705; 唯讀</td><td>&#x274C;</td></tr>
+                                    <tr><td>顧問案件</td><td>&#x2705; CRUD</td><td>&#x2705; 負責案件 CRUD</td><td>&#x2705; 唯讀</td><td>&#x274C;</td></tr>
+                                    <tr><td>題庫 / 權重 / 規則</td><td>&#x2705; CRUD</td><td>&#x274C;</td><td>&#x274C;</td><td>&#x274C;</td></tr>
+                                    <tr><td>模板 / 欄位映射</td><td>&#x2705; CRUD</td><td>&#x274C;</td><td>&#x274C;</td><td>&#x274C;</td></tr>
+                                    <tr><td>報告匯出</td><td>&#x2705; 所有</td><td>&#x2705; 負責案件</td><td>&#x274C;</td><td>&#x274C;</td></tr>
+                                    <tr><td>系統設定 / API</td><td>&#x2705; 完整</td><td>&#x274C;</td><td>&#x274C;</td><td>&#x274C;</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p2-schema-preview" style="margin-top:16px">
+                            <h4>實作方案設計</h4>
+                            <pre class="p2-code-block">// GAS API 加入 role 欄位
+{ token, role: "admin"|"senior_consultant"|"consultant"|"viewer" }
+
+// 前端 admin.js 依 role 控制 tab 可見性與按鈕啟用
+const ROLE_PERMISSIONS = {
+  admin:             ['all'],
+  senior_consultant: ['dashboard','records','bookings','cms','ic-sessions','ic-leads','ic-uploads','ic-cases','ic-export'],
+  consultant:        ['dashboard','records','bookings','ic-sessions'],
+  viewer:            ['dashboard']
+};</pre>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Tab: Settings -->
                 <div class="admin-tab" id="tab-settings">
                     <h2 class="tab-title">設定</h2>
@@ -269,6 +735,7 @@
     </div>
 
     <script src="api-config.js"></script>
+    <script src="ic-diagnostic-service.js?v=20260329"></script>
     <script src="admin.js"></script>
 </body>
 </html>

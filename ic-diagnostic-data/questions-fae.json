@@ -1,0 +1,258 @@
+[
+  {
+    "id": "F-REV-01",
+    "role": "fae",
+    "model": "revenue",
+    "category": "result",
+    "question_text": "過去一年，您支援的專案中成功轉為量產出貨的比例為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "> 60%", "value": 5 },
+      { "label": "40%–60%", "value": 4 },
+      { "label": "20%–39%", "value": 3 },
+      { "label": "10%–19%", "value": 2 },
+      { "label": "< 10%", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-REV-02",
+    "role": "fae",
+    "model": "revenue",
+    "category": "quality",
+    "question_text": "您支援的客戶中，高價值（營收前 20%）客戶佔您時間的比例為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "> 60%（集中支援高價值客戶）", "value": 5 },
+      { "label": "40%–60%", "value": 4 },
+      { "label": "20%–39%", "value": 3 },
+      { "label": "10%–19%", "value": 2 },
+      { "label": "< 10%（時間分散在低價值客戶）", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-REV-03",
+    "role": "fae",
+    "model": "revenue",
+    "category": "trend",
+    "question_text": "近一年，您支援的客戶 design-win 轉量產的速度趨勢為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "明顯加速", "value": 5 },
+      { "label": "略有加速", "value": 4 },
+      { "label": "持平", "value": 3 },
+      { "label": "略有放慢", "value": 2 },
+      { "label": "明顯放慢", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-REV-04",
+    "role": "fae",
+    "model": "revenue",
+    "category": "synergy",
+    "question_text": "您與 Sales 在客戶技術需求與商業機會上的協同程度為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "密切協同，技術支援直接帶動營收", "value": 5 },
+      { "label": "經常合作", "value": 4 },
+      { "label": "偶爾對齊", "value": 3 },
+      { "label": "很少溝通", "value": 2 },
+      { "label": "幾乎無協同", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-GP-01",
+    "role": "fae",
+    "model": "grossprofit",
+    "category": "result",
+    "question_text": "您推薦的技術方案是否傾向高毛利產品？",
+    "answer_type": "single",
+    "options": [
+      { "label": "主動推薦高毛利方案", "value": 5 },
+      { "label": "多數時候會考慮毛利", "value": 4 },
+      { "label": "主要看技術適配", "value": 3 },
+      { "label": "很少考慮毛利", "value": 2 },
+      { "label": "完全不考慮毛利", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-GP-02",
+    "role": "fae",
+    "model": "grossprofit",
+    "category": "quality",
+    "question_text": "您是否有能力透過技術差異化幫助公司爭取更好的售價？",
+    "answer_type": "single",
+    "options": [
+      { "label": "經常能透過技術優勢爭取溢價", "value": 5 },
+      { "label": "偶爾可以", "value": 4 },
+      { "label": "有意識但不常成功", "value": 3 },
+      { "label": "很少嘗試", "value": 2 },
+      { "label": "從未嘗試", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-GP-03",
+    "role": "fae",
+    "model": "grossprofit",
+    "category": "synergy",
+    "question_text": "您與 PM 在技術選型與毛利考量上的協同程度為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "密切對齊，技術方案兼顧毛利", "value": 5 },
+      { "label": "經常討論", "value": 4 },
+      { "label": "偶爾對齊", "value": 3 },
+      { "label": "很少溝通", "value": 2 },
+      { "label": "幾乎無互動", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-EXP-01",
+    "role": "fae",
+    "model": "expense",
+    "category": "result",
+    "question_text": "您的技術支援時間分配效率如何？（有效支援 vs 重複/低效支援）",
+    "answer_type": "single",
+    "options": [
+      { "label": "> 80% 為有效支援", "value": 5 },
+      { "label": "60%–80%", "value": 4 },
+      { "label": "40%–60%", "value": 3 },
+      { "label": "20%–40%", "value": 2 },
+      { "label": "< 20%", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-EXP-02",
+    "role": "fae",
+    "model": "expense",
+    "category": "quality",
+    "question_text": "您是否有系統性記錄技術支援活動與問題解決歷程？",
+    "answer_type": "single",
+    "options": [
+      { "label": "有完整記錄系統，可追溯查詢", "value": 5 },
+      { "label": "有基本記錄", "value": 4 },
+      { "label": "偶爾記錄", "value": 3 },
+      { "label": "很少記錄", "value": 2 },
+      { "label": "無記錄", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-CTB-01",
+    "role": "fae",
+    "model": "contribution",
+    "category": "result",
+    "question_text": "過去一年，您完成的 design-in 數量為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "20 個以上", "value": 5 },
+      { "label": "10–19 個", "value": 4 },
+      { "label": "5–9 個", "value": 3 },
+      { "label": "1–4 個", "value": 2 },
+      { "label": "0 個", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-CTB-02",
+    "role": "fae",
+    "model": "contribution",
+    "category": "result",
+    "question_text": "您的 design-in 轉 design-win 的比率為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "> 70%", "value": 5 },
+      { "label": "50%–70%", "value": 4 },
+      { "label": "30%–49%", "value": 3 },
+      { "label": "15%–29%", "value": 2 },
+      { "label": "< 15%", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-CTB-03",
+    "role": "fae",
+    "model": "contribution",
+    "category": "quality",
+    "question_text": "您解決客戶技術問題的平均回應時間為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "24 小時內", "value": 5 },
+      { "label": "1–3 個工作天", "value": 4 },
+      { "label": "3–5 個工作天", "value": 3 },
+      { "label": "1–2 週", "value": 2 },
+      { "label": "> 2 週", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-CTB-04",
+    "role": "fae",
+    "model": "contribution",
+    "category": "synergy",
+    "question_text": "您的技術成果（design-win、問題解決）是否被有效回饋至 Sales 與 PM？",
+    "answer_type": "single",
+    "options": [
+      { "label": "有系統化回饋機制", "value": 5 },
+      { "label": "經常回饋", "value": 4 },
+      { "label": "偶爾回饋", "value": 3 },
+      { "label": "很少回饋", "value": 2 },
+      { "label": "幾乎不回饋", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-CAP-01",
+    "role": "fae",
+    "model": "capability",
+    "category": "result",
+    "question_text": "您對負責產品的技術深度（電路設計、系統整合、除錯能力）為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "專家級，能獨立解決複雜系統問題", "value": 5 },
+      { "label": "進階，能處理多數技術問題", "value": 4 },
+      { "label": "中級，能處理常見問題", "value": 3 },
+      { "label": "初級，需要原廠支援", "value": 2 },
+      { "label": "入門，多數需要協助", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-CAP-02",
+    "role": "fae",
+    "model": "capability",
+    "category": "quality",
+    "question_text": "您是否具備跨產品線 / 跨平台的技術整合能力？",
+    "answer_type": "single",
+    "options": [
+      { "label": "能整合多產品線提出完整方案", "value": 5 },
+      { "label": "能整合 2-3 個產品線", "value": 4 },
+      { "label": "專注單一產品線", "value": 3 },
+      { "label": "僅熟悉部分產品", "value": 2 },
+      { "label": "技術面偏窄", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  },
+  {
+    "id": "F-CAP-03",
+    "role": "fae",
+    "model": "capability",
+    "category": "synergy",
+    "question_text": "您與 Sales 和 PM 之間的跨部門協同品質為？",
+    "answer_type": "single",
+    "options": [
+      { "label": "三方密切協同，形成客戶服務團隊", "value": 5 },
+      { "label": "經常合作", "value": 4 },
+      { "label": "有需要時才合作", "value": 3 },
+      { "label": "各做各的", "value": 2 },
+      { "label": "幾乎無協同，甚至有衝突", "value": 1 }
+    ],
+    "weight": 1, "required": true, "active": true
+  }
+]

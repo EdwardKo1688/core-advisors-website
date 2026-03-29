@@ -1,0 +1,175 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "description": "IC 產業人才轉型診斷 — 集中式評分設定",
+    "note": "所有權重為暫定值，可由後台管理介面調整。禁止在 JS 邏輯中硬編碼任何權重。"
+  },
+
+  "roleWeights": {
+    "sales": {
+      "revenue": 0.25,
+      "grossprofit": 0.25,
+      "expense": 0.10,
+      "contribution": 0.25,
+      "capability": 0.15
+    },
+    "pm": {
+      "revenue": 0.15,
+      "grossprofit": 0.25,
+      "expense": 0.15,
+      "contribution": 0.25,
+      "capability": 0.20
+    },
+    "fae": {
+      "revenue": 0.10,
+      "grossprofit": 0.15,
+      "expense": 0.10,
+      "contribution": 0.40,
+      "capability": 0.25
+    }
+  },
+
+  "subScoreWeights": {
+    "result": 0.40,
+    "quality": 0.25,
+    "trend": 0.15,
+    "synergy": 0.20
+  },
+
+  "maturityLevels": [
+    { "level": "A", "label": "成熟領先", "min": 85, "max": 100, "color": "#2e7d32", "description": "各項指標表現優異，具備持續優化與帶動同業標竿的能力。" },
+    { "level": "B", "label": "穩定可優化", "min": 70, "max": 84, "color": "#1565c0", "description": "基礎穩固，部分面向仍有提升空間，可聚焦重點改善。" },
+    { "level": "C", "label": "轉型起步", "min": 55, "max": 69, "color": "#e65100", "description": "已具備基本運作能力，但多項面向需系統性強化。" },
+    { "level": "D", "label": "高風險待改善", "min": 0, "max": 54, "color": "#c62828", "description": "多項核心指標偏弱，建議優先啟動改善計畫。" }
+  ],
+
+  "diagnosticRules": [
+    {
+      "id": "RULE-HIGH-REV-LOW-GP",
+      "name": "高營收低毛利",
+      "roleScope": ["sales", "pm"],
+      "condition": {
+        "type": "and",
+        "checks": [
+          { "model": "revenue", "category": "result", "operator": ">=", "threshold": 3.5 },
+          { "model": "grossprofit", "category": "result", "operator": "<=", "threshold": 2.5 }
+        ]
+      },
+      "severity": "high",
+      "message": "營收達成良好但毛利率偏低，存在價格與客戶結構風險。",
+      "suggestion": "建議檢視低毛利客戶佔比、定價策略與折扣管理機制，評估是否存在過度依賴低價搶單的模式。"
+    },
+    {
+      "id": "RULE-HIGH-SUPPORT-LOW-WIN",
+      "name": "高支援低轉換",
+      "roleScope": ["fae"],
+      "condition": {
+        "type": "and",
+        "checks": [
+          { "model": "expense", "category": "result", "operator": "<=", "threshold": 2.5 },
+          { "model": "contribution", "category": "result", "operator": "<=", "threshold": 2.5 }
+        ]
+      },
+      "severity": "high",
+      "message": "技術支援投入大但 design-win 轉換率低，支援資源配置效率不足。",
+      "suggestion": "建議重新檢視支援客戶優先順序，聚焦高價值、高轉換機率的專案，建立支援案件分級機制。"
+    },
+    {
+      "id": "RULE-FORECAST-WEAK",
+      "name": "預測品質偏弱",
+      "roleScope": ["pm"],
+      "condition": {
+        "type": "and",
+        "checks": [
+          { "model": "expense", "category": "quality", "operator": "<=", "threshold": 2.5 }
+        ]
+      },
+      "severity": "medium",
+      "message": "Forecast 預測準確率偏低，可能導致庫存管理與資源配置風險。",
+      "suggestion": "建議建立結構化的 forecast review 機制，與 Sales 定期對齊客戶需求變化，提升預測準確率。"
+    },
+    {
+      "id": "RULE-EXPENSE-NO-RESULT",
+      "name": "費用投入未形成成果",
+      "roleScope": ["sales", "pm"],
+      "condition": {
+        "type": "and",
+        "checks": [
+          { "model": "expense", "category": "result", "operator": "<=", "threshold": 2.0 },
+          { "model": "contribution", "category": "result", "operator": "<=", "threshold": 2.5 }
+        ]
+      },
+      "severity": "high",
+      "message": "經營費用投入偏高但商業貢獻不足，投入效率存在風險。",
+      "suggestion": "建議盤點費用投入結構，建立費用與成果的對應追蹤機制，優化資源分配。"
+    },
+    {
+      "id": "RULE-LOW-SYNERGY",
+      "name": "跨部門協同不足",
+      "roleScope": ["sales", "pm", "fae"],
+      "condition": {
+        "type": "and",
+        "checks": [
+          { "model": "capability", "category": "synergy", "operator": "<=", "threshold": 2.0 }
+        ]
+      },
+      "severity": "medium",
+      "message": "跨部門（Sales / PM / FAE）協同品質偏低，可能影響客戶服務與商機轉化。",
+      "suggestion": "建議建立定期三方同步機制（週會或雙週會），針對重點客戶建立聯合服務團隊。"
+    },
+    {
+      "id": "RULE-CAPABILITY-GAP",
+      "name": "角色能力缺口",
+      "roleScope": ["sales", "pm", "fae"],
+      "condition": {
+        "type": "and",
+        "checks": [
+          { "model": "capability", "category": "result", "operator": "<=", "threshold": 2.0 }
+        ]
+      },
+      "severity": "medium",
+      "message": "角色核心能力（技術深度、方法論、產品知識）存在明顯缺口。",
+      "suggestion": "建議規劃系統性培訓計畫，針對角色核心能力建立學習路徑與實戰演練機制。"
+    },
+    {
+      "id": "RULE-PIPELINE-WEAK",
+      "name": "商機管道不足",
+      "roleScope": ["sales"],
+      "condition": {
+        "type": "and",
+        "checks": [
+          { "model": "contribution", "category": "quality", "operator": "<=", "threshold": 2.0 }
+        ]
+      },
+      "severity": "high",
+      "message": "商機管道（pipeline / funnel）不足，過度依賴少數大案，營收可持續性風險高。",
+      "suggestion": "建議建立結構化的客戶開發機制，擴大商機來源，建立多階段管道管理。"
+    },
+    {
+      "id": "RULE-VENDOR-RELATION-WEAK",
+      "name": "原廠關係薄弱",
+      "roleScope": ["pm"],
+      "condition": {
+        "type": "and",
+        "checks": [
+          { "model": "contribution", "category": "quality", "operator": "<=", "threshold": 2.0 }
+        ]
+      },
+      "severity": "medium",
+      "message": "與原廠關係深度不足，可能影響價格保護、資源取得與策略合作。",
+      "suggestion": "建議主動規劃 QBR、聯合行銷與 roadmap sharing，提升原廠夥伴關係層級。"
+    }
+  ],
+
+  "dataCompletenessLabels": {
+    "basic": { "label": "基礎", "description": "僅依據問卷回答，建議補充資料以提升診斷精度。" },
+    "advanced": { "label": "進階", "description": "結合問卷與上傳資料，診斷精度較高。" },
+    "comprehensive": { "label": "完整", "description": "具備完整資料支撐，診斷結果可信度高。" }
+  },
+
+  "riskSortPriority": {
+    "high": 3,
+    "medium": 2,
+    "low": 1
+  }
+}

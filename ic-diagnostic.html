@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IC 產業人才轉型診斷 | 核心顧問有限公司</title>
+    <meta name="description" content="透過三角色五模型架構，快速診斷 IC 通路商人才經營成熟度，辨識轉型風險與優先改善方向。免費線上診斷，約 15 分鐘完成。">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://intelliconai.github.io/core-consultant/ic-diagnostic.html">
+    <!-- Open Graph -->
+    <meta property="og:type"        content="website">
+    <meta property="og:title"       content="IC 產業人才轉型診斷 | 核心顧問有限公司">
+    <meta property="og:description" content="透過三角色（Sales/PM/FAE）× 五模型架構，快速診斷 IC 通路商人才經營成熟度，辨識轉型風險與優先改善方向。免費線上診斷。">
+    <meta property="og:url"         content="https://intelliconai.github.io/core-consultant/ic-diagnostic.html">
+    <meta property="og:site_name"   content="核心顧問有限公司">
+    <meta property="og:locale"      content="zh_TW">
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary">
+    <meta name="twitter:title"       content="IC 產業人才轉型診斷 | 核心顧問">
+    <meta name="twitter:description" content="IC 通路商人才轉型診斷工具。三角色 × 五模型，免費線上診斷，約 15 分鐘取得成熟度報告。">
+    <link rel="stylesheet" href="style.css?v=20260329">
+    <link rel="stylesheet" href="ic-diagnostic.css?v=20260329">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&family=Noto+Serif+TC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- 導航列 -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">C</span>
+                <span class="logo-text">核心顧問</span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="開啟選單">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="services.html">顧問服務</a></li>
+                <li><a href="solutions.html">解決方案</a></li>
+                <li><a href="tools.html">工具方案</a></li>
+                <li><a href="navigator.html">AI 導入診斷</a></li>
+                <li><a href="bluesheet.html">商機診斷</a></li>
+                <li><a href="resources.html">資源觀點</a></li>
+                <li><a href="booking.html" class="btn btn-nav">預約諮詢</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ===================== -->
+    <!-- View 1: 工具介紹頁    -->
+    <!-- ===================== -->
+    <div id="viewIntro" class="icd-view active">
+        <!-- Hero -->
+        <section class="icd-hero">
+            <div class="container">
+                <div class="icd-hero-badge">
+                    <span class="badge-dot"></span>
+                    IC 通路產業專屬 · 免費線上診斷
+                </div>
+                <h1>IC 產業<br><span class="gradient-text">人才轉型診斷</span></h1>
+                <p class="icd-hero-desc">透過 <strong>三角色 × 五模型</strong> 架構，快速評估 IC 通路商的人才經營成熟度，辨識轉型風險與優先改善方向。</p>
+                <div class="icd-hero-actions">
+                    <button class="btn btn-primary" onclick="ICD.showView('start')">開始診斷 <span class="arrow">&rarr;</span></button>
+                    <a href="#icd-about" class="btn btn-outline">了解更多</a>
+                </div>
+                <div class="icd-hero-stats">
+                    <div class="icd-stat"><span class="icd-stat-num">3</span><span class="icd-stat-label">核心角色</span></div>
+                    <div class="icd-stat"><span class="icd-stat-num">5</span><span class="icd-stat-label">評估模型</span></div>
+                    <div class="icd-stat"><span class="icd-stat-num">~15</span><span class="icd-stat-label">分鐘完成</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 工具介紹 -->
+        <section class="icd-section" id="icd-about">
+            <div class="container">
+                <div class="icd-section-header">
+                    <span class="icd-badge">產品定位</span>
+                    <h2>為 IC 通路產業量身打造的診斷工具</h2>
+                    <p>聚焦 IC 通路商、半導體代理商、原廠通路組織與其主管團隊，結合問卷與資料分析，提供結構化診斷。</p>
+                </div>
+
+                <div class="icd-feature-grid">
+                    <div class="icd-feature-card">
+                        <div class="icd-feature-icon">S</div>
+                        <h3>適用對象</h3>
+                        <ul>
+                            <li>IC 通路商 / 半導體代理商</li>
+                            <li>原廠通路管理團隊</li>
+                            <li>Sales / PM / FAE 主管</li>
+                            <li>經營轉型負責人</li>
+                        </ul>
+                    </div>
+                    <div class="icd-feature-card">
+                        <div class="icd-feature-icon">M</div>
+                        <h3>診斷內容</h3>
+                        <ul>
+                            <li>營收達成與成長動能</li>
+                            <li>毛利品質與定價健康度</li>
+                            <li>費用投入與產出效率</li>
+                            <li>實際商業貢獻度</li>
+                            <li>角色能力與跨部門協同</li>
+                        </ul>
+                    </div>
+                    <div class="icd-feature-card">
+                        <div class="icd-feature-icon">R</div>
+                        <h3>產出報告</h3>
+                        <ul>
+                            <li>成熟度分級（A-D）</li>
+                            <li>五模型雷達圖</li>
+                            <li>風險紅旗標記</li>
+                            <li>優先行動建議</li>
+                            <li>顧問深化服務推薦</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 三角色 -->
+        <section class="icd-section icd-section-alt">
+            <div class="container">
+                <div class="icd-section-header">
+                    <span class="icd-badge">三角色</span>
+                    <h2>Sales · PM · FAE</h2>
+                    <p>IC 通路產業的三大核心職能，各自面臨不同挑戰與成長路徑。</p>
+                </div>
+                <div class="icd-role-grid">
+                    <div class="icd-role-card" data-role="sales">
+                        <div class="icd-role-tag">Sales</div>
+                        <h3>業務開發</h3>
+                        <p>客戶開發、客戶經營、專案取得、訂單與營收毛利達成</p>
+                        <div class="icd-role-focus">
+                            <span>營收 25%</span><span>毛利 25%</span><span>貢獻 25%</span>
+                        </div>
+                    </div>
+                    <div class="icd-role-card" data-role="pm">
+                        <div class="icd-role-tag">PM</div>
+                        <h3>產品經理</h3>
+                        <p>產品線經營、原廠關係管理、價格與策略管理、Forecast 管理</p>
+                        <div class="icd-role-focus">
+                            <span>毛利 25%</span><span>貢獻 25%</span><span>能力 20%</span>
+                        </div>
+                    </div>
+                    <div class="icd-role-card" data-role="fae">
+                        <div class="icd-role-tag">FAE</div>
+                        <h3>技術支援</h3>
+                        <p>技術支援、設計導入、問題排除、Design-win 技術貢獻</p>
+                        <div class="icd-role-focus">
+                            <span>貢獻 40%</span><span>能力 25%</span><span>毛利 15%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 五模型 -->
+        <section class="icd-section">
+            <div class="container">
+                <div class="icd-section-header">
+                    <span class="icd-badge">五模型</span>
+                    <h2>全方位評估架構</h2>
+                    <p>每個模型包含結果分、品質分、趨勢分與協同分四個子維度。</p>
+                </div>
+                <div class="icd-model-grid">
+                    <div class="icd-model-card">
+                        <div class="icd-model-num">01</div>
+                        <h4>營收模型</h4>
+                        <p>規模、成長與營收達成</p>
+                    </div>
+                    <div class="icd-model-card">
+                        <div class="icd-model-num">02</div>
+                        <h4>毛利模型</h4>
+                        <p>獲利品質與價格健康度</p>
+                    </div>
+                    <div class="icd-model-card">
+                        <div class="icd-model-num">03</div>
+                        <h4>費效模型</h4>
+                        <p>費用投入效率</p>
+                    </div>
+                    <div class="icd-model-card">
+                        <div class="icd-model-num">04</div>
+                        <h4>貢獻模型</h4>
+                        <p>實際商業貢獻</p>
+                    </div>
+                    <div class="icd-model-card">
+                        <div class="icd-model-num">05</div>
+                        <h4>能力與協同</h4>
+                        <p>角色能力成熟度與跨部門協同品質</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 成熟度說明 -->
+        <section class="icd-section icd-section-alt">
+            <div class="container">
+                <div class="icd-section-header">
+                    <span class="icd-badge">成熟度分級</span>
+                    <h2>四級成熟度評估</h2>
+                    <p>根據診斷結果，對應不同的經營建議與改善優先順序。</p>
+                </div>
+                <div class="icd-maturity-grid">
+                    <div class="icd-maturity-card" style="border-left-color: #2e7d32;">
+                        <div class="icd-maturity-level" style="color: #2e7d32;">A</div>
+                        <div class="icd-maturity-info">
+                            <h4>成熟領先 <span class="icd-maturity-range">85-100 分</span></h4>
+                            <p>各項指標表現優異，具備持續優化與帶動同業標竿的能力。</p>
+                        </div>
+                    </div>
+                    <div class="icd-maturity-card" style="border-left-color: #1565c0;">
+                        <div class="icd-maturity-level" style="color: #1565c0;">B</div>
+                        <div class="icd-maturity-info">
+                            <h4>穩定可優化 <span class="icd-maturity-range">70-84 分</span></h4>
+                            <p>基礎穩固，部分面向仍有提升空間，可聚焦重點改善。</p>
+                        </div>
+                    </div>
+                    <div class="icd-maturity-card" style="border-left-color: #e65100;">
+                        <div class="icd-maturity-level" style="color: #e65100;">C</div>
+                        <div class="icd-maturity-info">
+                            <h4>轉型起步 <span class="icd-maturity-range">55-69 分</span></h4>
+                            <p>已具備基本運作能力，但多項面向需系統性強化。</p>
+                        </div>
+                    </div>
+                    <div class="icd-maturity-card" style="border-left-color: #c62828;">
+                        <div class="icd-maturity-level" style="color: #c62828;">D</div>
+                        <div class="icd-maturity-info">
+                            <h4>高風險待改善 <span class="icd-maturity-range">0-54 分</span></h4>
+                            <p>多項核心指標偏弱，建議優先啟動改善計畫。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom CTA -->
+        <section class="icd-section icd-bottom-cta">
+            <div class="container">
+                <h2>立即開始您的診斷</h2>
+                <p>約 15 分鐘完成問卷，即刻獲得專屬診斷報告。</p>
+                <button class="btn btn-primary" onclick="ICD.showView('start')">開始診斷 <span class="arrow">&rarr;</span></button>
+            </div>
+        </section>
+    </div>
+
+    <!-- ===================== -->
+    <!-- View 2: 角色選擇+問卷  -->
+    <!-- ===================== -->
+    <div id="viewDiagnostic" class="icd-view">
+        <!-- Mobile Progress -->
+        <div class="icd-mobile-progress">
+            <a href="javascript:void(0)" onclick="ICD.showView('intro')" class="icd-mobile-back">C</a>
+            <div class="icd-mobile-bar">
+                <div class="icd-mobile-bar-fill" id="mobileBarFill"></div>
+            </div>
+            <span class="icd-mobile-text" id="mobileBarText">選擇角色</span>
+        </div>
+
+        <div class="icd-diag-wrapper">
+            <!-- Sidebar -->
+            <aside class="icd-sidebar">
+                <div class="icd-sidebar-header">
+                    <div class="icd-sidebar-logo">
+                        <span class="logo-icon">C</span>
+                        核心顧問
+                    </div>
+                    <div class="icd-sidebar-subtitle">IC 產業人才轉型診斷</div>
+                </div>
+                <div class="icd-sidebar-progress-bar">
+                    <div class="icd-sidebar-progress-fill" id="sidebarProgressFill"></div>
+                </div>
+                <div class="icd-sidebar-progress-text" id="sidebarProgressText">0 / 0 題</div>
+                <nav class="icd-sidebar-nav" id="sidebarNav">
+                    <!-- Populated by JS -->
+                </nav>
+                <div class="icd-sidebar-footer">
+                    <p>有問題？</p>
+                    <a href="booking.html">預約顧問諮詢</a>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="icd-diag-main" id="diagMain">
+                <!-- Step 0: 角色選擇 -->
+                <div class="icd-step active" data-step="role">
+                    <div class="icd-step-header">
+                        <span class="icd-badge">Step 1</span>
+                        <h2>選擇您的角色</h2>
+                        <p>請選擇最符合您目前職務的角色，診斷題目將依角色調整。</p>
+                    </div>
+                    <div class="icd-role-select-grid">
+                        <button class="icd-role-select-card" onclick="ICD.selectRole('sales', this)">
+                            <div class="icd-role-select-icon">S</div>
+                            <h3>Sales 業務開發</h3>
+                            <p>負責客戶開發、客戶經營、專案取得、營收與毛利達成</p>
+                            <span class="icd-role-select-tag">18 題</span>
+                        </button>
+                        <button class="icd-role-select-card" onclick="ICD.selectRole('pm', this)">
+                            <div class="icd-role-select-icon">P</div>
+                            <h3>PM 產品經理</h3>
+                            <p>負責產品線經營、原廠關係管理、價格策略、Forecast 管理</p>
+                            <span class="icd-role-select-tag">17 題</span>
+                        </button>
+                        <button class="icd-role-select-card" onclick="ICD.selectRole('fae', this)">
+                            <div class="icd-role-select-icon">F</div>
+                            <h3>FAE 技術支援</h3>
+                            <p>負責技術支援、設計導入、問題排除、Design-win 技術貢獻</p>
+                            <span class="icd-role-select-tag">16 題</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 1: 基本資料 -->
+                <div class="icd-step" data-step="info">
+                    <div class="icd-step-header">
+                        <span class="icd-badge">Step 2</span>
+                        <h2>基本資料</h2>
+                        <p>這些資料將用於生成您的專屬診斷報告。</p>
+                    </div>
+                    <div class="icd-form-grid">
+                        <div class="icd-field">
+                            <label class="icd-label">公司名稱 <span class="required">*</span></label>
+                            <input type="text" class="icd-input" id="infoCompany" placeholder="例：台灣某某科技" required>
+                        </div>
+                        <div class="icd-field">
+                            <label class="icd-label">您的姓名 <span class="required">*</span></label>
+                            <input type="text" class="icd-input" id="infoName" placeholder="例：王大明" required>
+                        </div>
+                        <div class="icd-field">
+                            <label class="icd-label">職稱</label>
+                            <input type="text" class="icd-input" id="infoTitle" placeholder="例：業務經理">
+                        </div>
+                        <div class="icd-field">
+                            <label class="icd-label">公司規模</label>
+                            <select class="icd-select" id="infoSize">
+                                <option value="">請選擇</option>
+                                <option value="1-50">1-50 人</option>
+                                <option value="51-200">51-200 人</option>
+                                <option value="201-500">201-500 人</option>
+                                <option value="501+">501 人以上</option>
+                            </select>
+                        </div>
+                        <div class="icd-field icd-field-full">
+                            <label class="icd-label">主要代理 / 經銷產品線</label>
+                            <input type="text" class="icd-input" id="infoProducts" placeholder="例：TI、NXP、Microchip">
+                        </div>
+                    </div>
+                    <div class="icd-step-actions">
+                        <button class="btn btn-outline btn-sm" onclick="ICD.prevStep()">上一步</button>
+                        <button class="btn btn-primary btn-sm" onclick="ICD.nextStep()">下一步 <span class="arrow">&rarr;</span></button>
+                    </div>
+                </div>
+
+                <!-- Step 2+: 問卷題組（由 JS 動態生成） -->
+                <div class="icd-step" data-step="questions">
+                    <div class="icd-step-header">
+                        <span class="icd-badge" id="questionGroupBadge">Step 3</span>
+                        <h2 id="questionGroupTitle">診斷問卷</h2>
+                        <p id="questionGroupDesc">請根據您的實際情況選擇最接近的選項。</p>
+                    </div>
+                    <div class="icd-questions" id="questionContainer">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="icd-step-actions">
+                        <button class="btn btn-outline btn-sm" onclick="ICD.prevStep()">上一步</button>
+                        <button class="btn btn-primary btn-sm" id="questionNextBtn" onclick="ICD.nextStep()">下一步 <span class="arrow">&rarr;</span></button>
+                    </div>
+                </div>
+
+                <!-- Step: 資料上傳（Mode B） -->
+                <div class="icd-step" data-step="upload">
+                    <div class="icd-step-header">
+                        <span class="icd-badge">選填</span>
+                        <h2>上傳補充資料</h2>
+                        <p>上傳 Excel / CSV 資料可提升診斷精度。此步驟為選填，可直接跳過。</p>
+                    </div>
+                    <div class="icd-upload-zone" id="uploadZone">
+                        <div class="icd-upload-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                        </div>
+                        <p class="icd-upload-text">拖拽檔案到此處，或 <button class="icd-upload-browse" onclick="document.getElementById('uploadFile').click()">瀏覽選擇</button></p>
+                        <p class="icd-upload-hint">支援 .xlsx, .csv（最大 5MB）</p>
+                        <input type="file" id="uploadFile" accept=".xlsx,.csv" style="display:none" onchange="ICD.handleUpload(this)">
+                    </div>
+                    <div class="icd-upload-status" id="uploadStatus" style="display:none;">
+                        <div class="icd-upload-file-info">
+                            <span class="icd-upload-file-name" id="uploadFileName"></span>
+                            <button class="icd-upload-remove" onclick="ICD.removeUpload()">移除</button>
+                        </div>
+                        <div class="icd-upload-progress">
+                            <div class="icd-upload-progress-fill" id="uploadProgressFill"></div>
+                        </div>
+                        <span class="icd-upload-msg" id="uploadMsg"></span>
+                    </div>
+                    <div class="icd-upload-templates">
+                        <h4>下載模板</h4>
+                        <p>根據您的角色下載對應的資料模板，填入後上傳。</p>
+                        <div class="icd-template-links" id="templateLinks">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    <div class="icd-step-actions">
+                        <button class="btn btn-outline btn-sm" onclick="ICD.prevStep()">上一步</button>
+                        <button class="btn btn-outline btn-sm" onclick="ICD.skipUpload()">跳過此步驟</button>
+                        <button class="btn btn-primary btn-sm" onclick="ICD.nextStep()">提交診斷 <span class="arrow">&rarr;</span></button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- ===================== -->
+    <!-- View 3: 診斷結果頁    -->
+    <!-- ===================== -->
+    <div id="viewResult" class="icd-view">
+        <div class="icd-result-wrapper">
+            <!-- 結果頭部 -->
+            <div class="icd-result-header">
+                <div class="icd-result-header-top">
+                    <div>
+                        <h1>IC 產業人才轉型診斷報告</h1>
+                        <p id="resultCompany">—</p>
+                    </div>
+                    <div class="icd-result-header-actions">
+                        <button class="btn btn-outline btn-sm" onclick="ICD.copySummary()">複製摘要</button>
+                    </div>
+                </div>
+                <div class="icd-result-meta">
+                    <div class="icd-result-meta-item">
+                        <span class="icd-result-meta-label">受診者</span>
+                        <span id="resultName">—</span>
+                    </div>
+                    <div class="icd-result-meta-item">
+                        <span class="icd-result-meta-label">角色</span>
+                        <span id="resultRole">—</span>
+                    </div>
+                    <div class="icd-result-meta-item">
+                        <span class="icd-result-meta-label">診斷日期</span>
+                        <span id="resultDate">—</span>
+                    </div>
+                    <div class="icd-result-meta-item">
+                        <span class="icd-result-meta-label">資料完備度</span>
+                        <span id="resultCompleteness">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 總分摘要 -->
+            <div class="icd-result-summary">
+                <div class="icd-result-score-card">
+                    <div class="icd-result-score-ring" id="scoreRing">
+                        <svg viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="52" fill="none" stroke="#e0e0e0" stroke-width="8"/>
+                            <circle cx="60" cy="60" r="52" fill="none" stroke-width="8" stroke-linecap="round"
+                                    id="scoreCircle"
+                                    stroke-dasharray="326.73"
+                                    stroke-dashoffset="326.73"
+                                    transform="rotate(-90 60 60)"/>
+                        </svg>
+                        <div class="icd-result-score-value" id="scoreValue">—</div>
+                    </div>
+                    <div class="icd-result-score-info">
+                        <div class="icd-result-maturity-badge" id="maturityBadge">—</div>
+                        <p id="maturityDesc">診斷計算中...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 五模型雷達圖 -->
+            <div class="icd-result-section">
+                <h3>五模型分析</h3>
+                <div class="icd-result-radar-wrap">
+                    <canvas id="radarChart" width="400" height="400"></canvas>
+                </div>
+                <div class="icd-result-model-scores" id="modelScores">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- 風險紅旗 -->
+            <div class="icd-result-section">
+                <h3>風險診斷</h3>
+                <div class="icd-result-risks" id="riskFlags">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- 行動建議 -->
+            <div class="icd-result-section">
+                <h3>優先行動建議</h3>
+                <div class="icd-result-actions" id="actionItems">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- 角色回饋 -->
+            <div class="icd-result-section">
+                <h3>角色回饋</h3>
+                <div class="icd-result-feedback" id="roleFeedback">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- 資料完備度 -->
+            <div class="icd-result-section" id="completenessSection">
+                <h3>資料完備度</h3>
+                <div class="icd-result-completeness" id="completenessDetail">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- 留資表單 -->
+            <div class="icd-result-section icd-result-lead-section">
+                <h3>取得完整報告與顧問建議</h3>
+                <p>留下聯絡資訊，我們的顧問團隊將與您聯繫，提供更深入的解讀與改善建議。</p>
+                <div class="icd-lead-form">
+                    <div class="icd-form-grid">
+                        <div class="icd-field">
+                            <label class="icd-label">姓名 <span class="required">*</span></label>
+                            <input type="text" class="icd-input" id="leadName">
+                        </div>
+                        <div class="icd-field">
+                            <label class="icd-label">Email <span class="required">*</span></label>
+                            <input type="email" class="icd-input" id="leadEmail" placeholder="name@company.com">
+                        </div>
+                        <div class="icd-field">
+                            <label class="icd-label">電話</label>
+                            <input type="tel" class="icd-input" id="leadPhone" placeholder="09xx-xxx-xxx">
+                        </div>
+                        <div class="icd-field">
+                            <label class="icd-label">公司名稱</label>
+                            <input type="text" class="icd-input" id="leadCompany">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="ICD.submitLead()">送出 <span class="arrow">&rarr;</span></button>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="icd-result-cta">
+                <a href="booking.html" class="btn btn-primary" id="ctaBooking">預約顧問諮詢 <span class="arrow">&rarr;</span></a>
+                <button class="btn btn-outline" onclick="ICD.copySummary()">複製診斷摘要</button>
+                <button class="btn btn-outline" onclick="ICD.restart()">重新診斷</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="icd-toast" id="icdToast"></div>
+
+    <!-- Footer (intro view only) -->
+    <footer class="icd-footer" id="icdFooter">
+        <div class="container">
+            <p>&copy; 2026 核心顧問有限公司 Core Consultant Ltd. 版權所有 | <a href="index.html" style="color:inherit;opacity:0.7">返回首頁</a> | <a href="booking.html" style="color:inherit;opacity:0.7">預約諮詢</a></p>
+        </div>
+    </footer>
+
+    <script src="api-config.js"></script>
+    <script src="cms-loader.js"></script>
+    <script src="ic-diagnostic-service.js?v=20260329"></script>
+    <script src="ic-diagnostic-analytics.js?v=20260329"></script>
+    <script src="ic-diagnostic.js?v=20260329"></script>
+    <script src="script.js"></script>
+</body>
+</html>
