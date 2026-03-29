@@ -20,9 +20,6 @@ projecthub-frontend/
 .claude/
 openspec/
 docs/
-bluesheet.html
-bluesheet.css
-bluesheet.js
 lark-proxy-v2.js
 lark-webhook-proxy.js
 ikqtek-ai-strategy.html
