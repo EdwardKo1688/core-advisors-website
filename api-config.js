@@ -21,5 +21,5 @@ var API_ENABLED = false;
 // 2. 在 Script Properties 設定 CLAUDE_API_KEY、ADMIN_EMAIL、SHEET_ID
 // 3. 複製 Deployment URL 貼到下方
 // 4. 將 AI_ENABLED 改為 true
-var AI_PROXY_URL = '';
-var AI_ENABLED = false;
+var AI_PROXY_URL = 'https://script.google.com/macros/s/AKfycbxd1CuGJwxpfPmeRRJ7ZIinsExYGgpTZC1PVPxNM_uR-g9g5s2OjtPhW5H6Q8RD2iaz/exec';
+var AI_ENABLED = true;
