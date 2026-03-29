@@ -14,3 +14,12 @@ var GAS_API_URL = 'YOUR_GOOGLE_APPS_SCRIPT_DEPLOYMENT_URL';
 
 // Set to true after configuring the URL above
 var API_ENABLED = false;
+
+// ── AI 智慧顧問分析設定 ──────────────────────────────────────
+// 步驟：
+// 1. 將 google-apps-script/gas-ai-proxy.gs 部署為 GAS Web App
+// 2. 在 Script Properties 設定 CLAUDE_API_KEY、ADMIN_EMAIL、SHEET_ID
+// 3. 複製 Deployment URL 貼到下方
+// 4. 將 AI_ENABLED 改為 true
+var AI_PROXY_URL = '';
+var AI_ENABLED = false;

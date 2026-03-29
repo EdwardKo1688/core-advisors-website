@@ -1457,3 +1457,381 @@ body:has(#viewResult.active) .icd-footer { display: none; }
     .icd-model-grid { grid-template-columns: 1fr; }
     .icd-result-model-scores { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   強化基本資料表單樣式
+   ============================================================ */
+.icd-form-section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--navy);
+    border-bottom: 2px solid var(--navy);
+    padding-bottom: 6px;
+    margin: 24px 0 16px;
+    opacity: 0.7;
+}
+
+.icd-label-hint {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #888;
+    margin-left: 4px;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.icd-textarea {
+    resize: vertical;
+    min-height: 72px;
+    font-family: inherit;
+    line-height: 1.6;
+}
+
+.icd-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 0;
+}
+
+.icd-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #444;
+    transition: border-color 0.2s, background 0.2s;
+    background: #fafafa;
+    user-select: none;
+}
+
+.icd-checkbox-item:hover {
+    border-color: var(--navy);
+    background: #f0f4ff;
+}
+
+.icd-checkbox-item input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--navy);
+    cursor: pointer;
+}
+
+.icd-checkbox-item:has(input:checked) {
+    border-color: var(--navy);
+    background: #e8eef8;
+    color: var(--navy);
+    font-weight: 500;
+}
+
+/* ============================================================
+   AI 智慧顧問分析面板
+   ============================================================ */
+.icd-ai-panel {
+    background: linear-gradient(135deg, #f0f4ff 0%, #fafbff 100%);
+    border: 1.5px solid #c5d3f0;
+    border-radius: 12px;
+    padding: 28px;
+}
+
+.icd-ai-panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.icd-ai-panel-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.icd-ai-icon-wrap {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.icd-ai-panel-title h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0 0 4px;
+}
+
+.icd-ai-subtitle {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0;
+}
+
+.icd-ai-generate-btn {
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--navy), #1a4080);
+    box-shadow: 0 4px 12px rgba(0,51,102,0.2);
+}
+
+.icd-ai-generate-btn:hover {
+    background: linear-gradient(135deg, #1a4080, #0d2a5a);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0,51,102,0.3);
+}
+
+/* Loading */
+.icd-ai-loading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e0e8ff;
+}
+
+.icd-ai-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid #e0e8ff;
+    border-top-color: var(--navy);
+    border-radius: 50%;
+    animation: icd-spin 0.8s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes icd-spin {
+    to { transform: rotate(360deg); }
+}
+
+.icd-ai-loading-text {
+    font-weight: 600;
+    color: var(--navy);
+    margin: 0 0 4px;
+    font-size: 0.95rem;
+}
+
+.icd-ai-loading-sub {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0;
+}
+
+/* AI Content */
+.icd-ai-content {
+    background: white;
+    border-radius: 8px;
+    padding: 28px 32px;
+    border: 1px solid #e0e8ff;
+    line-height: 1.8;
+    color: #2c3e50;
+    margin-bottom: 16px;
+    min-height: 60px;
+}
+
+.icd-ai-content .icd-ai-h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 24px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #e0e8ff;
+}
+
+.icd-ai-content .icd-ai-h3:first-child { margin-top: 0; }
+
+.icd-ai-content .icd-ai-p {
+    margin: 0 0 12px;
+    font-size: 0.92rem;
+}
+
+.icd-ai-content .icd-ai-list {
+    margin: 0 0 12px;
+    padding-left: 20px;
+}
+
+.icd-ai-content .icd-ai-list li {
+    font-size: 0.92rem;
+    margin-bottom: 6px;
+}
+
+.icd-ai-content strong {
+    color: var(--navy);
+    font-weight: 600;
+}
+
+/* Actions */
+.icd-ai-actions {
+    margin-top: 16px;
+}
+
+.icd-ai-email-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.icd-ai-email-input {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.88rem;
+}
+
+.icd-ai-btn-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Error */
+.icd-ai-error {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: #fff8f8;
+    border: 1px solid #ffcccc;
+    border-radius: 8px;
+    color: #c62828;
+    font-size: 0.88rem;
+}
+
+.icd-ai-error-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+.icd-ai-error p { margin: 0; flex: 1; }
+
+/* btn-ghost variant */
+.btn-ghost {
+    background: transparent;
+    border: 1.5px solid #ddd;
+    color: #666;
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-ghost:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+}
+
+/* ============================================================
+   PDF 列印樣式
+   ============================================================ */
+@media print {
+    /* 隱藏不需要的元素 */
+    .navbar,
+    .icd-hero,
+    .icd-section,
+    .icd-bottom-cta,
+    .icd-footer,
+    .icd-sidebar,
+    .icd-mobile-progress,
+    .icd-result-cta,
+    .icd-result-lead-section,
+    .icd-ai-generate-btn,
+    .icd-ai-actions,
+    .icd-ai-email-row,
+    .icd-ai-btn-row,
+    #completenessSection,
+    .btn,
+    script {
+        display: none !important;
+    }
+
+    /* 顯示結果頁 */
+    .icd-view { display: block !important; }
+    #viewIntro, #viewDiagnostic { display: none !important; }
+    #viewResult { display: block !important; }
+
+    /* 結果包裝 */
+    .icd-result-wrapper {
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* 標題 */
+    .icd-result-header {
+        border-bottom: 2px solid #003366;
+        padding-bottom: 16px;
+        margin-bottom: 24px;
+    }
+
+    .icd-result-header h1 {
+        font-size: 1.4rem !important;
+        color: #003366;
+    }
+
+    /* 各區塊 */
+    .icd-result-section {
+        page-break-inside: avoid;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 0;
+    }
+
+    /* AI 面板 - 顯示內容但隱藏按鈕 */
+    .icd-ai-panel {
+        background: #f8f9ff !important;
+        border: 1px solid #ccc !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .icd-ai-content {
+        box-shadow: none !important;
+    }
+
+    /* 雷達圖 */
+    canvas {
+        max-width: 300px !important;
+        max-height: 300px !important;
+    }
+
+    /* 頁面設定 */
+    @page {
+        margin: 15mm 20mm;
+        size: A4;
+    }
+
+    body { font-size: 11pt !important; }
+}
+
+/* Mobile: AI panel */
+@media (max-width: 768px) {
+    .icd-ai-panel-header {
+        flex-direction: column;
+    }
+
+    .icd-ai-generate-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .icd-ai-email-row {
+        flex-direction: column;
+    }
+
+    .icd-ai-btn-row {
+        flex-direction: column;
+    }
+
+    .icd-ai-btn-row .btn,
+    .icd-ai-btn-row .btn-ghost {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .icd-checkbox-group {
+        flex-direction: column;
+    }
+}

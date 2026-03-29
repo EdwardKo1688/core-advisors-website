@@ -394,12 +394,20 @@ const ICD = (() => {
             showToast('請填寫公司名稱與姓名');
             return false;
         }
+        // Collect customer types (checkboxes)
+        const customerTypeEls = document.querySelectorAll('#infoCustomerTypes input[type=checkbox]:checked');
+        const customerTypes = Array.from(customerTypeEls).map(el => el.value);
+
         state.info = {
             company: company,
             name: name,
             title: document.getElementById('infoTitle').value.trim(),
+            experience: document.getElementById('infoExperience')?.value || '',
             size: document.getElementById('infoSize').value,
-            products: document.getElementById('infoProducts').value.trim()
+            products: document.getElementById('infoProducts').value.trim(),
+            customerTypes: customerTypes,
+            challenge: document.getElementById('infoChallenge')?.value.trim() || '',
+            goal: document.getElementById('infoGoal')?.value.trim() || ''
         };
         return true;
     }
@@ -1002,6 +1010,261 @@ ${actions}
         showView('intro');
     }
 
+    // ============================================================
+    // AI 智慧顧問分析
+    // ============================================================
+
+    let _aiGeneratedText = ''; // Store for copy/email
+
+    function buildDiagnosticPrompt(r) {
+        const info = r.info || {};
+        const roleLabel = ROLE_LABELS[r.role] || r.role;
+        const ms = r.modelScores || {};
+
+        const modelSummary = [
+            `營收模型：${ms.revenue?.score ?? '—'}/100`,
+            `毛利模型：${ms.grossprofit?.score ?? '—'}/100`,
+            `費效模型：${ms.expense?.score ?? '—'}/100`,
+            `貢獻模型：${ms.contribution?.score ?? '—'}/100`,
+            `能力與協同：${ms.capability?.score ?? '—'}/100`
+        ].join('、');
+
+        const rulesText = (r.triggeredRules || []).length > 0
+            ? (r.triggeredRules || []).map(rule =>
+                `【${rule.severity === 'high' ? '高風險' : rule.severity === 'medium' ? '中風險' : '低風險'}】${rule.flag}：${rule.insight}`
+              ).join('\n')
+            : '無顯著風險規則觸發';
+
+        const customerTypesText = (info.customerTypes || []).join('、') || '未填寫';
+        const challengeText = info.challenge ? `\n- 最大挑戰：${info.challenge}` : '';
+        const goalText = info.goal ? `\n- 診斷目標：${info.goal}` : '';
+        const experienceText = info.experience ? `、${info.experience}年資` : '';
+
+        return `你是一位資深的 IC 通路商人才轉型顧問，擁有 20 年的半導體通路產業實戰經驗，曾輔導過台灣、中國、東南亞超過 50 家 IC 代理商完成組織轉型。
+
+【診斷對象】
+- 姓名：${info.name || '受診者'}${info.title ? '，' + info.title : ''}
+- 公司：${info.company || '受診公司'}（${info.size || '規模未填'}${experienceText}）
+- 角色：${roleLabel}
+- 主要代理品牌：${info.products || '未填寫'}
+- 主要客戶類型：${customerTypesText}${challengeText}${goalText}
+
+【診斷結果】
+- 總分：${r.overallScore}/100
+- 成熟度等級：Level ${r.maturity?.level} — ${r.maturity?.label}（${r.maturity?.description || ''}）
+- 資料完備度：${r.completeness}%
+- 五模型分析：${modelSummary}
+
+【風險診斷（觸發規則）】
+${rulesText}
+
+請以繁體中文、資深顧問的專業語氣，針對以上診斷數據提供以下四個面向的深度分析（請使用 Markdown 格式，## 為大標，**粗體** 強調重點）：
+
+## 一、執行長視角摘要
+（200字以內）以 CEO/董事長視角，點出這份診斷結果最核心的 2-3 個策略意涵。不要泛泛而談，要直指核心問題與競爭力缺口。
+
+## 二、三大轉型突破口
+列出三個最具潛力的改善方向，每個包含：突破口名稱、現況問題診斷（2句）、建議行動（2句）、預期效果（1句）。要非常具體，避免官話。
+
+## 三、90 天快贏行動計劃
+按月份列出 9 個具體、可立即執行的行動：
+**第一個月（立即啟動）**：3 個行動（附上具體做法）
+**第二個月（深化執行）**：3 個行動（附上具體做法）
+**第三個月（制度化固化）**：3 個行動（附上具體做法）
+
+## 四、IC 產業特有洞察
+（100字以內）結合 2025-2026 年半導體通路市場趨勢（如：原廠直銷壓力、AI 需求帶動的新商機、設計導入的重要性上升），給予這個職位/公司規模在當前市場環境下的特有建議。
+
+最後加上一段簡短的顧問鼓勵語（2-3句），讓受診者感受到被理解和被支持。`;
+    }
+
+    function renderMarkdown(text) {
+        if (!text) return '';
+        return text
+            // H2 headings
+            .replace(/^## (.+)$/gm, '<h3 class="icd-ai-h3">$1</h3>')
+            // Bold
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            // Bullet points
+            .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
+            // Wrap consecutive <li> in <ul>
+            .replace(/(<li>.*<\/li>\n?)+/gs, match => `<ul class="icd-ai-list">${match}</ul>`)
+            // Numbered list
+            .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+            // Paragraph breaks
+            .replace(/\n{2,}/g, '</p><p class="icd-ai-p">')
+            // Wrap in paragraph
+            .replace(/^(?!<[hul])(.+)$/gm, (m, p1) => p1.startsWith('<') ? m : `<p class="icd-ai-p">${m}</p>`)
+            // Clean up empty tags
+            .replace(/<p class="icd-ai-p"><\/p>/g, '');
+    }
+
+    function typewriterEffect(htmlContent, container, onDone) {
+        // Strip HTML, type plain text, then swap to HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = htmlContent;
+        const plainText = tempDiv.textContent || tempDiv.innerText || '';
+
+        let i = 0;
+        container.style.display = 'block';
+        container.innerHTML = '';
+
+        // Type character by character (fast mode: every 8ms)
+        const interval = setInterval(() => {
+            i += 3; // Advance 3 chars at a time for speed
+            if (i >= plainText.length) {
+                clearInterval(interval);
+                // Replace with formatted HTML
+                container.innerHTML = htmlContent;
+                if (onDone) onDone();
+            } else {
+                container.textContent = plainText.slice(0, i) + '▌';
+            }
+        }, 12);
+    }
+
+    async function generateAIAnalysis() {
+        const proxyUrl = (typeof AI_PROXY_URL !== 'undefined') ? AI_PROXY_URL : '';
+        const aiEnabled = (typeof AI_ENABLED !== 'undefined') ? AI_ENABLED : false;
+
+        if (!aiEnabled || !proxyUrl) {
+            showAIError('AI 分析功能尚未啟用。請聯繫管理員設定 AI 服務。');
+            return;
+        }
+
+        if (!state.result) {
+            showAIError('找不到診斷結果，請重新完成診斷。');
+            return;
+        }
+
+        // UI: loading state
+        document.getElementById('aiGenerateBtn').style.display = 'none';
+        document.getElementById('aiLoading').style.display = 'flex';
+        document.getElementById('aiContent').style.display = 'none';
+        document.getElementById('aiActions').style.display = 'none';
+        document.getElementById('aiError').style.display = 'none';
+
+        // Track
+        if (typeof ICDAnalytics !== 'undefined') {
+            ICDAnalytics.trackAIGenerate(state.selectedRole, state.result?.maturity?.level, 'start');
+        }
+
+        try {
+            const prompt = buildDiagnosticPrompt(state.result);
+            const res = await fetch(proxyUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: prompt, max_tokens: 2000, action: 'analyze' })
+            });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error || 'AI 服務錯誤');
+
+            _aiGeneratedText = data.content;
+            const html = renderMarkdown(data.content);
+
+            document.getElementById('aiLoading').style.display = 'none';
+            const contentEl = document.getElementById('aiContent');
+
+            typewriterEffect(html, contentEl, () => {
+                document.getElementById('aiActions').style.display = 'block';
+                // Track success
+                if (typeof ICDAnalytics !== 'undefined') {
+                    ICDAnalytics.trackAIGenerate(state.selectedRole, state.result?.maturity?.level, 'success');
+                }
+            });
+
+        } catch (err) {
+            console.error('AI analysis error:', err);
+            document.getElementById('aiLoading').style.display = 'none';
+            showAIError('AI 分析失敗：' + (err.message || '請稍後重試'));
+            if (typeof ICDAnalytics !== 'undefined') {
+                ICDAnalytics.trackAIGenerate(state.selectedRole, state.result?.maturity?.level, 'error');
+            }
+        }
+    }
+
+    function showAIError(msg) {
+        document.getElementById('aiError').style.display = 'flex';
+        document.getElementById('aiErrorMsg').textContent = msg;
+        document.getElementById('aiGenerateBtn').style.display = 'inline-flex';
+        document.getElementById('aiLoading').style.display = 'none';
+    }
+
+    function regenerateAI() {
+        document.getElementById('aiContent').style.display = 'none';
+        document.getElementById('aiActions').style.display = 'none';
+        document.getElementById('aiGenerateBtn').style.display = 'inline-flex';
+        _aiGeneratedText = '';
+        generateAIAnalysis();
+    }
+
+    function copyAIAnalysis() {
+        const text = _aiGeneratedText || document.getElementById('aiContent')?.textContent || '';
+        if (!text) { showToast('尚未生成 AI 分析'); return; }
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('AI 分析已複製到剪貼簿');
+        }).catch(() => showToast('複製失敗，請手動選取文字複製'));
+    }
+
+    async function sendAIReport() {
+        const email = document.getElementById('aiEmailInput')?.value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showToast('請輸入有效的 Email 地址');
+            return;
+        }
+
+        const proxyUrl = (typeof AI_PROXY_URL !== 'undefined') ? AI_PROXY_URL : '';
+        if (!proxyUrl) { showToast('Email 功能尚未設定'); return; }
+
+        const r = state.result;
+        const btn = document.querySelector('.icd-ai-email-row .btn');
+        if (btn) { btn.disabled = true; btn.textContent = '發送中...'; }
+
+        try {
+            const res = await fetch(proxyUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'email',
+                    email: email,
+                    name: r?.info?.name || '',
+                    company: r?.info?.company || '',
+                    role: ROLE_LABELS[r?.role] || r?.role,
+                    score: r?.overallScore,
+                    level: r?.maturity?.level,
+                    aiContent: _aiGeneratedText
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                showToast('AI 分析報告已發送到您的信箱！');
+                if (btn) { btn.textContent = '✓ 已發送'; }
+                if (typeof ICDAnalytics !== 'undefined') {
+                    ICDAnalytics.trackEmailSend(r?.role, r?.maturity?.level);
+                }
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (err) {
+            showToast('Email 發送失敗：' + (err.message || '請稍後重試'));
+            if (btn) { btn.disabled = false; btn.textContent = '📧 Email 此報告'; }
+        }
+    }
+
+    function downloadPDF() {
+        if (typeof ICDAnalytics !== 'undefined' && state.result) {
+            ICDAnalytics.trackPDFDownload(state.selectedRole, state.result?.maturity?.level);
+        }
+        // Add print class to show PDF-optimized layout
+        document.body.classList.add('icd-print-mode');
+        setTimeout(() => {
+            window.print();
+            setTimeout(() => document.body.classList.remove('icd-print-mode'), 1000);
+        }, 100);
+    }
+
     // --- Toast ---
     function showToast(msg) {
         const toast = document.getElementById('icdToast');
@@ -1026,6 +1289,11 @@ ${actions}
         skipUpload,
         copySummary,
         submitLead,
-        restart
+        restart,
+        generateAIAnalysis,
+        regenerateAI,
+        copyAIAnalysis,
+        sendAIReport,
+        downloadPDF
     };
 })();

@@ -209,6 +209,43 @@ const ICDAnalytics = (() => {
         return summary;
     }
 
+    /**
+     * 10.7 AI 分析生成追蹤
+     * @param {string} role - 角色
+     * @param {string} level - 成熟度等級 A-D
+     * @param {string} status - 'start' | 'success' | 'error'
+     */
+    function trackAIGenerate(role, level, status) {
+        track('icd_ai_generate', {
+            event_category: 'ic_diagnostic',
+            role: role,
+            maturity_level: level,
+            status: status
+        });
+    }
+
+    /**
+     * 10.8 PDF 下載追蹤
+     */
+    function trackPDFDownload(role, level) {
+        track('icd_pdf_download', {
+            event_category: 'ic_diagnostic',
+            role: role,
+            maturity_level: level
+        });
+    }
+
+    /**
+     * 10.9 Email 報告發送追蹤
+     */
+    function trackEmailSend(role, level) {
+        track('icd_email_send', {
+            event_category: 'ic_diagnostic',
+            role: role,
+            maturity_level: level
+        });
+    }
+
     /* ========================================================
        Public API
        ======================================================== */
@@ -220,9 +257,12 @@ const ICDAnalytics = (() => {
         trackViewResult,
         trackLeadSubmit,
         trackBookingClick,
+        trackAIGenerate,
+        trackPDFDownload,
+        trackEmailSend,
         getLocalEvents,
         clearLocalEvents,
         getEventSummary,
-        version: '1.0.0'
+        version: '1.1.0'
     };
 })();

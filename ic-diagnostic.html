@@ -318,12 +318,13 @@
                     <div class="icd-step-header">
                         <span class="icd-badge">Step 2</span>
                         <h2>基本資料</h2>
-                        <p>這些資料將用於生成您的專屬診斷報告。</p>
+                        <p>這些資料將用於生成您的專屬診斷報告，並讓 AI 分析更加精準。</p>
                     </div>
+                    <div class="icd-form-section-label">基本身份</div>
                     <div class="icd-form-grid">
                         <div class="icd-field">
                             <label class="icd-label">公司名稱 <span class="required">*</span></label>
-                            <input type="text" class="icd-input" id="infoCompany" placeholder="例：台灣某某科技" required>
+                            <input type="text" class="icd-input" id="infoCompany" placeholder="例：台灣某某科技股份有限公司" required>
                         </div>
                         <div class="icd-field">
                             <label class="icd-label">您的姓名 <span class="required">*</span></label>
@@ -331,21 +332,55 @@
                         </div>
                         <div class="icd-field">
                             <label class="icd-label">職稱</label>
-                            <input type="text" class="icd-input" id="infoTitle" placeholder="例：業務經理">
+                            <input type="text" class="icd-input" id="infoTitle" placeholder="例：業務協理 / PM 主管 / FAE 工程師">
                         </div>
                         <div class="icd-field">
-                            <label class="icd-label">公司規模</label>
-                            <select class="icd-select" id="infoSize">
+                            <label class="icd-label">IC 產業年資</label>
+                            <select class="icd-select" id="infoExperience">
                                 <option value="">請選擇</option>
-                                <option value="1-50">1-50 人</option>
-                                <option value="51-200">51-200 人</option>
-                                <option value="201-500">201-500 人</option>
-                                <option value="501+">501 人以上</option>
+                                <option value="2年以下">2 年以下（新進）</option>
+                                <option value="2-5年">2–5 年（初中階）</option>
+                                <option value="5-10年">5–10 年（資深）</option>
+                                <option value="10年以上">10 年以上（專家/主管）</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="icd-form-section-label">公司背景</div>
+                    <div class="icd-form-grid">
+                        <div class="icd-field">
+                            <label class="icd-label">公司規模（總人數）</label>
+                            <select class="icd-select" id="infoSize">
+                                <option value="">請選擇</option>
+                                <option value="1-50">1–50 人（小型代理商）</option>
+                                <option value="51-200">51–200 人（中型代理商）</option>
+                                <option value="201-500">201–500 人（大型代理商）</option>
+                                <option value="501+">501 人以上（大型集團）</option>
+                            </select>
+                        </div>
+                        <div class="icd-field">
+                            <label class="icd-label">主要代理 / 經銷品牌</label>
+                            <input type="text" class="icd-input" id="infoProducts" placeholder="例：TI、NXP、Microchip、ST">
+                        </div>
                         <div class="icd-field icd-field-full">
-                            <label class="icd-label">主要代理 / 經銷產品線</label>
-                            <input type="text" class="icd-input" id="infoProducts" placeholder="例：TI、NXP、Microchip">
+                            <label class="icd-label">主要服務客戶類型 <span class="icd-label-hint">（可複選）</span></label>
+                            <div class="icd-checkbox-group" id="infoCustomerTypes">
+                                <label class="icd-checkbox-item"><input type="checkbox" value="EMS/ODM/OEM製造業"><span>電子製造業（EMS / ODM / OEM）</span></label>
+                                <label class="icd-checkbox-item"><input type="checkbox" value="RD設計公司"><span>研發設計公司（RD House）</span></label>
+                                <label class="icd-checkbox-item"><input type="checkbox" value="系統整合商SI"><span>系統整合商（SI）</span></label>
+                                <label class="icd-checkbox-item"><input type="checkbox" value="通路商貿易商"><span>通路商 / 貿易商</span></label>
+                                <label class="icd-checkbox-item"><input type="checkbox" value="政府國防航太"><span>政府 / 國防 / 航太</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="icd-form-section-label">經營挑戰 <span class="icd-label-hint">（選填，有助 AI 提供更精準分析）</span></div>
+                    <div class="icd-form-grid">
+                        <div class="icd-field icd-field-full">
+                            <label class="icd-label">目前最大的業務 / 經營挑戰</label>
+                            <textarea class="icd-input icd-textarea" id="infoChallenge" placeholder="例：毛利持續被壓縮，客戶要求不斷降價，但自身在議價上處於弱勢..." rows="3"></textarea>
+                        </div>
+                        <div class="icd-field icd-field-full">
+                            <label class="icd-label">希望透過此診斷得到什麼</label>
+                            <textarea class="icd-input icd-textarea" id="infoGoal" placeholder="例：了解自己在哪些能力面向有盲點，以及下一步應該優先改善什麼..." rows="2"></textarea>
                         </div>
                     </div>
                     <div class="icd-step-actions">
@@ -512,6 +547,54 @@
                 </div>
             </div>
 
+            <!-- AI 智慧顧問分析 -->
+            <div class="icd-result-section icd-ai-panel" id="aiAnalysisSection">
+                <div class="icd-ai-panel-header">
+                    <div class="icd-ai-panel-title">
+                        <div class="icd-ai-icon-wrap">🤖</div>
+                        <div>
+                            <h3>AI 智慧顧問分析</h3>
+                            <p class="icd-ai-subtitle">由 Claude AI 根據您的完整診斷數據，生成個人化轉型策略報告</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary icd-ai-generate-btn" id="aiGenerateBtn" onclick="ICD.generateAIAnalysis()">
+                        ✨ 生成 AI 分析報告 <span class="arrow">&rarr;</span>
+                    </button>
+                </div>
+
+                <!-- Loading -->
+                <div class="icd-ai-loading" id="aiLoading" style="display:none">
+                    <div class="icd-ai-spinner"></div>
+                    <div>
+                        <p class="icd-ai-loading-text">AI 顧問正在深度分析您的診斷數據...</p>
+                        <p class="icd-ai-loading-sub">約 10–20 秒完成</p>
+                    </div>
+                </div>
+
+                <!-- AI Content -->
+                <div class="icd-ai-content" id="aiContent" style="display:none"></div>
+
+                <!-- Post-gen actions -->
+                <div class="icd-ai-actions" id="aiActions" style="display:none">
+                    <div class="icd-ai-email-row">
+                        <input type="email" class="icd-input icd-ai-email-input" id="aiEmailInput" placeholder="輸入 Email 接收完整 AI 分析報告">
+                        <button class="btn btn-outline btn-sm" onclick="ICD.sendAIReport()">📧 Email 此報告</button>
+                    </div>
+                    <div class="icd-ai-btn-row">
+                        <button class="btn btn-outline btn-sm" onclick="ICD.copyAIAnalysis()">📋 複製分析</button>
+                        <button class="btn btn-outline btn-sm" onclick="ICD.downloadPDF()">📄 下載 PDF 報告</button>
+                        <button class="btn btn-ghost btn-sm" onclick="ICD.regenerateAI()">↺ 重新生成</button>
+                    </div>
+                </div>
+
+                <!-- Error -->
+                <div class="icd-ai-error" id="aiError" style="display:none">
+                    <span class="icd-ai-error-icon">⚠️</span>
+                    <p id="aiErrorMsg">AI 分析暫時無法使用</p>
+                    <button class="btn btn-outline btn-sm" onclick="ICD.generateAIAnalysis()">重試</button>
+                </div>
+            </div>
+
             <!-- 留資表單 -->
             <div class="icd-result-section icd-result-lead-section">
                 <h3>取得完整報告與顧問建議</h3>
@@ -542,6 +625,7 @@
             <!-- CTA -->
             <div class="icd-result-cta">
                 <a href="booking.html" class="btn btn-primary" id="ctaBooking">預約顧問諮詢 <span class="arrow">&rarr;</span></a>
+                <button class="btn btn-outline" onclick="ICD.downloadPDF()">📄 下載 PDF</button>
                 <button class="btn btn-outline" onclick="ICD.copySummary()">複製診斷摘要</button>
                 <button class="btn btn-outline" onclick="ICD.restart()">重新診斷</button>
             </div>
