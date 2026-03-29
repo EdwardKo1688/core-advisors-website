@@ -108,21 +108,9 @@
                         <span class="nav-icon">&#x1F500;</span>
                         <span class="nav-label">欄位映射</span>
                     </button>
-                    <div class="admin-nav-divider">Phase 2 預覽</div>
-                    <button class="admin-nav-item admin-nav-item--p2" data-tab="ic-cases">
-                        <span class="nav-icon">&#x1F4C1;</span>
-                        <span class="nav-label">顧問案件</span>
-                        <span class="nav-p2-tag">P2</span>
-                    </button>
-                    <button class="admin-nav-item admin-nav-item--p2" data-tab="ic-export">
-                        <span class="nav-icon">&#x1F4CA;</span>
-                        <span class="nav-label">報告匯出</span>
-                        <span class="nav-p2-tag">P2</span>
-                    </button>
-                    <button class="admin-nav-item admin-nav-item--p2" data-tab="ic-permissions">
-                        <span class="nav-icon">&#x1F510;</span>
-                        <span class="nav-label">角色權限</span>
-                        <span class="nav-p2-tag">P2</span>
+                    <button class="admin-nav-item" data-tab="ic-export">
+                        <span class="nav-icon">&#x1F916;</span>
+                        <span class="nav-label">AI 報告</span>
                     </button>
                     <button class="admin-nav-item" data-tab="settings">
                         <span class="nav-icon">&#x2699;</span>
@@ -564,100 +552,41 @@
                     </div>
                 </div>
 
-                <!-- Tab: IC Cases (12.6) - Phase 2 Stub -->
-                <div class="admin-tab" id="tab-ic-cases">
-                    <div class="tab-header">
-                        <h2 class="tab-title">顧問案件列表 <span class="p2-badge-title">Phase 2</span></h2>
-                    </div>
-                    <p class="tab-desc">將 IC 診斷紀錄與顧問服務案件整合，追蹤從診斷到諮詢的完整漏斗。</p>
-                    <div class="p2-preview-box">
-                        <h3>&#x1F4CB; Phase 2 功能設計</h3>
-                        <div class="p2-feature-grid">
-                            <div class="p2-feature-card">
-                                <div class="p2-feature-icon">&#x1F195;</div>
-                                <strong>12.6.1 案件建立</strong>
-                                <p>從診斷紀錄或留資名單一鍵建立顧問案件，自動帶入診斷結果與風險標記。</p>
-                            </div>
-                            <div class="p2-feature-card">
-                                <div class="p2-feature-icon">&#x1F4CA;</div>
-                                <strong>12.6.2 漏斗追蹤</strong>
-                                <p>診斷完成 → 留資 → 預約確認 → 服務進行中 → 完案，全程可視化。</p>
-                            </div>
-                            <div class="p2-feature-card">
-                                <div class="p2-feature-icon">&#x1F4DD;</div>
-                                <strong>12.6.3 案件備注</strong>
-                                <p>每個案件可記錄顧問備注、行動清單完成度、下次跟進時間。</p>
-                            </div>
-                            <div class="p2-feature-card">
-                                <div class="p2-feature-icon">&#x1F4C8;</div>
-                                <strong>12.6.4 轉換率分析</strong>
-                                <p>診斷→留資→預約→成案轉換漏斗，協助優化諮詢轉化效率。</p>
-                            </div>
-                        </div>
-                        <div class="p2-schema-preview">
-                            <h4>資料結構設計</h4>
-                            <pre class="p2-code-block">{
-  "caseId"        : "CASE-2026-001",
-  "sessionId"     : "ICD-...",
-  "leadId"        : "LEAD-...",
-  "bookingId"     : "BK-...",
-  "status"        : "in_progress",  // new | contacted | booked | in_progress | closed
-  "maturityLevel" : "C",
-  "score"         : 62,
-  "topRisks"      : ["RULE-01", "RULE-03"],
-  "consultantNote": "...",
-  "nextFollowUp"  : "2026-04-15",
-  "createdAt"     : "2026-03-29T..."
-}</pre>
-                        </div>
-                    </div>
-                </div>
+                <!-- Tab: IC Cases - hidden (Phase 2) -->
+                <div class="admin-tab" id="tab-ic-cases" style="display:none"></div>
 
-                <!-- Tab: IC Export (12.7) - Phase 2 Stub -->
+                <!-- Tab: AI 分析報告 -->
                 <div class="admin-tab" id="tab-ic-export">
                     <div class="tab-header">
-                        <h2 class="tab-title">報告匯出 <span class="p2-badge-title">Phase 2</span></h2>
+                        <h2 class="tab-title">&#x1F916; AI 分析報告</h2>
+                        <div class="tab-actions" id="aiReportActions"></div>
                     </div>
-                    <p class="tab-desc">將診斷結果匯出為格式化 PDF 或 Excel 報告，供顧問與客戶使用。</p>
-                    <div class="p2-preview-box">
-                        <h3>&#x1F4CA; Phase 2 功能設計</h3>
-                        <div class="p2-feature-grid">
-                            <div class="p2-feature-card">
-                                <div class="p2-feature-icon">&#x1F4C4;</div>
-                                <strong>12.7.1 PDF 診斷報告</strong>
-                                <p>含公司名稱、成熟度等級、雷達圖、Top-3 風險、Top-5 行動建議的完整診斷報告。</p>
-                            </div>
-                            <div class="p2-feature-card">
-                                <div class="p2-feature-icon">&#x1F4CA;</div>
-                                <strong>12.7.2 Excel 資料匯出</strong>
-                                <p>批次匯出所有 IC 診斷紀錄含各模型分數明細，支援後續資料分析。</p>
-                            </div>
-                            <div class="p2-feature-card">
-                                <div class="p2-feature-icon">&#x1F4C8;</div>
-                                <strong>12.7.3 管理儀表板報告</strong>
-                                <p>週期性（月/季）診斷統計報告，含角色分佈、平均分數、常見風險趨勢。</p>
-                            </div>
-                            <div class="p2-feature-card">
-                                <div class="p2-feature-icon">&#x1F4E7;</div>
-                                <strong>12.7.4 自動寄送</strong>
-                                <p>診斷完成後自動 Email 報告摘要給填答者（需 GAS SendMail 整合）。</p>
-                            </div>
-                        </div>
-                        <div class="p2-schema-preview">
-                            <h4>PDF 報告結構設計</h4>
-                            <pre class="p2-code-block">第 1 頁：封面（公司名、日期、角色、等級徽章）
-第 2 頁：成熟度概覽（雷達圖 + 五模型分數條）
-第 3 頁：Top-3 風險分析（詳細說明 + 觸發條件）
-第 4 頁：Top-5 行動建議（P1/P2/P3 + 建議時程）
-第 5 頁：附錄（評分方法說明、版本資訊）</pre>
-                        </div>
+                    <p class="tab-desc">IC 通路人才診斷 AI 智慧顧問分析記錄，由 Claude AI 自動生成並儲存。</p>
+                    <div class="records-table-wrap">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>時間</th>
+                                    <th>公司</th>
+                                    <th>姓名</th>
+                                    <th>角色</th>
+                                    <th>分數</th>
+                                    <th>等級</th>
+                                    <th>風險數</th>
+                                    <th>完備度</th>
+                                </tr>
+                            </thead>
+                            <tbody id="aiReportBody">
+                                <tr><td colspan="8" class="empty-state">載入中…</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- Tab: IC Permissions (12.8) - Phase 2 Stub -->
-                <div class="admin-tab" id="tab-ic-permissions">
+                <!-- Tab: IC Permissions - hidden (Phase 2) -->
+                <div class="admin-tab" id="tab-ic-permissions" style="display:none">
                     <div class="tab-header">
-                        <h2 class="tab-title">角色權限設定 <span class="p2-badge-title">Phase 2</span></h2>
+                        <h2 class="tab-title">角色權限設定</h2>
                     </div>
                     <p class="tab-desc">細分後台管理員權限，支援顧問、主管、系統管理員三層角色。</p>
                     <div class="p2-preview-box">

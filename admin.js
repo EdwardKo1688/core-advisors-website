@@ -38,7 +38,29 @@
                 { company: '台灣智造科技', user: '王大明', date: '2026-03-08', score: 42 },
                 { company: '快運物流', user: '李芳如', date: '2026-03-05', score: 35 }
             ]
-        }
+        },
+        icSessions: [
+            { id: 'demo-s1', role: 'sales', info: { company: '台積電代理商A', name: '王大明', title: '業務協理', size: '50-200人', products: 'MCU, SoC' },
+              overallScore: 62, maturity: { level: 'B', label: '成長期' },
+              triggeredRules: [{ flag: '毛利率下滑', severity: 'high', insight: '近三季毛利率持續下滑，需優先檢視定價策略' }],
+              completeness: 85, timestamp: new Date(Date.now() - 2*24*3600*1000).toISOString() },
+            { id: 'demo-s2', role: 'pm', info: { company: '鴻海供應商B', name: '李小華', title: 'PM', size: '10-50人', products: 'DRAM' },
+              overallScore: 41, maturity: { level: 'C', label: '發展期' },
+              triggeredRules: [{ flag: '客戶集中度過高', severity: 'high', insight: '前三大客戶佔業績 85%，風險集中' }, { flag: '費用失控', severity: 'medium', insight: '費效比超過產業平均 1.4 倍' }],
+              completeness: 72, timestamp: new Date(Date.now() - 7*24*3600*1000).toISOString() },
+            { id: 'demo-s3', role: 'fae', info: { company: 'IC通路商C', name: '張技術', title: 'FAE', size: '10-50人', products: 'FPGA' },
+              overallScore: 78, maturity: { level: 'A', label: '成熟期' },
+              triggeredRules: [],
+              completeness: 91, timestamp: new Date(Date.now() - 14*24*3600*1000).toISOString() }
+        ],
+        icLeads: [
+            { id: 'demo-l1', name: '王大明', email: 'wang@companyA.com', phone: '0912-345-678',
+              company: '台積電代理商A', role: 'sales', maturity: 'B', score: 62, status: 'contacted',
+              timestamp: new Date(Date.now() - 2*24*3600*1000).toISOString() },
+            { id: 'demo-l2', name: '李小華', email: 'li@companyB.com', phone: '',
+              company: '鴻海供應商B', role: 'pm', maturity: 'C', score: 41, status: 'new',
+              timestamp: new Date(Date.now() - 7*24*3600*1000).toISOString() }
+        ]
     };
 
     // ===== API Helper =====
@@ -639,32 +661,40 @@
         revenue: '營收', grossprofit: '毛利', expense: '費效', contribution: '貢獻', capability: '能力協同'
     };
 
-    /** 取得診斷 Session 清單（優先使用 ICDService.DataStore，fallback 至 localStorage 直讀） */
+    /** 取得診斷 Session 清單（優先使用 ICDService.DataStore，fallback 至 localStorage，Demo 模式補預設資料） */
     function getICSessionsFromStorage() {
         if (typeof ICDService !== 'undefined') {
             const sessions = ICDService.DataStore.getSessions();
             if (sessions.length > 0) return sessions;
-            // 相容舊 icd_last_result 單筆寫入格式
             const last = ICDService.DataStore.getLastSession();
-            return last ? [last] : [];
+            if (last) return [last];
+        } else {
+            try {
+                const sessions = JSON.parse(localStorage.getItem('icd_sessions') || 'null');
+                if (sessions && sessions.length > 0) return sessions;
+                const last = localStorage.getItem('icd_last_result');
+                if (last) return [JSON.parse(last)];
+            } catch (e) {}
         }
-        try {
-            const sessions = JSON.parse(localStorage.getItem('icd_sessions') || 'null');
-            if (sessions && sessions.length > 0) return sessions;
-            const last = localStorage.getItem('icd_last_result');
-            if (!last) return [];
-            return [JSON.parse(last)];
-        } catch (e) { return []; }
+        // Demo fallback：localStorage 無資料時使用預設展示資料
+        if (!isApiConfigured()) return DEMO_DATA.icSessions || [];
+        return [];
     }
 
-    /** 取得留資名單（優先使用 ICDService.DataStore） */
+    /** 取得留資名單（優先使用 ICDService.DataStore，Demo 模式補預設資料） */
     function getICLeadsFromStorage() {
         if (typeof ICDService !== 'undefined') {
-            return ICDService.DataStore.getLeads();
+            const leads = ICDService.DataStore.getLeads();
+            if (leads.length > 0) return leads;
+        } else {
+            try {
+                const leads = JSON.parse(localStorage.getItem('icd_leads') || '[]');
+                if (leads.length > 0) return leads;
+            } catch (e) {}
         }
-        try {
-            return JSON.parse(localStorage.getItem('icd_leads') || '[]');
-        } catch (e) { return []; }
+        // Demo fallback
+        if (!isApiConfigured()) return DEMO_DATA.icLeads || [];
+        return [];
     }
 
     // ===== IC Dashboard Stats =====
@@ -1157,10 +1187,41 @@
         // The tab HTML already has the full design preview
     }
 
-    // ===== IC Export Tab (12.7) - Phase 2 Stub =====
+    // ===== AI 分析報告 Tab =====
     function loadICExport() {
-        // Static preview content — no dynamic data in Phase 1
-        // The tab HTML already has the full design preview
+        const sessions = getICSessionsFromStorage();
+
+        // 顯示 Google Sheet 連結（若有設定 AI Proxy）
+        const actionsEl = document.getElementById('aiReportActions');
+        if (actionsEl) {
+            const sheetUrl = 'https://docs.google.com/spreadsheets/d/1Qq_0N2MPsalsFZbL7WkUkSD3FkbcFSOJAgPsD7m7Iiw/edit';
+            actionsEl.innerHTML = `<a href="${sheetUrl}" target="_blank" class="btn-action" style="text-decoration:none">&#x1F4CA; 查看 Google Sheet ↗</a>`;
+        }
+
+        const tbody = document.getElementById('aiReportBody');
+        if (!tbody) return;
+
+        if (sessions.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="empty-state">尚無 AI 分析報告（完成前台診斷並生成 AI 分析後顯示）</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = sessions.map(s => {
+            const riskCount = (s.triggeredRules || []).length;
+            const riskBadge = riskCount > 0
+                ? `<span class="ic-risk-badge">${riskCount} 個風險</span>`
+                : '<span class="ic-ok-badge">無風險</span>';
+            return `<tr>
+                <td>${formatDate(s.timestamp)}</td>
+                <td><strong>${s.info?.company || '-'}</strong></td>
+                <td>${s.info?.name || '-'}</td>
+                <td><span class="ic-role-tag">${IC_ROLE_LABELS[s.role] || s.role}</span></td>
+                <td><strong>${s.overallScore || '-'}</strong></td>
+                <td><span class="ic-level-badge level-${s.maturity?.level || 'D'}">${s.maturity?.level ? 'Level ' + s.maturity.level : '-'}</span></td>
+                <td>${riskBadge}</td>
+                <td>${s.completeness || 0}%</td>
+            </tr>`;
+        }).join('');
     }
 
     // IC tab loading is handled in the main navItems click handler above

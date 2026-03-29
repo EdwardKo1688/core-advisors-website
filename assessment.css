@@ -66,6 +66,20 @@ body:has(.assess-wrapper) .navbar {
     line-height: 1.5;
 }
 
+.assess-back-link {
+    display: inline-block;
+    margin-bottom: 16px;
+    font-size: 0.78rem;
+    color: var(--text-light);
+    text-decoration: none;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+}
+.assess-back-link:hover {
+    opacity: 1;
+    color: var(--navy);
+}
+
 /* Progress Bar */
 .assess-progress-bar {
     width: 100%;
