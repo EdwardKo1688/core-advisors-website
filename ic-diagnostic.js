@@ -75,7 +75,7 @@ const ICD = (() => {
             showStep('role');
         } else if (view === 'result') {
             document.getElementById('viewResult').classList.add('active');
-            document.getElementById('icdFooter').style.display = 'none';
+            document.getElementById('icdFooter').style.display = '';
             state.currentView = 'result';
 
             // 10.4 追蹤：結果頁瀏覽
