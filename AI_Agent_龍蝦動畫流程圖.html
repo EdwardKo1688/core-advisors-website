@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦞 AI Agent 運作流程動畫</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans TC',sans-serif;background:#0a0f1e;color:#e2e8f0;min-height:100vh;overflow-x:hidden}
+.page{max-width:1480px;margin:0 auto;padding:.8rem 1.5rem .6rem}
+
+.hdr{text-align:center;margin-bottom:.6rem}
+.hdr h1{font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,#ef4444,#f59e0b,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr p{font-size:.72rem;color:#64748b;margin-top:.15rem}
+.ctrl{margin-top:.4rem;display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap}
+.btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:.3rem .9rem;border-radius:8px;cursor:pointer;font-size:.7rem;font-family:inherit;transition:all .2s}
+.btn:hover{background:#334155;color:#fff}
+.btn.on{background:#dc2626;border-color:#dc2626;color:#fff}
+.spl{font-size:.62rem;color:#475569;align-self:center}
+
+/* ===== FLOW ===== */
+.flow{position:relative;width:100%;height:560px}
+
+/* ===== SVG LAYER ===== */
+.flow svg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.fp{fill:none;stroke-width:3;opacity:.08;transition:opacity .5s}
+.fp.on{opacity:1}.fp.was{opacity:.2}
+/* animated dash for request arrows */
+.fp.on.req{stroke-dasharray:12 6;animation:reqDash .7s linear infinite}
+/* animated dash for response arrows (reverse) */
+.fp.on.res{stroke-dasharray:12 6;animation:resDash .7s linear infinite}
+@keyframes reqDash{to{stroke-dashoffset:-36}}
+@keyframes resDash{to{stroke-dashoffset:36}}
+/* glow filter */
+.glow-filter{filter:url(#glowF)}
+
+/* pulse dots */
+.pd{opacity:0;transition:opacity .3s}.pd.on{opacity:1;animation:pdAni 1.4s ease-in-out infinite}
+@keyframes pdAni{0%,100%{r:4;opacity:.5}50%{r:9;opacity:1}}
+
+/* ===== NODES ===== */
+.nd{position:absolute;border-radius:14px;padding:.65rem .75rem;transition:all .5s;z-index:2;opacity:.35}
+.nd.was{opacity:.6}.nd.on{opacity:1;box-shadow:0 0 28px var(--g),0 0 70px var(--gs);transform:scale(1.04);z-index:5}
+.nd h3{font-size:.82rem;font-weight:700;margin-bottom:.08rem}
+.nd .s{font-size:.62rem;color:#94a3b8;line-height:1.4}
+.nd .tg{display:inline-block;font-size:.54rem;font-weight:700;padding:.1rem .4rem;border-radius:10px;margin-top:.2rem}
+.nd .di{font-size:.56rem;color:#64748b;margin-top:.2rem;line-height:1.4}
+.sn{position:absolute;top:-.4rem;left:-.3rem;width:1.2rem;height:1.2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:900;color:#fff;z-index:3;opacity:0;transition:opacity .3s}
+.nd.on .sn,.nd.was .sn{opacity:1}
+
+/* ===== BIG ARROWS (center) ===== */
+.big-arrow{position:absolute;z-index:1;pointer-events:none}
+.arrow-label{position:absolute;font-size:.6rem;font-weight:700;padding:.15rem .5rem;border-radius:6px;white-space:nowrap;z-index:3;opacity:0;transition:all .5s}
+.arrow-label.on{opacity:1}
+
+/* ===== PARTICLES ===== */
+.ptc{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden}
+.ptc i{position:absolute;width:2px;height:2px;border-radius:50%;opacity:0;animation:pf 5s ease-in-out infinite}
+@keyframes pf{0%{opacity:0;transform:translateY(0)}25%{opacity:.4}75%{opacity:.15}100%{opacity:0;transform:translateY(-50px)}}
+
+/* ===== NARRATION ===== */
+.nar{background:#1a253c;border:1px solid #334155;border-radius:12px;padding:.55rem 1rem;margin-top:.4rem;min-height:2.6rem;display:flex;align-items:center;gap:.6rem}
+.nar .ic{font-size:1.5rem;flex-shrink:0;animation:pop .5s ease}
+.nar .tx h4{font-size:.82rem;color:#fff;margin-bottom:.08rem}
+.nar .tx p{font-size:.7rem;color:#94a3b8;line-height:1.5}
+@keyframes pop{0%,100%{transform:scale(1)}40%{transform:scale(1.25)}}
+
+.leg{display:flex;justify-content:center;gap:1rem;margin-top:.4rem;flex-wrap:wrap}
+.leg span{display:flex;align-items:center;gap:.2rem;font-size:.58rem;color:#64748b}
+.leg i{width:7px;height:7px;border-radius:50%;display:inline-block}
+
+/* Node theme colors */
+.c-user{background:#0f1d2d;border:2px solid #06b6d4;--g:#06b6d4;--gs:#06b6d430}
+.c-ch{background:#0f1d2d;border:2px solid #06b6d4;--g:#06b6d4;--gs:#06b6d430}
+.c-shell{background:#1e1215;border:2px solid #dc2626;--g:#dc2626;--gs:#dc262630}
+.c-llm{background:#1a2310;border:2px solid #facc15;--g:#facc15;--gs:#facc1530}
+.c-tool{background:#1a1520;border:2px solid #ef4444;--g:#ef4444;--gs:#ef444430}
+.c-skill{background:#1a1525;border:2px solid #8b5cf6;--g:#8b5cf6;--gs:#8b5cf630}
+.c-rag{background:#101e1a;border:2px solid #10b981;--g:#10b981;--gs:#10b98130}
+.c-mem{background:#1e1d10;border:2px solid #f59e0b;--g:#f59e0b;--gs:#f59e0b30}
+.c-spawn{background:#1e1020;border:2px solid #ec4899;--g:#ec4899;--gs:#ec489930}
+.c-reply{background:#0f1d2d;border:2px solid #06b6d4;--g:#06b6d4;--gs:#06b6d430}
+
+/* md file chips inside shell */
+.md-grid{display:flex;flex-wrap:wrap;gap:3px;margin-top:.3rem}
+.md-chip{font-size:.52rem;font-weight:600;padding:.12rem .3rem;border-radius:5px;background:#2a1520;border:1px solid #55202a;color:#fca5a5}
+
+/* === Chapter Navigation === */
+.chapter-nav{position:sticky;top:0;z-index:9998;background:rgba(8,9,15,0.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid #1e293b;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-family:'Noto Sans TC',sans-serif}
+.chapter-nav .nav-home{display:flex;align-items:center;gap:6px;color:#94a3b8;text-decoration:none;font-size:11px;
+  padding:5px 12px;border-radius:6px;border:1px solid #334055;background:#0f1320;transition:all .2s;cursor:pointer;white-space:nowrap}
+.chapter-nav .nav-home:hover{background:#1e293b;color:#f1f5f9;border-color:#475569}
+.chapter-nav .nav-chapters{display:flex;align-items:center;gap:4px}
+.chapter-nav .nav-ch{display:flex;align-items:center;gap:4px;padding:5px 12px;border-radius:6px;font-size:10px;
+  font-weight:600;text-decoration:none;border:1px solid #334055;transition:all .2s;cursor:pointer;white-space:nowrap}
+.chapter-nav .nav-ch:hover{background:#1e293b;border-color:#475569}
+.chapter-nav .nav-ch.current{border-width:2px;cursor:default;opacity:0.95}
+.chapter-nav .nav-ch.ch1{color:#ef4444} .chapter-nav .nav-ch.ch1.current{border-color:#ef4444;background:rgba(239,68,68,0.1)}
+.chapter-nav .nav-ch.ch2{color:#f59e0b} .chapter-nav .nav-ch.ch2.current{border-color:#f59e0b;background:rgba(245,158,11,0.1)}
+.chapter-nav .nav-ch.ch3{color:#06b6d4} .chapter-nav .nav-ch.ch3.current{border-color:#06b6d4;background:rgba(6,182,212,0.1)}
+.chapter-nav .nav-arrow{color:#334055;font-size:14px;margin:0 2px}
+@media(max-width:640px){.chapter-nav{flex-wrap:wrap;justify-content:center}}
+
+</style>
+</head>
+<body>
+<nav class="chapter-nav">
+  <a class="nav-home" href="AI_Agent_三部曲.html">◁ 三部曲總覽</a>
+  <div class="nav-chapters"><span class="nav-ch ch1 current">▸ 01 流程動畫</span><span class="nav-arrow">›</span><a class="nav-ch ch2" href="AI_Agent_龍蝦解剖學.html">  02 龍蝦解剖</a><span class="nav-arrow">›</span><a class="nav-ch ch3" href="企業AI系統架構圖.html">  03 系統架構</a></div>
+</nav>
+<div class="page">
+  <div class="hdr">
+    <h1>🦞 AI Agent 運作流程動畫 — 龍蝦如何動起來</h1>
+    <p>User（左）↔ LLM 外借大腦（右）｜雙向箭頭中間 = 龍蝦的身體結構</p>
+    <div class="ctrl">
+      <button class="btn on" id="bp" onclick="togglePlay()">▶ 播放</button>
+      <button class="btn" onclick="prev()">◀</button>
+      <button class="btn" onclick="next()">▶</button>
+      <button class="btn" onclick="reset()">↺</button>
+      <span class="spl">速度</span>
+      <button class="btn sp" onclick="spd(3200)">慢</button>
+      <button class="btn sp on" onclick="spd(2000)">中</button>
+      <button class="btn sp" onclick="spd(1100)">快</button>
+    </div>
+  </div>
+
+  <div class="flow" id="fc">
+    <div class="ptc" id="ptc"></div>
+
+    <!-- ========== SVG PATHS ========== -->
+    <svg viewBox="0 0 1440 560" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="glowF"><feGaussianBlur stdDeviation="3" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <marker id="ah" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="currentColor" opacity=".8"/></marker>
+        <marker id="ahl" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto"><polygon points="8 0, 0 3, 8 6" fill="currentColor" opacity=".8"/></marker>
+      </defs>
+
+      <!-- P0: user → channel -->
+      <path id="p0" class="fp req" d="M 125 255 L 180 255" stroke="#06b6d4" marker-end="url(#ah)"/>
+      <circle id="d0" class="pd" cx="152" cy="255" fill="#06b6d4"/>
+
+      <!-- P1: channel → shell (up into shell) -->
+      <path id="p1" class="fp req" d="M 280 240 C 320 200 350 165 390 145" stroke="#dc2626" marker-end="url(#ah)"/>
+      <circle id="d1" class="pd" cx="335" cy="195" fill="#dc2626"/>
+
+      <!-- ===== THE TWO BIG CENTER ARROWS ===== -->
+      <!-- P2: REQUEST arrow — Shell → LLM (left to right, top path) -->
+      <path id="p2" class="fp req" d="M 720 110 C 900 80 1100 100 1250 195" stroke="#facc15" stroke-width="4" marker-end="url(#ah)"/>
+      <circle id="d2" class="pd" cx="980" cy="90" r="6" fill="#facc15"/>
+
+      <!-- P3: RESPONSE arrow — LLM → Tools/center (right to left, bottom path) -->
+      <path id="p3" class="fp res" d="M 1250 310 C 1100 380 850 400 680 370" stroke="#ef4444" stroke-width="4" marker-end="url(#ahl)"/>
+      <circle id="d3" class="pd" cx="960" cy="385" r="6" fill="#ef4444"/>
+
+      <!-- P4: LLM → RAG (right to center-top) -->
+      <path id="p4" class="fp res" d="M 1240 200 C 1100 140 950 110 850 100" stroke="#10b981" marker-end="url(#ahl)"/>
+      <circle id="d4" class="pd" cx="1050" cy="145" fill="#10b981"/>
+
+      <!-- P5: LLM → Skills (right to center-bottom) -->
+      <path id="p5" class="fp res" d="M 1250 330 C 1050 440 750 490 600 480" stroke="#8b5cf6" marker-end="url(#ahl)"/>
+      <circle id="d5" class="pd" cx="900" cy="460" fill="#8b5cf6"/>
+
+      <!-- P6: Tools → Spawn -->
+      <path id="p6" class="fp req" d="M 680 400 C 720 430 760 450 800 455" stroke="#ec4899" marker-end="url(#ah)"/>
+      <circle id="d6" class="pd" cx="740" cy="435" fill="#ec4899"/>
+
+      <!-- P7: execution → memory -->
+      <path id="p7" class="fp req" d="M 750 95 C 800 70 860 55 900 55" stroke="#f59e0b" marker-end="url(#ah)"/>
+      <circle id="d7" class="pd" cx="830" cy="72" fill="#f59e0b"/>
+
+      <!-- P8: memory → back into shell (feedback loop) -->
+      <path id="p8" class="fp res" d="M 900 75 C 830 90 760 110 720 125" stroke="#f59e0b" stroke-dasharray="4 3" marker-end="url(#ahl)"/>
+      <circle id="d8" class="pd" cx="810" cy="100" fill="#f59e0b"/>
+
+      <!-- P9: result → reply user (bottom sweep left) -->
+      <path id="p9" class="fp res" d="M 600 370 C 400 410 250 380 145 330" stroke="#06b6d4" stroke-width="3" marker-end="url(#ahl)"/>
+      <circle id="d9" class="pd" cx="370" cy="395" fill="#06b6d4"/>
+    </svg>
+
+    <!-- ===== ARROW LABELS (on the two big center arrows) ===== -->
+    <div class="arrow-label" id="alReq" style="left:52%;top:11%;background:#facc1520;color:#facc15">
+      ➡ 請求：System Prompt + User Message → 送給 LLM
+    </div>
+    <div class="arrow-label" id="alRes" style="left:48%;top:70%;background:#ef444420;color:#ef4444">
+      ⬅ 回應：LLM 回傳指令 → Tools / Skills / RAG 執行
+    </div>
+
+    <!-- ========== NODES ========== -->
+
+    <!-- N0: User — far left -->
+    <div class="nd c-user" id="n0" style="left:1%;top:38%;width:110px">
+      <div class="sn" style="background:#06b6d4">1</div>
+      <h3 style="color:#06b6d4">👤 使用者</h3>
+      <div class="s">在 WhatsApp 說：<br>「幫我查上季營收」</div>
+    </div>
+
+    <!-- N1: Channel -->
+    <div class="nd c-ch" id="n1" style="left:12%;top:38%;width:115px">
+      <div class="sn" style="background:#06b6d4">2</div>
+      <h3 style="color:#06b6d4">📡 觸鬚</h3>
+      <div class="s">通訊頻道接收<br>→ 路由 Gateway</div>
+      <div class="tg" style="background:#06b6d420;color:#06b6d4">50+ 平台</div>
+    </div>
+
+    <!-- N2: Shell (System Prompt) — center-top, wide, prominent -->
+    <div class="nd c-shell" id="n2" style="left:24%;top:3%;width:340px">
+      <div class="sn" style="background:#dc2626">3</div>
+      <h3 style="color:#dc2626;font-size:.9rem">🦞 龍蝦的殼 — System Prompt 組裝</h3>
+      <div class="s">每次對話開始，自動載入 → 打包成「完整指令」送給 LLM</div>
+      <div class="md-grid">
+        <span class="md-chip">🪪 SOUL.md 人格</span>
+        <span class="md-chip">🏷️ IDENTITY.md 身份</span>
+        <span class="md-chip">👤 USER.md 偏好</span>
+        <span class="md-chip">📋 AGENTS.md 規則</span>
+        <span class="md-chip">🧠 MEMORY.md 記憶</span>
+        <span class="md-chip">📦 TOOLS.md 工具清單</span>
+      </div>
+      <div class="tg" style="background:#dc262620;color:#dc2626">「讀自己成為自己」→ 然後送往右邊的大腦</div>
+    </div>
+
+    <!-- N3: Tools — center -->
+    <div class="nd c-tool" id="n3" style="left:38%;top:55%;width:150px">
+      <div class="sn" style="background:#ef4444">5a</div>
+      <h3 style="color:#ef4444">🦀 鉗子 — Tools</h3>
+      <div class="s">exec · web_search<br>read/write · browser<br>cron · memory_search</div>
+      <div class="tg" style="background:#ef444420;color:#ef4444">器官：能不能做</div>
+    </div>
+
+    <!-- N4: Skills — center-bottom -->
+    <div class="nd c-skill" id="n4" style="left:27%;top:75%;width:150px">
+      <div class="sn" style="background:#8b5cf6">5b</div>
+      <h3 style="color:#8b5cf6">🦿 腿 — Skills</h3>
+      <div class="s">SKILL.md 教 Agent<br>組合 Tools 完成任務<br>13,700+ @ ClawHub</div>
+      <div class="tg" style="background:#8b5cf620;color:#8b5cf6">教科書：怎麼做</div>
+    </div>
+
+    <!-- N5: RAG — center-top-right -->
+    <div class="nd c-rag" id="n5" style="left:50%;top:7%;width:145px">
+      <div class="sn" style="background:#10b981">5c</div>
+      <h3 style="color:#10b981">🫁 消化 — RAG</h3>
+      <div class="s">從知識庫「檢索」<br>相關文件 → 餵回 LLM<br>現查現答</div>
+      <div class="tg" style="background:#10b98120;color:#10b981">檢索增強生成</div>
+    </div>
+
+    <!-- N6: Spawn — center-bottom-right -->
+    <div class="nd c-spawn" id="n6" style="left:53%;top:72%;width:140px">
+      <div class="sn" style="background:#ec4899">6</div>
+      <h3 style="color:#ec4899">🥚 繁殖 — 子 Agent</h3>
+      <div class="s">任務複雜？<br>分裂專責子 Agent<br>各自完成後彙報</div>
+      <div class="tg" style="background:#ec489920;color:#ec4899">sessions_spawn</div>
+    </div>
+
+    <!-- N7: Memory — right-top -->
+    <div class="nd c-mem" id="n7" style="left:62%;top:2%;width:135px">
+      <div class="sn" style="background:#f59e0b">7</div>
+      <h3 style="color:#f59e0b">💾 記憶更新</h3>
+      <div class="s">重要 → MEMORY.md<br>今日 → memory/日期.md<br>→ 回饋進 System Prompt</div>
+      <div class="tg" style="background:#f59e0b20;color:#f59e0b">持久化循環</div>
+    </div>
+
+    <!-- N8: LLM — FAR RIGHT, LARGE -->
+    <div class="nd c-llm" id="n8" style="right:1%;top:22%;width:165px">
+      <div class="sn" style="background:#facc15">4</div>
+      <h3 style="color:#facc15;font-size:.95rem">🧠 外借大腦</h3>
+      <h3 style="color:#facc15;font-size:.8rem">LLM（外部 API）</h3>
+      <div class="s" style="margin-top:.25rem">
+        <strong style="color:#fff">龍蝦沒有大腦！</strong><br><br>
+        <span style="color:#8b5cf6">● Claude</span> Anthropic<br>
+        <span style="color:#10b981">● GPT-4o</span> OpenAI<br>
+        <span style="color:#06b6d4">● Gemini</span> / 本地
+      </div>
+      <div class="tg" style="background:#facc1520;color:#facc15;margin-top:.35rem">可隨時換大腦！</div>
+    </div>
+
+    <!-- N9: Reply — far left bottom -->
+    <div class="nd c-reply" id="n9" style="left:1%;top:55%;width:130px">
+      <div class="sn" style="background:#06b6d4">8</div>
+      <h3 style="color:#06b6d4">💬 回覆</h3>
+      <div class="s">結果送回 WhatsApp<br>「上季營收 $12.5M<br>QoQ +8.3%」</div>
+      <div class="tg" style="background:#06b6d420;color:#06b6d4">完成！🎉</div>
+    </div>
+  </div>
+
+  <div class="nar" id="nar">
+    <div class="ic" id="ni">🦞</div>
+    <div class="tx"><h4 id="nt">按播放看龍蝦動起來</h4><p id="nd">User（左）發訊息 → 經過中間的龍蝦身體結構 → 送到右邊的 LLM 大腦 → 大腦回傳指令 → 中間的 Tools/Skills/RAG 執行 → 結果回到左邊。</p></div>
+  </div>
+
+  <div class="leg">
+    <span><i style="background:#06b6d4"></i>輸入/輸出</span>
+    <span><i style="background:#dc2626"></i>System Prompt</span>
+    <span><i style="background:#facc15"></i>➡ 請求送 LLM</span>
+    <span><i style="background:#ef4444"></i>⬅ LLM 回傳指令</span>
+    <span><i style="background:#8b5cf6"></i>Skills</span>
+    <span><i style="background:#10b981"></i>RAG</span>
+    <span><i style="background:#f59e0b"></i>Memory</span>
+    <span><i style="background:#ec4899"></i>Multi-Agent</span>
+  </div>
+</div>
+
+<script>
+const S=[
+  {n:[0],p:[],icon:"👤",t:"Step 1 — 使用者發送訊息",
+   d:"你在 WhatsApp 打了「幫我查上季營收報表」。這就是 User Prompt。一切從左邊開始。",labels:[]},
+  {n:[1],p:[0],icon:"📡",t:"Step 2 — 觸鬚接收（Channel）",
+   d:"WhatsApp Channel 接收訊息 → 路由到 OpenClaw Gateway。龍蝦的觸鬚感知到獵物。",labels:[]},
+  {n:[2],p:[1],icon:"🦞",t:"Step 3 — 龍蝦的殼（System Prompt 組裝）",
+   d:"Gateway 載入 SOUL.md（人格）、IDENTITY.md（身份）、USER.md（偏好）、AGENTS.md（規則）、MEMORY.md（記憶）、TOOLS.md（工具清單）。打包成完整指令，準備送往右邊的大腦。",labels:[]},
+  {n:[8],p:[2],icon:"🧠",t:"Step 4 — ➡ 送往外借大腦（LLM API）",
+   d:"完整 System Prompt + 你的訊息 → 透過 API 送到最右邊的 LLM（Claude/GPT/Gemini）。注意：龍蝦自己沒有大腦，智慧完全來自外部！LLM 分析意圖、規劃步驟、決定要用哪些 Tools。",labels:['alReq']},
+  {n:[3,4,5],p:[3,4,5],icon:"⚡",t:"Step 5 — ⬅ LLM 回傳指令，中間全面啟動",
+   d:"LLM 想好了 → 指令回傳到中間的龍蝦身體：🦀 Tools 執行 read/exec → 🦿 Skills 指導如何組合動作 → 🫁 RAG 從知識庫檢索上季營收文件。三者同時協作！",labels:['alRes']},
+  {n:[6],p:[6],icon:"🥚",t:"Step 6 — 繁殖（分派子 Agent）",
+   d:"任務太複雜？主 Agent 分裂出子 Agent：一個查資料、一個做圖表、一個寫摘要。完成後彙報主 Agent。龍蝦一次產萬顆卵的能力！",labels:[]},
+  {n:[7],p:[7,8],icon:"💾",t:"Step 7 — 記憶更新 → 回饋進殼",
+   d:"重要資訊存入 MEMORY.md（你偏好 QoQ 比較）。記憶會回饋進 System Prompt — 下次對話 Agent 已經知道你的偏好。這就是龍蝦的「肌肉記憶」循環。",labels:[]},
+  {n:[9],p:[9],icon:"💬",t:"Step 8 — 結果回覆使用者！",
+   d:"最終答案從中間往左送回 WhatsApp：「上季營收 $12.5M，QoQ +8.3%，報表已存到 Google Drive」。整個 User ↔ LLM 雙向流程完成！🎉",labels:[]}
+];
+
+let cur=-1,playing=false,tmr=null,spv=2000;
+const vis=new Set();
+
+function clr(){
+  document.querySelectorAll('.nd').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.fp').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.pd').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.arrow-label').forEach(e=>e.classList.remove('on'));
+}
+
+function show(i){
+  if(i<0||i>=S.length)return;
+  clr();
+  const s=S[i];
+  s.n.forEach(x=>{vis.add('n'+x);});
+  s.p.forEach(x=>{vis.add('p'+x);});
+  vis.forEach(v=>{const e=document.getElementById(v);if(e)e.classList.add('was');});
+  s.n.forEach(x=>document.getElementById('n'+x).classList.add('on'));
+  s.p.forEach(x=>{document.getElementById('p'+x).classList.add('on');document.getElementById('d'+x).classList.add('on');});
+  s.labels.forEach(id=>document.getElementById(id).classList.add('on'));
+  const ic=document.getElementById('ni');ic.textContent=s.icon;ic.style.animation='none';ic.offsetHeight;ic.style.animation='pop .5s ease';
+  document.getElementById('nt').textContent=s.t;
+  document.getElementById('nd').textContent=s.d;
+  cur=i;
+}
+
+function next(){const x=cur+1;if(x>=S.length){if(playing){reset();return;}return;}show(x);}
+function prev(){if(cur<=0)return;vis.clear();document.querySelectorAll('.nd,.fp').forEach(e=>e.classList.remove('was'));show(cur-1);for(let j=0;j<cur-1;j++){S[j].n.forEach(x=>vis.add('n'+x));S[j].p.forEach(x=>vis.add('p'+x));}}
+function reset(){cur=-1;playing=false;clearInterval(tmr);vis.clear();clr();document.querySelectorAll('.nd,.fp').forEach(e=>e.classList.remove('was'));document.getElementById('ni').textContent='🦞';document.getElementById('nt').textContent='按播放看龍蝦動起來';document.getElementById('nd').textContent='User（左）→ 中間龍蝦身體 → LLM 大腦（右）→ 回傳指令 → 執行 → 回覆。雙向箭頭 = 請求 ➡ 與回應 ⬅。';upBtn();}
+function togglePlay(){if(playing){playing=false;clearInterval(tmr);}else{playing=true;if(cur>=S.length-1)reset();next();tmr=setInterval(()=>{if(cur>=S.length-1){playing=false;clearInterval(tmr);upBtn();return;}next();},spv);}upBtn();}
+function upBtn(){const b=document.getElementById('bp');b.textContent=playing?'⏸':'▶ 播放';b.classList.toggle('on',playing);}
+function spd(ms){spv=ms;document.querySelectorAll('.btn.sp').forEach(b=>b.classList.remove('on'));event.target.classList.add('on');if(playing){clearInterval(tmr);tmr=setInterval(()=>{if(cur>=S.length-1){playing=false;clearInterval(tmr);upBtn();return;}next();},spv);}}
+
+// particles
+(()=>{const c=document.getElementById('ptc');const cs=['#06b6d4','#dc2626','#facc15','#8b5cf6','#10b981','#ec4899','#f59e0b'];for(let i=0;i<20;i++){const d=document.createElement('i');d.style.left=Math.random()*100+'%';d.style.top=Math.random()*100+'%';d.style.background=cs[i%7];d.style.animationDelay=Math.random()*5+'s';d.style.animationDuration=(3+Math.random()*4)+'s';c.appendChild(d);}})();
+
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}if(e.key==='ArrowLeft')prev();if(e.key==='r')reset();if(e.key==='p')togglePlay();});
+
+// === TTS NARRATION ===
+const ttsScript=[
+  "歡迎來到 AI Agent 運作流程動畫。接下來我會帶您走過 AI Agent 處理一個請求的完整 8 個步驟。",
+  "第一步，使用者發送訊息。您在 WhatsApp 打了「幫我查上季營收報表」，這就是 User Prompt，一切從左邊開始。",
+  "第二步，觸鬚接收。WhatsApp Channel 收到訊息，路由到 OpenClaw Gateway。就像龍蝦的觸鬚感知到獵物。",
+  "第三步，龍蝦的殼組裝 System Prompt。載入靈魂、身份、偏好、規則、記憶、工具清單，打包成完整指令，準備送往大腦。",
+  "第四步，送往外借大腦。完整指令加上您的訊息，透過 API 送到最右邊的大語言模型。龍蝦自己沒有大腦，智慧完全來自外部。",
+  "第五步，大語言模型回傳指令，中間全面啟動。工具執行讀取、技能指導組合動作、RAG 從知識庫檢索文件，三者同時協作。",
+  "第六步，繁殖分派子 Agent。任務太複雜時，主 Agent 分裂出子 Agent，一個查資料、一個做圖表、一個寫摘要，各司其職。",
+  "第七步，記憶更新。重要資訊存入記憶，回饋進 System Prompt。下次對話 Agent 已經知道您的偏好。",
+  "第八步，結果回覆使用者。最終答案送回 WhatsApp。整個雙向流程完成！"
+];
+let ttsOn=false,ttsI=0,ttsFV=null;
+function findFV(){const v=speechSynthesis.getVoices();const p=[v=>v.lang.includes('zh-TW')&&/female|美|雅|慧|小/i.test(v.name),v=>v.lang.includes('zh-TW'),v=>v.lang.includes('zh')];for(const f of p){const r=v.find(f);if(r)return r;}return null;}
+speechSynthesis.onvoiceschanged=()=>{ttsFV=findFV();};ttsFV=findFV();
+
+function ttsSpeak(txt,cb){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang='zh-TW';u.rate=1;u.pitch=1.1;if(ttsFV)u.voice=ttsFV;u.onend=cb;u.onerror=cb;speechSynthesis.speak(u);}
+
+function ttsNarrate(){
+  if(ttsI>=ttsScript.length){ttsOn=false;document.getElementById('ttsBtn').textContent='🎙️ 重播導覽';document.getElementById('ttsBtn').style.background='#8b5cf6';return;}
+  if(ttsI>0){show(ttsI-1);}// step 0 is intro, steps 1-8 map to show(0)-show(7)
+  ttsSpeak(ttsScript[ttsI],()=>{if(!ttsOn)return;ttsI++;setTimeout(ttsNarrate,300);});
+}
+
+function ttsToggleFlow(){
+  const btn=document.getElementById('ttsBtn');
+  if(!ttsOn){ttsOn=true;ttsI=0;reset();btn.textContent='⏹ 停止導覽';btn.style.background='#ef4444';ttsNarrate();}
+  else{ttsOn=false;speechSynthesis.cancel();btn.textContent='🎙️ 語音導覽';btn.style.background='#8b5cf6';}
+}
+
+// Add button to controls
+const ttsBtn=document.createElement('button');
+ttsBtn.id='ttsBtn';ttsBtn.className='btn';ttsBtn.textContent='🎙️ 語音導覽';
+ttsBtn.style.cssText='background:#8b5cf6;border-color:#8b5cf6;color:#fff;font-weight:700';
+ttsBtn.onclick=ttsToggleFlow;
+document.querySelector('.ctrl').prepend(ttsBtn);
+</script>
+</body>
+</html>

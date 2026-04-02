@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent 從入門到企業級 — 三部曲（完整版）</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+/* === GLOBAL === */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans TC',sans-serif;background:#08090f;color:#f1f5f9;min-height:100vh;overflow-x:hidden}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* === GLOBAL NAV === */
+.global-nav{position:sticky;top:0;z-index:10000;background:rgba(8,9,15,0.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid #1e293b;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.nav-brand{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:900;cursor:pointer;
+  background:linear-gradient(135deg,#ef4444,#f59e0b,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;transition:opacity .2s}
+.nav-brand:hover{opacity:0.8}
+.nav-tabs{display:flex;align-items:center;gap:4px}
+.nav-tab{padding:6px 14px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;
+  border:1px solid #334055;color:#94a3b8;background:transparent;transition:all .2s;white-space:nowrap;font-family:inherit}
+.nav-tab:hover{background:#1e293b;border-color:#475569;color:#f1f5f9}
+.nav-tab.active{border-width:2px}
+.nav-tab.t-home{color:#8b5cf6}.nav-tab.t-home.active{border-color:#8b5cf6;background:rgba(139,92,246,0.1)}
+.nav-tab.t-ch1{color:#ef4444}.nav-tab.t-ch1.active{border-color:#ef4444;background:rgba(239,68,68,0.1)}
+.nav-tab.t-ch2{color:#f59e0b}.nav-tab.t-ch2.active{border-color:#f59e0b;background:rgba(245,158,11,0.1)}
+.nav-tab.t-ch3{color:#06b6d4}.nav-tab.t-ch3.active{border-color:#06b6d4;background:rgba(6,182,212,0.1)}
+.nav-arrow{color:#334055;font-size:12px}
+@media(max-width:640px){.global-nav{flex-wrap:wrap;justify-content:center}.nav-brand{width:100%;justify-content:center}}
+
+.view-section{display:none}.view-section.active{display:block}
+
+/* === HOME === */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#08090f;--card:#0f1320;--card-hover:#151b2e;
+  --red:#ef4444;--orange:#f59e0b;--cyan:#06b6d4;--green:#10b981;
+  --purple:#8b5cf6;--blue:#3b82f6;--pink:#ec4899;
+  --white:#f1f5f9;--gray:#94a3b8;--gray-dk:#1e293b;--gray-md:#475569;
+}
+body{background:var(--bg);color:var(--white);font-family:'Noto Sans TC',sans-serif;
+  min-height:100vh;overflow-x:hidden}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* === HERO === */
+.hero{text-align:center;padding:60px 24px 40px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(ellipse at 50% 30%,rgba(139,92,246,0.08) 0%,transparent 60%);pointer-events:none}
+.hero-badge{display:inline-block;padding:6px 18px;border-radius:99px;font-size:11px;font-weight:600;
+  background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(139,92,246,0.15));
+  border:1px solid rgba(139,92,246,0.25);color:var(--purple);letter-spacing:1px;margin-bottom:20px}
+.hero h1{font-size:clamp(28px,5vw,48px);font-weight:900;line-height:1.25;
+  background:linear-gradient(135deg,#fff 0%,#94a3b8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero h1 em{font-style:normal;
+  background:linear-gradient(135deg,#ef4444,#f59e0b,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{font-size:15px;color:var(--gray);margin-top:14px;line-height:1.8;max-width:680px;margin-left:auto;margin-right:auto}
+.hero .tags{margin-top:18px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.hero .tag{font-size:10px;padding:4px 12px;border-radius:99px;border:1px solid var(--gray-dk);
+  color:var(--gray-md);background:rgba(255,255,255,0.02)}
+
+/* === STORY ARC === */
+.arc{max-width:960px;margin:0 auto 40px;padding:0 20px}
+.arc-title{text-align:center;font-size:13px;color:var(--gray-md);margin-bottom:24px;letter-spacing:2px;font-weight:700}
+.arc-steps{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap}
+.arc-step{text-align:center;padding:12px 20px;position:relative}
+.arc-dot{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:18px;margin:0 auto 8px;border:2px solid}
+.arc-label{font-size:11px;font-weight:700;letter-spacing:0.5px}
+.arc-sub{font-size:9px;color:var(--gray-md);margin-top:2px}
+.arc-arrow{font-size:20px;color:var(--gray-dk);margin:0 4px;align-self:center}
+
+/* === CARDS === */
+.cards{max-width:1100px;margin:0 auto;padding:0 20px 40px;display:flex;flex-direction:column;gap:24px}
+
+.chapter-card{background:var(--card);border-radius:16px;padding:0;overflow:hidden;
+  border:1px solid var(--gray-dk);transition:all .4s;cursor:pointer;position:relative;
+  display:grid;grid-template-columns:160px 1fr;min-height:220px}
+.chapter-card:hover{transform:translateY(-4px);border-color:var(--gray-md);
+  box-shadow:0 20px 40px rgba(0,0,0,0.4)}
+
+.card-num{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;position:relative;overflow:hidden}
+.card-num::before{content:'';position:absolute;inset:0;opacity:0.08}
+.card-num .chapter{font-size:11px;font-weight:700;letter-spacing:2px;margin-bottom:6px}
+.card-num .big{font-size:52px;font-weight:900;line-height:1}
+.card-num .emoji{font-size:36px;margin-top:8px}
+
+.card-body{padding:28px 32px 28px 24px;display:flex;flex-direction:column;justify-content:center}
+.card-body h2{font-size:22px;font-weight:900;margin-bottom:4px}
+.card-body .subtitle{font-size:13px;color:var(--gray);margin-bottom:14px;line-height:1.6}
+.card-body .desc{font-size:12px;color:var(--gray-md);line-height:1.8;margin-bottom:16px}
+.card-body .meta{display:flex;gap:16px;flex-wrap:wrap}
+.card-body .meta-item{font-size:10px;color:var(--gray);display:flex;align-items:center;gap:4px}
+.card-body .meta-icon{font-size:12px}
+
+.card-cta{position:absolute;bottom:20px;right:24px;font-size:11px;font-weight:700;
+  padding:8px 18px;border-radius:8px;border:1px solid;transition:all .3s}
+.card-cta:hover{transform:scale(1.05)}
+
+/* Card colors */
+.card-1{border-left:4px solid var(--red)}
+.card-1 .card-num::before{background:linear-gradient(135deg,var(--red),var(--orange))}
+.card-1 .chapter,.card-1 .big,.card-1 h2{color:var(--red)}
+.card-1 .card-cta{border-color:var(--red);color:var(--red);background:rgba(239,68,68,0.08)}
+.card-1 .card-cta:hover{background:var(--red);color:#fff}
+
+.card-2{border-left:4px solid var(--orange)}
+.card-2 .card-num::before{background:linear-gradient(135deg,var(--orange),#facc15)}
+.card-2 .chapter,.card-2 .big,.card-2 h2{color:var(--orange)}
+.card-2 .card-cta{border-color:var(--orange);color:var(--orange);background:rgba(245,158,11,0.08)}
+.card-2 .card-cta:hover{background:var(--orange);color:#fff}
+
+.card-3{border-left:4px solid var(--cyan)}
+.card-3 .card-num::before{background:linear-gradient(135deg,var(--cyan),var(--blue))}
+.card-3 .chapter,.card-3 .big,.card-3 h2{color:var(--cyan)}
+.card-3 .card-cta{border-color:var(--cyan);color:var(--cyan);background:rgba(6,182,212,0.08)}
+.card-3 .card-cta:hover{background:var(--cyan);color:#fff}
+
+/* === TRANSITION QUOTES === */
+.transition{max-width:680px;margin:0 auto;padding:8px 20px 24px;text-align:center}
+.transition .quote{font-size:13px;color:var(--gray);font-style:italic;line-height:1.6;
+  padding:16px 24px;border-left:3px solid var(--gray-dk);text-align:left;
+  background:rgba(255,255,255,0.01);border-radius:0 8px 8px 0}
+.transition .speaker{font-size:10px;color:var(--gray-md);margin-top:6px;text-align:right}
+
+/* === BOTTOM === */
+.bottom{text-align:center;padding:40px 20px 60px;max-width:700px;margin:0 auto}
+.bottom h3{font-size:20px;font-weight:900;margin-bottom:12px;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.bottom p{font-size:13px;color:var(--gray);line-height:1.8;margin-bottom:24px}
+.bottom .use-cases{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.bottom .use-case{font-size:10px;padding:6px 14px;border-radius:8px;background:var(--card);
+  border:1px solid var(--gray-dk);color:var(--gray)}
+.bottom .footer-note{font-size:9px;color:var(--gray-dk);margin-top:32px;letter-spacing:0.5px}
+
+/* === Responsive === */
+@media(max-width:768px){
+  .chapter-card{grid-template-columns:1fr;min-height:auto}
+  .card-num{flex-direction:row;gap:12px;padding:16px 20px;justify-content:flex-start}
+  .card-num .emoji{margin-top:0}
+  .card-cta{position:static;margin-top:12px;display:inline-block;width:fit-content}
+  .arc-steps{flex-direction:column;gap:4px}
+  .arc-arrow{transform:rotate(90deg)}
+}
+
+
+/* === CH1: FLOW ANIMATION === */
+#ch1{background:#0a0f1e}
+#ch1 .page{max-width:1480px;margin:0 auto;padding:.8rem 1.5rem .6rem}
+#ch1 .hdr{text-align:center;margin-bottom:.6rem}
+#ch1 .hdr h1{font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,#ef4444,#f59e0b,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+#ch1 .hdr p{font-size:.72rem;color:#64748b;margin-top:.15rem}
+#ch1 .ctrl{margin-top:.4rem;display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap}
+#ch1 .btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:.3rem .9rem;border-radius:8px;cursor:pointer;font-size:.7rem;font-family:inherit;transition:all .2s}
+#ch1 .btn:hover{background:#334155;color:#fff}
+#ch1 .btn.on{background:#dc2626;border-color:#dc2626;color:#fff}
+#ch1 .spl{font-size:.62rem;color:#475569;align-self:center}
+#ch1 .flow{position:relative;width:100%;height:560px}
+#ch1 .flow svg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
+#ch1 .fp{fill:none;stroke-width:3;opacity:.08;transition:opacity .5s}
+#ch1 .fp.on{opacity:1}#ch1 .fp.was{opacity:.2}
+#ch1 .fp.on.req{stroke-dasharray:12 6;animation:reqDash .7s linear infinite}
+#ch1 .fp.on.res{stroke-dasharray:12 6;animation:resDash .7s linear infinite}
+@keyframes reqDash{to{stroke-dashoffset:-36}}
+@keyframes resDash{to{stroke-dashoffset:36}}
+#ch1 .pd{opacity:0;transition:opacity .3s}#ch1 .pd.on{opacity:1;animation:pdAni 1.4s ease-in-out infinite}
+@keyframes pdAni{0%,100%{r:4;opacity:.5}50%{r:9;opacity:1}}
+#ch1 .nd{position:absolute;border-radius:14px;padding:.65rem .75rem;transition:all .5s;z-index:2;opacity:.35}
+#ch1 .nd.was{opacity:.6}#ch1 .nd.on{opacity:1;box-shadow:0 0 28px var(--g),0 0 70px var(--gs);transform:scale(1.04);z-index:5}
+#ch1 .nd h3{font-size:.82rem;font-weight:700;margin-bottom:.08rem}
+#ch1 .nd .s{font-size:.62rem;color:#94a3b8;line-height:1.4}
+#ch1 .nd .tg{display:inline-block;font-size:.54rem;font-weight:700;padding:.1rem .4rem;border-radius:10px;margin-top:.2rem}
+#ch1 .sn{position:absolute;top:-.4rem;left:-.3rem;width:1.2rem;height:1.2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:900;color:#fff;z-index:3;opacity:0;transition:opacity .3s}
+#ch1 .nd.on .sn,#ch1 .nd.was .sn{opacity:1}
+#ch1 .arrow-label{position:absolute;font-size:.6rem;font-weight:700;padding:.15rem .5rem;border-radius:6px;white-space:nowrap;z-index:3;opacity:0;transition:all .5s}
+#ch1 .arrow-label.on{opacity:1}
+#ch1 .ptc{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;overflow:hidden}
+#ch1 .ptc i{position:absolute;width:2px;height:2px;border-radius:50%;opacity:0;animation:pf 5s ease-in-out infinite}
+@keyframes pf{0%{opacity:0;transform:translateY(0)}25%{opacity:.4}75%{opacity:.15}100%{opacity:0;transform:translateY(-50px)}}
+#ch1 .nar{background:#1a253c;border:1px solid #334155;border-radius:12px;padding:.55rem 1rem;margin-top:.4rem;min-height:2.6rem;display:flex;align-items:center;gap:.6rem}
+#ch1 .nar .ic{font-size:1.5rem;flex-shrink:0}
+#ch1 .nar .tx h4{font-size:.82rem;color:#fff;margin-bottom:.08rem}
+#ch1 .nar .tx p{font-size:.7rem;color:#94a3b8;line-height:1.5}
+@keyframes pop{0%,100%{transform:scale(1)}40%{transform:scale(1.25)}}
+#ch1 .leg{display:flex;justify-content:center;gap:1rem;margin-top:.4rem;flex-wrap:wrap}
+#ch1 .leg span{display:flex;align-items:center;gap:.2rem;font-size:.58rem;color:#64748b}
+#ch1 .leg i{width:7px;height:7px;border-radius:50%;display:inline-block}
+#ch1 .c-user{background:#0f1d2d;border:2px solid #06b6d4;--g:#06b6d4;--gs:#06b6d430}
+#ch1 .c-ch{background:#0f1d2d;border:2px solid #06b6d4;--g:#06b6d4;--gs:#06b6d430}
+#ch1 .c-shell{background:#1e1215;border:2px solid #dc2626;--g:#dc2626;--gs:#dc262630}
+#ch1 .c-llm{background:#1a2310;border:2px solid #facc15;--g:#facc15;--gs:#facc1530}
+#ch1 .c-tool{background:#1a1520;border:2px solid #ef4444;--g:#ef4444;--gs:#ef444430}
+#ch1 .c-skill{background:#1a1525;border:2px solid #8b5cf6;--g:#8b5cf6;--gs:#8b5cf630}
+#ch1 .c-rag{background:#101e1a;border:2px solid #10b981;--g:#10b981;--gs:#10b98130}
+#ch1 .c-mem{background:#1e1d10;border:2px solid #f59e0b;--g:#f59e0b;--gs:#f59e0b30}
+#ch1 .c-spawn{background:#1e1020;border:2px solid #ec4899;--g:#ec4899;--gs:#ec489930}
+#ch1 .c-reply{background:#0f1d2d;border:2px solid #06b6d4;--g:#06b6d4;--gs:#06b6d430}
+#ch1 .md-grid{display:flex;flex-wrap:wrap;gap:3px;margin-top:.3rem}
+#ch1 .md-chip{font-size:.52rem;font-weight:600;padding:.12rem .3rem;border-radius:5px;background:#2a1520;border:1px solid #55202a;color:#fca5a5}
+
+/* === CH2: LOBSTER ANATOMY === */
+#ch2{background:#0F172A}
+#ch2 .page{max-width:1300px;margin:0 auto;padding:16px 20px}
+#ch2 .hdr{margin-bottom:12px;border-bottom:1px solid #334055;padding-bottom:10px}
+#ch2 .hdr h1{font-size:22px;font-weight:900;background:linear-gradient(135deg,#ef4444,#f59e0b,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+#ch2 .hdr p{font-size:11px;color:#94A3B8;margin-top:4px;line-height:1.5}
+#ch2 .main{display:grid;grid-template-columns:200px 1fr 200px;gap:10px;margin-bottom:12px}
+#ch2 .side-panel{display:flex;flex-direction:column;gap:10px}
+#ch2 .organ-card{border-radius:10px;background:#1A253C;padding:12px;cursor:pointer;border:1px solid;transition:all .3s}
+#ch2 .organ-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.3)}
+#ch2 .organ-title{font-size:12px;font-weight:700;margin-bottom:4px}
+#ch2 .organ-desc{font-size:8.5px;color:#94A3B8;line-height:1.6}
+#ch2 .organ-highlight{font-size:8.5px;font-weight:700;margin-top:6px}
+#ch2 .body-shell{border:2px solid #DC2626;border-radius:14px;background:#1A253C;overflow:hidden}
+#ch2 .body-title-bar{background:#991B1B;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+#ch2 .body-title-bar h2{font-size:14px;font-weight:900}
+#ch2 .body-title-bar .note{font-size:8px;color:#FCA5A5}
+#ch2 .sp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 12px}
+#ch2 .sp-card{background:#1E2D4A;border-radius:8px;padding:10px;border-top:3px solid;cursor:pointer;transition:all .3s}
+#ch2 .sp-card:hover{transform:translateY(-2px)}
+#ch2 .sp-name{font-size:10px;font-weight:700;margin-bottom:2px}
+#ch2 .sp-sub{font-size:8px;font-weight:700;margin-bottom:4px}
+#ch2 .sp-desc{font-size:7.5px;color:#94A3B8;line-height:1.5}
+#ch2 .bottom-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+#ch2 .section-card{border-radius:10px;background:#1A253C;padding:12px;border:1px solid;cursor:pointer;transition:all .3s}
+#ch2 .section-card:hover{transform:translateY(-2px)}
+#ch2 .section-title{font-size:13px;font-weight:700;margin-bottom:4px}
+#ch2 .section-desc{font-size:8.5px;color:#94A3B8;margin-bottom:8px}
+#ch2 .item-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+#ch2 .item-chip{background:#1E2D4A;border-radius:5px;padding:5px 6px;text-align:center;border:1px solid #334055}
+#ch2 .item-chip .name{font-size:7px;font-weight:700;color:#F1F5F9}
+#ch2 .item-chip .desc{font-size:6px;color:#94A3B8;margin-top:1px}
+#ch2 .prompt-strip{border-radius:10px;background:#1A253C;border:1px solid #334055;padding:10px 14px}
+#ch2 .prompt-strip h3{font-size:13px;font-weight:700;margin-bottom:8px}
+#ch2 .prompt-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+#ch2 .prompt-card{background:#1E2D4A;border-radius:7px;padding:8px;border-top:2px solid}
+#ch2 .prompt-card .pt{font-size:8px;font-weight:700;margin-bottom:3px;line-height:1.3}
+#ch2 .prompt-card .pd{font-size:7px;color:#94A3B8;line-height:1.5}
+#ch2 .ch2-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.75);z-index:10001;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+#ch2 .ch2-modal-overlay.show{display:flex}
+#ch2 .modal{background:#1A253C;border-radius:14px;max-width:580px;width:90%;max-height:85vh;overflow-y:auto;padding:24px;border:1px solid #334055;position:relative;animation:slideUp .3s ease-out}
+#ch2 .modal-close{position:absolute;top:12px;right:14px;width:28px;height:28px;border-radius:50%;background:#1E2D4A;border:1px solid #334055;color:#94A3B8;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#ch2 .modal-close:hover{background:#DC2626;color:#fff}
+#ch2 .modal h2{font-size:16px;font-weight:900;margin-bottom:4px}
+#ch2 .modal h3{font-size:12px;font-weight:700;margin:14px 0 6px;padding-bottom:3px;border-bottom:1px solid #334055}
+#ch2 .modal p,#ch2 .modal li{font-size:11px;color:#94A3B8;line-height:1.8}
+#ch2 .modal ul{padding-left:16px}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){#ch2 .main{grid-template-columns:1fr}#ch2 .bottom-grid{grid-template-columns:1fr}#ch2 .prompt-cards{grid-template-columns:repeat(2,1fr)}#ch2 .sp-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* === CH3: ARCHITECTURE === */
+#ch3{background:#0B0F1A}
+#ch3 .header{padding:18px 28px 12px;border-bottom:1px solid #334055}
+#ch3 .header h1{font-size:22px;font-weight:900;letter-spacing:1px;background:linear-gradient(90deg,#fff 0%,#94A3B8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+#ch3 .header .sub{font-size:11px;color:#64748B;margin-top:4px}
+#ch3 .main{display:grid;grid-template-columns:90px 1fr 260px;gap:10px;padding:12px 18px 8px}
+#ch3 .osi-bar{border:1px solid #334055;border-radius:8px;padding:8px 4px;background:#101525;display:flex;flex-direction:column}
+#ch3 .osi-title{text-align:center;font-size:10px;color:#94A3B8;font-weight:700;margin-bottom:6px}
+#ch3 .osi-item{display:flex;align-items:center;gap:4px;padding:6px 3px;flex:1;cursor:pointer;border-radius:4px;transition:background .2s}
+#ch3 .osi-item:hover{background:rgba(255,255,255,0.04)}
+#ch3 .osi-dot{width:5px;min-height:100%;border-radius:2px;flex-shrink:0}
+#ch3 .osi-label{font-size:8px;font-weight:700;line-height:1.3}
+#ch3 .layers{display:flex;flex-direction:column;gap:8px}
+#ch3 .layer-card{border-radius:10px;background:#141E33;border-left:5px solid;padding:8px 10px 10px;cursor:pointer;transition:transform .2s,box-shadow .2s}
+#ch3 .layer-card:hover{transform:translateX(4px);box-shadow:0 0 20px rgba(0,0,0,0.4)}
+#ch3 .layer-name{font-size:11px;font-weight:700;margin-bottom:6px}
+#ch3 .sub-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+#ch3 .sub-card{background:#1A253C;border:1px solid #334055;border-radius:7px;padding:7px 8px;transition:all .25s;cursor:pointer}
+#ch3 .sub-card:hover{border-color:#64748B;transform:translateY(-2px)}
+#ch3 .sub-title{font-size:9.5px;font-weight:700;color:#FFF;margin-bottom:3px}
+#ch3 .sub-desc{font-size:8px;color:#94A3B8;line-height:1.5}
+#ch3 .arrow-between{display:flex;justify-content:center;padding:2px 0}
+#ch3 .arrow-between svg{opacity:0.3}
+#ch3 .concerns{display:flex;flex-direction:column;gap:8px}
+#ch3 .concern-card{border-radius:10px;padding:10px;flex:1;cursor:pointer;transition:transform .2s;border:1px solid}
+#ch3 .concern-card:hover{transform:translateX(-4px)}
+#ch3 .concern-title{font-size:11px;font-weight:700;margin-bottom:2px}
+#ch3 .concern-subtitle{font-size:8px;color:#64748B;font-weight:700;margin-bottom:6px}
+#ch3 .concern-items{font-size:8.5px;color:#94A3B8;line-height:1.7}
+#ch3 .concern-items span{display:block}
+#ch3 .principles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:6px 18px 14px}
+#ch3 .principle-card{background:#141E33;border-radius:8px;padding:9px 10px;border:1px solid;cursor:pointer;transition:transform .2s}
+#ch3 .principle-card:hover{transform:translateY(-3px)}
+#ch3 .principle-title{font-size:10px;font-weight:700;margin-bottom:4px}
+#ch3 .principle-desc{font-size:8.5px;color:#94A3B8;line-height:1.6}
+#ch3 .ch3-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10001;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+#ch3 .ch3-modal-overlay.show{display:flex}
+#ch3 .modal{background:#141E33;border-radius:14px;max-width:680px;width:90%;max-height:85vh;overflow-y:auto;padding:28px;border:1px solid #334055;animation:slideUp .3s ease-out;position:relative}
+#ch3 .modal-close{position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:50%;background:#1A253C;border:1px solid #334055;color:#94A3B8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#ch3 .modal-close:hover{background:#DC2626;color:#FFF}
+#ch3 .modal h2{font-size:18px;font-weight:900;margin-bottom:6px}
+#ch3 .modal h3{font-size:13px;font-weight:700;margin:16px 0 8px;padding-bottom:4px;border-bottom:1px solid #334055}
+#ch3 .modal p,#ch3 .modal ul{font-size:12px;color:#94A3B8;line-height:1.8}
+#ch3 .modal ul{padding-left:18px}
+#ch3 .modal li{margin-bottom:4px}
+#ch3 .modal .tag{display:inline-block;font-size:9px;padding:2px 8px;border-radius:20px;margin:2px;font-weight:600}
+@media(max-width:1100px){#ch3 .main{grid-template-columns:1fr;gap:16px}#ch3 .osi-bar{display:none}#ch3 .concerns{flex-direction:row;flex-wrap:wrap}#ch3 .sub-cards{grid-template-columns:repeat(2,1fr)}#ch3 .principles{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){#ch3 .sub-cards{grid-template-columns:1fr}#ch3 .principles{grid-template-columns:1fr}#ch3 .concerns{flex-direction:column}}
+
+/* === TTS === */
+.tts-bar{position:fixed;bottom:0;left:0;width:100%;background:rgba(15,19,32,0.97);backdrop-filter:blur(8px);border-top:1px solid #1e293b;padding:10px 20px;display:flex;align-items:center;gap:12px;z-index:9999}
+.tts-bar button{font-family:inherit}
+.tts-bar .tts-main-btn{background:#8b5cf6;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;cursor:pointer;font-weight:700;transition:all .2s}
+.tts-bar .tts-skip-btn{background:#1e293b;color:#94a3b8;border:1px solid #334055;border-radius:8px;padding:6px 12px;font-size:11px;cursor:pointer}
+.tts-bar .tts-progress{flex:1;height:4px;background:#1e293b;border-radius:2px;overflow:hidden}
+.tts-bar .tts-progress-inner{height:100%;background:linear-gradient(90deg,#8b5cf6,#06b6d4);width:0%;transition:width .3s}
+.tts-bar .tts-status{font-size:10px;color:#64748b;min-width:80px;text-align:right}
+.tts-bar select{background:#1e293b;color:#94a3b8;border:1px solid #334055;border-radius:6px;padding:4px 6px;font-size:10px;font-family:inherit}
+.tts-highlight{box-shadow:0 0 30px rgba(139,92,246,0.35)!important;border-color:#8b5cf6!important;transition:all .5s}
+.bottom-spacer{height:54px}
+
+/* Hint */
+.page-hint{position:fixed;bottom:60px;right:16px;background:#1A253C;border:1px solid #334055;border-radius:6px;padding:6px 12px;font-size:9px;color:#94A3B8;z-index:50;display:none}
+</style>
+</head>
+<body>
+
+<!-- GLOBAL NAV -->
+<nav class="global-nav">
+  <div class="nav-brand" onclick="showView('home')">🦞 AI Agent 三部曲</div>
+  <div class="nav-tabs">
+    <button class="nav-tab t-home active" onclick="showView('home')">總覽</button>
+    <span class="nav-arrow">›</span>
+    <button class="nav-tab t-ch1" onclick="showView('ch1')">01 流程動畫</button>
+    <span class="nav-arrow">›</span>
+    <button class="nav-tab t-ch2" onclick="showView('ch2')">02 龍蝦解剖</button>
+    <span class="nav-arrow">›</span>
+    <button class="nav-tab t-ch3" onclick="showView('ch3')">03 系統架構</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<section id="view-home" class="view-section active">
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">EXECUTIVE AI LITERACY SERIES</div>
+  <h1>AI Agent <em>從入門到企業級</em><br>三部曲</h1>
+  <p>
+    為企業高階主管量身設計的 AI 素養培訓教材<br>
+    從「看懂 AI」到「敢投資 AI」— 三個互動章節、一套完整故事
+  </p>
+  <div class="tags">
+    <span class="tag">CEO / CFO / CTO</span>
+    <span class="tag">非技術背景友善</span>
+    <span class="tag">互動式簡報</span>
+    <span class="tag">可離線使用</span>
+    <span class="tag">30 分鐘完整體驗</span>
+  </div>
+</div>
+
+<!-- STORY ARC -->
+<div class="arc">
+  <div class="arc-title">簡 報 故 事 弧</div>
+  <div class="arc-steps">
+    <div class="arc-step">
+      <div class="arc-dot" style="border-color:var(--red);color:var(--red)">1</div>
+      <div class="arc-label" style="color:var(--red)">WOW</div>
+      <div class="arc-sub">想要 AI</div>
+    </div>
+    <div class="arc-arrow">→</div>
+    <div class="arc-step">
+      <div class="arc-dot" style="border-color:var(--orange);color:var(--orange)">2</div>
+      <div class="arc-label" style="color:var(--orange)">AHA</div>
+      <div class="arc-sub">理解 AI</div>
+    </div>
+    <div class="arc-arrow">→</div>
+    <div class="arc-step">
+      <div class="arc-dot" style="border-color:var(--cyan);color:var(--cyan)">3</div>
+      <div class="arc-label" style="color:var(--cyan)">GO!</div>
+      <div class="arc-sub">投資 AI</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAPTER CARDS -->
+<div class="cards">
+
+  <!-- CH 1 -->
+  <div class="chapter-card card-1" >
+    <div class="card-num">
+      <div class="chapter">CHAPTER</div>
+      <div class="big">01</div>
+      <div class="emoji">⚡</div>
+    </div>
+    <div class="card-body">
+      <h2>AI Agent 怎麼工作？</h2>
+      <div class="subtitle">看懂 AI 的第一步 — 30 秒搞懂全流程</div>
+      <div class="desc">
+        透過 8 步驟動畫流程圖，直覺展示：使用者提問 → AI 穿上系統提示詞的「殼」→
+        呼叫大語言模型思考 → 調用工具與技能執行 → 回傳結果。<br>
+        就像看一部 30 秒的迷你動畫 — 不需要任何技術背景就能理解 AI 的「魔法」。
+      </div>
+      <div class="meta">
+        <div class="meta-item"><span class="meta-icon">🎬</span> 8 步驟互動動畫</div>
+        <div class="meta-item"><span class="meta-icon">⏱</span> 5 分鐘</div>
+        <div class="meta-item"><span class="meta-icon">🎯</span> 建立好奇心</div>
+      </div>
+    </div>
+    <div class="card-cta">開始體驗 →</div>
+  </div>
+
+  <!-- Transition 1→2 -->
+  <div class="transition">
+    <div class="quote">
+      「剛才看到 AI Agent 如何回應使用者，但裡面的零件到底是什麼？<br>
+      每個步驟背後的技術元件，各自扮演什麼角色？」
+      <div class="speaker">— 轉場引導：從「流程」進入「結構」</div>
+    </div>
+  </div>
+
+  <!-- CH 2 -->
+  <div class="chapter-card card-2" >
+    <div class="card-num">
+      <div class="chapter">CHAPTER</div>
+      <div class="big">02</div>
+      <div class="emoji">🦞</div>
+    </div>
+    <div class="card-body">
+      <h2>AI Agent 裡面有什麼？</h2>
+      <div class="subtitle">一隻龍蝦搞懂 AI 全部核心技術</div>
+      <div class="desc">
+        龍蝦沒有大腦（如同 AI Agent 沒有內建 LLM）、殼就是 System Prompt、
+        鉗子是 Tools、腿是 Skills、消化系統是 RAG、還能繁殖子 Agent（Multi-Agent）。<br>
+        用最生動的比喻，建立企業高階與技術團隊之間的「共同語彙」。
+      </div>
+      <div class="meta">
+        <div class="meta-item"><span class="meta-icon">🔬</span> 10 大元件解剖</div>
+        <div class="meta-item"><span class="meta-icon">⏱</span> 10 分鐘</div>
+        <div class="meta-item"><span class="meta-icon">🎯</span> 建立共同語彙</div>
+      </div>
+    </div>
+    <div class="card-cta">開始探索 →</div>
+  </div>
+
+  <!-- Transition 2→3 -->
+  <div class="transition">
+    <div class="quote">
+      「每個零件都懂了。但要在企業裡落地，資安怎麼做？個資怎麼管？<br>
+      從基礎設施到應用層，完整的企業級架構應該長什麼樣？」
+      <div class="speaker">— 轉場引導：從「理解」進入「投資決策」</div>
+    </div>
+  </div>
+
+  <!-- CH 3 -->
+  <div class="chapter-card card-3" >
+    <div class="card-num">
+      <div class="chapter">CHAPTER</div>
+      <div class="big">03</div>
+      <div class="emoji">🏗️</div>
+    </div>
+    <div class="card-body">
+      <h2>企業級 AI 怎麼建？</h2>
+      <div class="subtitle">從基礎設施到 Agent 調度 — CTO 的完整藍圖</div>
+      <div class="desc">
+        6 大架構層（基礎設施 → IAM → 網路安全 → 資料平台 → AI 平台 → 應用整合），
+        對應 OSI 七層模型，搭配資安防護、個資保護、AI 治理、可觀測性四大橫切面。<br>
+        24 個技術元件全部可點擊展開，附技術細節、風險提醒與關鍵技術標籤。
+      </div>
+      <div class="meta">
+        <div class="meta-item"><span class="meta-icon">🏛️</span> 6 層 × 4 元件 + 4 橫切面</div>
+        <div class="meta-item"><span class="meta-icon">⏱</span> 15 分鐘</div>
+        <div class="meta-item"><span class="meta-icon">🎯</span> 驅動投資決策</div>
+      </div>
+    </div>
+    <div class="card-cta">開始規劃 →</div>
+  </div>
+
+</div>
+
+<!-- BOTTOM -->
+<div class="bottom">
+  <h3>準備好帶領企業進入 AI Agent 時代了嗎？</h3>
+  <p>
+    這三份互動式教材可以獨立使用，也可以按照 1→2→3 的故事弧依序簡報。<br>
+    所有檔案皆為自包含 HTML，無需安裝任何軟體，用瀏覽器即可開啟。
+  </p>
+  <div class="use-cases">
+    <div class="use-case">CTO 向董事會簡報</div>
+    <div class="use-case">外部顧問對客戶培訓</div>
+    <div class="use-case">企業 AI 素養工作坊</div>
+    <div class="use-case">新任主管到職培訓</div>
+  </div>
+  <div class="footer-note">
+    AI Agent 從入門到企業級三部曲 &nbsp;|&nbsp; 設計目標：WOW → AHA → GO! &nbsp;|&nbsp; 所有檔案可離線分享
+  </div>
+</div>
+</section>
+
+<!-- CH1 -->
+<section id="ch1" class="view-section">
+<div class="page">
+  <div class="hdr">
+    <h1>🦞 AI Agent 運作流程動畫 — 龍蝦如何動起來</h1>
+    <p>User（左）↔ LLM 外借大腦（右）｜雙向箭頭中間 = 龍蝦的身體結構</p>
+    <div class="ctrl">
+      <button class="btn on" id="bp" onclick="togglePlay()">▶ 播放</button>
+      <button class="btn" onclick="prev()">◀</button>
+      <button class="btn" onclick="next()">▶</button>
+      <button class="btn" onclick="reset()">↺</button>
+      <span class="spl">速度</span>
+      <button class="btn sp" onclick="spd(3200)">慢</button>
+      <button class="btn sp on" onclick="spd(2000)">中</button>
+      <button class="btn sp" onclick="spd(1100)">快</button>
+    </div>
+  </div>
+
+  <div class="flow" id="fc">
+    <div class="ptc" id="ptc"></div>
+
+    <!-- ========== SVG PATHS ========== -->
+    <svg viewBox="0 0 1440 560" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="glowF"><feGaussianBlur stdDeviation="3" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <marker id="ah" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="currentColor" opacity=".8"/></marker>
+        <marker id="ahl" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto"><polygon points="8 0, 0 3, 8 6" fill="currentColor" opacity=".8"/></marker>
+      </defs>
+
+      <!-- P0: user → channel -->
+      <path id="p0" class="fp req" d="M 125 255 L 180 255" stroke="#06b6d4" marker-end="url(#ah)"/>
+      <circle id="d0" class="pd" cx="152" cy="255" fill="#06b6d4"/>
+
+      <!-- P1: channel → shell (up into shell) -->
+      <path id="p1" class="fp req" d="M 280 240 C 320 200 350 165 390 145" stroke="#dc2626" marker-end="url(#ah)"/>
+      <circle id="d1" class="pd" cx="335" cy="195" fill="#dc2626"/>
+
+      <!-- ===== THE TWO BIG CENTER ARROWS ===== -->
+      <!-- P2: REQUEST arrow — Shell → LLM (left to right, top path) -->
+      <path id="p2" class="fp req" d="M 720 110 C 900 80 1100 100 1250 195" stroke="#facc15" stroke-width="4" marker-end="url(#ah)"/>
+      <circle id="d2" class="pd" cx="980" cy="90" r="6" fill="#facc15"/>
+
+      <!-- P3: RESPONSE arrow — LLM → Tools/center (right to left, bottom path) -->
+      <path id="p3" class="fp res" d="M 1250 310 C 1100 380 850 400 680 370" stroke="#ef4444" stroke-width="4" marker-end="url(#ahl)"/>
+      <circle id="d3" class="pd" cx="960" cy="385" r="6" fill="#ef4444"/>
+
+      <!-- P4: LLM → RAG (right to center-top) -->
+      <path id="p4" class="fp res" d="M 1240 200 C 1100 140 950 110 850 100" stroke="#10b981" marker-end="url(#ahl)"/>
+      <circle id="d4" class="pd" cx="1050" cy="145" fill="#10b981"/>
+
+      <!-- P5: LLM → Skills (right to center-bottom) -->
+      <path id="p5" class="fp res" d="M 1250 330 C 1050 440 750 490 600 480" stroke="#8b5cf6" marker-end="url(#ahl)"/>
+      <circle id="d5" class="pd" cx="900" cy="460" fill="#8b5cf6"/>
+
+      <!-- P6: Tools → Spawn -->
+      <path id="p6" class="fp req" d="M 680 400 C 720 430 760 450 800 455" stroke="#ec4899" marker-end="url(#ah)"/>
+      <circle id="d6" class="pd" cx="740" cy="435" fill="#ec4899"/>
+
+      <!-- P7: execution → memory -->
+      <path id="p7" class="fp req" d="M 750 95 C 800 70 860 55 900 55" stroke="#f59e0b" marker-end="url(#ah)"/>
+      <circle id="d7" class="pd" cx="830" cy="72" fill="#f59e0b"/>
+
+      <!-- P8: memory → back into shell (feedback loop) -->
+      <path id="p8" class="fp res" d="M 900 75 C 830 90 760 110 720 125" stroke="#f59e0b" stroke-dasharray="4 3" marker-end="url(#ahl)"/>
+      <circle id="d8" class="pd" cx="810" cy="100" fill="#f59e0b"/>
+
+      <!-- P9: result → reply user (bottom sweep left) -->
+      <path id="p9" class="fp res" d="M 600 370 C 400 410 250 380 145 330" stroke="#06b6d4" stroke-width="3" marker-end="url(#ahl)"/>
+      <circle id="d9" class="pd" cx="370" cy="395" fill="#06b6d4"/>
+    </svg>
+
+    <!-- ===== ARROW LABELS (on the two big center arrows) ===== -->
+    <div class="arrow-label" id="alReq" style="left:52%;top:11%;background:#facc1520;color:#facc15">
+      ➡ 請求：System Prompt + User Message → 送給 LLM
+    </div>
+    <div class="arrow-label" id="alRes" style="left:48%;top:70%;background:#ef444420;color:#ef4444">
+      ⬅ 回應：LLM 回傳指令 → Tools / Skills / RAG 執行
+    </div>
+
+    <!-- ========== NODES ========== -->
+
+    <!-- N0: User — far left -->
+    <div class="nd c-user" id="n0" style="left:1%;top:38%;width:110px">
+      <div class="sn" style="background:#06b6d4">1</div>
+      <h3 style="color:#06b6d4">👤 使用者</h3>
+      <div class="s">在 WhatsApp 說：<br>「幫我查上季營收」</div>
+    </div>
+
+    <!-- N1: Channel -->
+    <div class="nd c-ch" id="n1" style="left:12%;top:38%;width:115px">
+      <div class="sn" style="background:#06b6d4">2</div>
+      <h3 style="color:#06b6d4">📡 觸鬚</h3>
+      <div class="s">通訊頻道接收<br>→ 路由 Gateway</div>
+      <div class="tg" style="background:#06b6d420;color:#06b6d4">50+ 平台</div>
+    </div>
+
+    <!-- N2: Shell (System Prompt) — center-top, wide, prominent -->
+    <div class="nd c-shell" id="n2" style="left:24%;top:3%;width:340px">
+      <div class="sn" style="background:#dc2626">3</div>
+      <h3 style="color:#dc2626;font-size:.9rem">🦞 龍蝦的殼 — System Prompt 組裝</h3>
+      <div class="s">每次對話開始，自動載入 → 打包成「完整指令」送給 LLM</div>
+      <div class="md-grid">
+        <span class="md-chip">🪪 SOUL.md 人格</span>
+        <span class="md-chip">🏷️ IDENTITY.md 身份</span>
+        <span class="md-chip">👤 USER.md 偏好</span>
+        <span class="md-chip">📋 AGENTS.md 規則</span>
+        <span class="md-chip">🧠 MEMORY.md 記憶</span>
+        <span class="md-chip">📦 TOOLS.md 工具清單</span>
+      </div>
+      <div class="tg" style="background:#dc262620;color:#dc2626">「讀自己成為自己」→ 然後送往右邊的大腦</div>
+    </div>
+
+    <!-- N3: Tools — center -->
+    <div class="nd c-tool" id="n3" style="left:38%;top:55%;width:150px">
+      <div class="sn" style="background:#ef4444">5a</div>
+      <h3 style="color:#ef4444">🦀 鉗子 — Tools</h3>
+      <div class="s">exec · web_search<br>read/write · browser<br>cron · memory_search</div>
+      <div class="tg" style="background:#ef444420;color:#ef4444">器官：能不能做</div>
+    </div>
+
+    <!-- N4: Skills — center-bottom -->
+    <div class="nd c-skill" id="n4" style="left:27%;top:75%;width:150px">
+      <div class="sn" style="background:#8b5cf6">5b</div>
+      <h3 style="color:#8b5cf6">🦿 腿 — Skills</h3>
+      <div class="s">SKILL.md 教 Agent<br>組合 Tools 完成任務<br>13,700+ @ ClawHub</div>
+      <div class="tg" style="background:#8b5cf620;color:#8b5cf6">教科書：怎麼做</div>
+    </div>
+
+    <!-- N5: RAG — center-top-right -->
+    <div class="nd c-rag" id="n5" style="left:50%;top:7%;width:145px">
+      <div class="sn" style="background:#10b981">5c</div>
+      <h3 style="color:#10b981">🫁 消化 — RAG</h3>
+      <div class="s">從知識庫「檢索」<br>相關文件 → 餵回 LLM<br>現查現答</div>
+      <div class="tg" style="background:#10b98120;color:#10b981">檢索增強生成</div>
+    </div>
+
+    <!-- N6: Spawn — center-bottom-right -->
+    <div class="nd c-spawn" id="n6" style="left:53%;top:72%;width:140px">
+      <div class="sn" style="background:#ec4899">6</div>
+      <h3 style="color:#ec4899">🥚 繁殖 — 子 Agent</h3>
+      <div class="s">任務複雜？<br>分裂專責子 Agent<br>各自完成後彙報</div>
+      <div class="tg" style="background:#ec489920;color:#ec4899">sessions_spawn</div>
+    </div>
+
+    <!-- N7: Memory — right-top -->
+    <div class="nd c-mem" id="n7" style="left:62%;top:2%;width:135px">
+      <div class="sn" style="background:#f59e0b">7</div>
+      <h3 style="color:#f59e0b">💾 記憶更新</h3>
+      <div class="s">重要 → MEMORY.md<br>今日 → memory/日期.md<br>→ 回饋進 System Prompt</div>
+      <div class="tg" style="background:#f59e0b20;color:#f59e0b">持久化循環</div>
+    </div>
+
+    <!-- N8: LLM — FAR RIGHT, LARGE -->
+    <div class="nd c-llm" id="n8" style="right:1%;top:22%;width:165px">
+      <div class="sn" style="background:#facc15">4</div>
+      <h3 style="color:#facc15;font-size:.95rem">🧠 外借大腦</h3>
+      <h3 style="color:#facc15;font-size:.8rem">LLM（外部 API）</h3>
+      <div class="s" style="margin-top:.25rem">
+        <strong style="color:#fff">龍蝦沒有大腦！</strong><br><br>
+        <span style="color:#8b5cf6">● Claude</span> Anthropic<br>
+        <span style="color:#10b981">● GPT-4o</span> OpenAI<br>
+        <span style="color:#06b6d4">● Gemini</span> / 本地
+      </div>
+      <div class="tg" style="background:#facc1520;color:#facc15;margin-top:.35rem">可隨時換大腦！</div>
+    </div>
+
+    <!-- N9: Reply — far left bottom -->
+    <div class="nd c-reply" id="n9" style="left:1%;top:55%;width:130px">
+      <div class="sn" style="background:#06b6d4">8</div>
+      <h3 style="color:#06b6d4">💬 回覆</h3>
+      <div class="s">結果送回 WhatsApp<br>「上季營收 $12.5M<br>QoQ +8.3%」</div>
+      <div class="tg" style="background:#06b6d420;color:#06b6d4">完成！🎉</div>
+    </div>
+  </div>
+
+  <div class="nar" id="nar">
+    <div class="ic" id="ni">🦞</div>
+    <div class="tx"><h4 id="nt">按播放看龍蝦動起來</h4><p id="nd">User（左）發訊息 → 經過中間的龍蝦身體結構 → 送到右邊的 LLM 大腦 → 大腦回傳指令 → 中間的 Tools/Skills/RAG 執行 → 結果回到左邊。</p></div>
+  </div>
+
+  <div class="leg">
+    <span><i style="background:#06b6d4"></i>輸入/輸出</span>
+    <span><i style="background:#dc2626"></i>System Prompt</span>
+    <span><i style="background:#facc15"></i>➡ 請求送 LLM</span>
+    <span><i style="background:#ef4444"></i>⬅ LLM 回傳指令</span>
+    <span><i style="background:#8b5cf6"></i>Skills</span>
+    <span><i style="background:#10b981"></i>RAG</span>
+    <span><i style="background:#f59e0b"></i>Memory</span>
+    <span><i style="background:#ec4899"></i>Multi-Agent</span>
+  </div>
+</div>
+</section>
+
+<!-- CH2 -->
+<section id="ch2" class="view-section">
+<div class="page">
+
+<div class="hdr">
+  <h1>🦞 一次搞懂 AI Agent — 用龍蝦解剖學看 OpenClaw</h1>
+  <p>龍蝦沒有大腦，卻是最成功的生物之一 — AI Agent 也一樣：沒有內建智慧，靠外借大腦 + 精密結構 = 強大執行力 &nbsp;|&nbsp; 點擊任意卡片查看詳細說明</p>
+</div>
+
+<div class="main">
+  <!-- LEFT -->
+  <div class="side-panel" id="leftPanel"></div>
+  <!-- CENTER: Shell / System Prompt -->
+  <div class="body-shell">
+    <div class="body-title-bar">
+      <h2>🦞 龍蝦的殼 = System Prompt（Agent 的 DNA）</h2>
+      <span class="note">每次醒來都重讀一遍，「讀自己成為自己」</span>
+    </div>
+    <div class="sp-grid" id="spGrid"></div>
+  </div>
+  <!-- RIGHT -->
+  <div class="side-panel" id="rightPanel"></div>
+</div>
+
+<!-- Bottom: Tools / Skills / ClawHub -->
+<div class="bottom-grid" id="bottomGrid"></div>
+
+<!-- Prompt Strip -->
+<div class="prompt-strip">
+  <h3>💬 提示詞（Prompt）= 跟龍蝦說話的方式 — 你怎麼說，決定牠怎麼做</h3>
+  <div class="prompt-cards" id="promptCards"></div>
+</div>
+
+</div>
+
+<!-- Modal -->
+<div class="ch2-modal-overlay" id="ch2_modalOverlay">
+  <div class="modal" id="ch2_modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="ch2_modalBody"></div>
+  </div>
+</div>
+<div class="hint">💡 點擊卡片查看詳情 &nbsp;|&nbsp; ESC 關閉</div>
+</section>
+
+<!-- CH3 -->
+<section id="ch3" class="view-section">
+<div class="header">
+  <h1>企業 AI 完整系統架構圖 — 從基礎設施到 Agent 調度</h1>
+  <div class="sub">For AI Architects / CTO / Tech Leads &nbsp;|&nbsp; 含 OSI 七層映射 · 資安 · 個資 · AI 治理 · Zero Trust &nbsp;|&nbsp; 點擊任意卡片查看詳情</div>
+</div>
+
+<div class="main">
+  <!-- OSI Bar -->
+  <div class="osi-bar">
+    <div class="osi-title">OSI 七層</div>
+    <div class="osi-item" data-osi="7"><div class="osi-dot" style="background:var(--purple)"></div><div class="osi-label" style="color:var(--purple)">L7 應用層</div></div>
+    <div class="osi-item" data-osi="6"><div class="osi-dot" style="background:var(--blue)"></div><div class="osi-label" style="color:var(--blue)">L6 表現層</div></div>
+    <div class="osi-item" data-osi="5"><div class="osi-dot" style="background:var(--green)"></div><div class="osi-label" style="color:var(--green)">L5 會話層</div></div>
+    <div class="osi-item" data-osi="4"><div class="osi-dot" style="background:var(--cyan)"></div><div class="osi-label" style="color:var(--cyan)">L4 傳輸層</div></div>
+    <div class="osi-item" data-osi="3"><div class="osi-dot" style="background:var(--orange)"></div><div class="osi-label" style="color:var(--orange)">L3 網路層</div></div>
+    <div class="osi-item" data-osi="2"><div class="osi-dot" style="background:var(--pink)"></div><div class="osi-label" style="color:var(--pink)">L2 資料鏈路</div></div>
+    <div class="osi-item" data-osi="1"><div class="osi-dot" style="background:var(--pink)"></div><div class="osi-label" style="color:var(--pink)">L1 實體層</div></div>
+  </div>
+
+  <!-- Center: 6 Architecture Layers -->
+  <div class="layers" id="ch3_archLayers"></div>
+
+  <!-- Right: Cross-cutting Concerns -->
+  <div class="concerns" id="ch3_concerns"></div>
+</div>
+
+<!-- Bottom Principles -->
+<div class="principles" id="ch3_principles"></div>
+
+<!-- Modal -->
+<div class="ch3-modal-overlay" id="ch3_modalOverlay">
+  <div class="modal" id="ch3_modalContent">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="ch3_modalBody"></div>
+  </div>
+</div>
+
+<div class="hint">💡 點擊卡片查看技術細節 &nbsp;|&nbsp; 按 ESC 關閉</div>
+</section>
+
+<!-- TTS BAR -->
+<div class="tts-bar" id="globalTtsBar">
+  <button class="tts-main-btn" id="gttsToggle" onclick="gttsToggle()">🎙️ 開始語音導覽</button>
+  <button class="tts-skip-btn" onclick="gttsSkip()">⏭ 下一段</button>
+  <div class="tts-progress"><div class="tts-progress-inner" id="gttsProgress"></div></div>
+  <div class="tts-status" id="gttsStatus">準備就緒</div>
+  <select id="gttsSpeed" onchange="gttsChangeSpeed()">
+    <option value="0.8">0.8x</option><option value="0.9">0.9x</option>
+    <option value="1" selected>1x</option><option value="1.1">1.1x</option><option value="1.2">1.2x</option>
+  </select>
+</div>
+<div class="bottom-spacer"></div>
+
+<!-- VIEW SWITCHING -->
+<script>
+let currentView = 'home';
+function showView(id) {
+  gttsStop();
+  document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const sId = id === 'home' ? 'view-home' : id;
+  document.getElementById(sId).classList.add('active');
+  document.querySelector('.nav-tab.t-' + id).classList.add('active');
+  currentView = id;
+  window.scrollTo(0, 0);
+  const bgs = {home:'#08090f',ch1:'#0a0f1e',ch2:'#0F172A',ch3:'#0B0F1A'};
+  document.body.style.background = bgs[id] || '#08090f';
+}
+// Home cards click → navigate
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('.chapter-card');
+  if (!card) return;
+  if (card.classList.contains('card-1')) showView('ch1');
+  else if (card.classList.contains('card-2')) showView('ch2');
+  else if (card.classList.contains('card-3')) showView('ch3');
+});
+</script>
+
+<!-- CH1 SCRIPT -->
+<script>
+(function() {
+const S=[
+  {n:[0],p:[],icon:"👤",t:"Step 1 — 使用者發送訊息",
+   d:"你在 WhatsApp 打了「幫我查上季營收報表」。這就是 User Prompt。一切從左邊開始。",labels:[]},
+  {n:[1],p:[0],icon:"📡",t:"Step 2 — 觸鬚接收（Channel）",
+   d:"WhatsApp Channel 接收訊息 → 路由到 OpenClaw Gateway。龍蝦的觸鬚感知到獵物。",labels:[]},
+  {n:[2],p:[1],icon:"🦞",t:"Step 3 — 龍蝦的殼（System Prompt 組裝）",
+   d:"Gateway 載入 SOUL.md（人格）、IDENTITY.md（身份）、USER.md（偏好）、AGENTS.md（規則）、MEMORY.md（記憶）、TOOLS.md（工具清單）。打包成完整指令，準備送往右邊的大腦。",labels:[]},
+  {n:[8],p:[2],icon:"🧠",t:"Step 4 — ➡ 送往外借大腦（LLM API）",
+   d:"完整 System Prompt + 你的訊息 → 透過 API 送到最右邊的 LLM（Claude/GPT/Gemini）。注意：龍蝦自己沒有大腦，智慧完全來自外部！LLM 分析意圖、規劃步驟、決定要用哪些 Tools。",labels:['alReq']},
+  {n:[3,4,5],p:[3,4,5],icon:"⚡",t:"Step 5 — ⬅ LLM 回傳指令，中間全面啟動",
+   d:"LLM 想好了 → 指令回傳到中間的龍蝦身體：🦀 Tools 執行 read/exec → 🦿 Skills 指導如何組合動作 → 🫁 RAG 從知識庫檢索上季營收文件。三者同時協作！",labels:['alRes']},
+  {n:[6],p:[6],icon:"🥚",t:"Step 6 — 繁殖（分派子 Agent）",
+   d:"任務太複雜？主 Agent 分裂出子 Agent：一個查資料、一個做圖表、一個寫摘要。完成後彙報主 Agent。龍蝦一次產萬顆卵的能力！",labels:[]},
+  {n:[7],p:[7,8],icon:"💾",t:"Step 7 — 記憶更新 → 回饋進殼",
+   d:"重要資訊存入 MEMORY.md（你偏好 QoQ 比較）。記憶會回饋進 System Prompt — 下次對話 Agent 已經知道你的偏好。這就是龍蝦的「肌肉記憶」循環。",labels:[]},
+  {n:[9],p:[9],icon:"💬",t:"Step 8 — 結果回覆使用者！",
+   d:"最終答案從中間往左送回 WhatsApp：「上季營收 $12.5M，QoQ +8.3%，報表已存到 Google Drive」。整個 User ↔ LLM 雙向流程完成！🎉",labels:[]}
+];
+
+let cur=-1,playing=false,tmr=null,spv=2000;
+const vis=new Set();
+
+function clr(){
+  document.querySelectorAll('.nd').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.fp').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.pd').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.arrow-label').forEach(e=>e.classList.remove('on'));
+}
+
+window.ch1Show = function show(i){
+  if(i<0||i>=S.length)return;
+  clr();
+  const s=S[i];
+  s.n.forEach(x=>{vis.add('n'+x);});
+  s.p.forEach(x=>{vis.add('p'+x);});
+  vis.forEach(v=>{const e=document.getElementById(v);if(e)e.classList.add('was');});
+  s.n.forEach(x=>document.getElementById('n'+x).classList.add('on'));
+  s.p.forEach(x=>{document.getElementById('p'+x).classList.add('on');document.getElementById('d'+x).classList.add('on');});
+  s.labels.forEach(id=>document.getElementById(id).classList.add('on'));
+  const ic=document.getElementById('ni');ic.textContent=s.icon;ic.style.animation='none';ic.offsetHeight;ic.style.animation='pop .5s ease';
+  document.getElementById('nt').textContent=s.t;
+  document.getElementById('nd').textContent=s.d;
+  cur=i;
+}
+
+function next(){const x=cur+1;if(x>=S.length){if(playing){reset();return;}return;}show(x);}
+function prev(){if(cur<=0)return;vis.clear();document.querySelectorAll('.nd,.fp').forEach(e=>e.classList.remove('was'));show(cur-1);for(let j=0;j<cur-1;j++){S[j].n.forEach(x=>vis.add('n'+x));S[j].p.forEach(x=>vis.add('p'+x));}}
+function reset(){cur=-1;playing=false;clearInterval(tmr);vis.clear();clr();document.querySelectorAll('.nd,.fp').forEach(e=>e.classList.remove('was'));document.getElementById('ni').textContent='🦞';document.getElementById('nt').textContent='按播放看龍蝦動起來';document.getElementById('nd').textContent='User（左）→ 中間龍蝦身體 → LLM 大腦（右）→ 回傳指令 → 執行 → 回覆。雙向箭頭 = 請求 ➡ 與回應 ⬅。';upBtn();}
+function togglePlay(){if(playing){playing=false;clearInterval(tmr);}else{playing=true;if(cur>=S.length-1)reset();next();tmr=setInterval(()=>{if(cur>=S.length-1){playing=false;clearInterval(tmr);upBtn();return;}next();},spv);}upBtn();}
+function upBtn(){const b=document.getElementById('bp');b.textContent=playing?'⏸':'▶ 播放';b.classList.toggle('on',playing);}
+function spd(ms){spv=ms;document.querySelectorAll('.btn.sp').forEach(b=>b.classList.remove('on'));event.target.classList.add('on');if(playing){clearInterval(tmr);tmr=setInterval(()=>{if(cur>=S.length-1){playing=false;clearInterval(tmr);upBtn();return;}next();},spv);}}
+
+// particles
+(()=>{const c=document.getElementById('ptc');const cs=['#06b6d4','#dc2626','#facc15','#8b5cf6','#10b981','#ec4899','#f59e0b'];for(let i=0;i<20;i++){const d=document.createElement('i');d.style.left=Math.random()*100+'%';d.style.top=Math.random()*100+'%';d.style.background=cs[i%7];d.style.animationDelay=Math.random()*5+'s';d.style.animationDuration=(3+Math.random()*4)+'s';c.appendChild(d);}})();
+
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}if(e.key==='ArrowLeft')prev();if(e.key==='r')reset();if(e.key==='p')togglePlay();});
+})();
+</script>
+
+<!-- CH2 SCRIPT -->
+<script>
+(function() {
+// === DATA ===
+const spComponents = [
+  {name:"🪪 SOUL.md",sub:"靈魂 / 人格",desc:"定義 Agent 的個性、語氣、\n價值觀、行為底線。\n→ 就像龍蝦的「基因」",color:"#8B5CF6",
+    detail:{plain:"SOUL.md 就是 Agent 的「性格設定檔」。寫在這裡的規則，Agent 每次醒來都會讀一遍，確保自己始終如一。",
+      why:"不同部門需要不同「性格」的 Agent — 客服要溫和、法務要嚴謹、行銷要活潑。",
+      biz:"企業可以為不同場景客製 Agent 人格，確保品牌調性一致。",clevel:"投資 SOUL.md 設計 = 投資品牌體驗的一致性。"}},
+  {name:"🏷️ IDENTITY.md",sub:"身份名片",desc:"名字、頭像、Emoji。\n讓每個 Agent 有辨識度。\n→ 龍蝦的「外觀花紋」",color:"#06B6D4",
+    detail:{plain:"讓 Agent 有名字、有頭像、有專屬 emoji — 員工一眼就知道在跟哪個 Agent 對話。",
+      why:"企業可能有 10 個以上的 Agent，辨識度避免混淆。",
+      biz:"「小財」負責財務、「小法」負責法規 — 命名策略讓員工秒懂。",clevel:"Agent 品牌化管理提升內部採用率。"}},
+  {name:"👤 USER.md",sub:"主人檔案",desc:"記錄使用者偏好、背景。\nAgent 會客製化回應。\n→ 龍蝦認識飼主",color:"#10B981",
+    detail:{plain:"USER.md 記錄「這個使用者是誰」— 職稱、偏好的回覆格式、常用專有名詞等。",
+      why:"同一個 Agent 面對不同使用者可以自動調整回應風格和深度。",
+      biz:"CEO 看到的摘要 vs 工程師看到的技術細節 — 同一個 Agent 不同輸出。",clevel:"個人化體驗 = 更高的 AI 採用率和員工滿意度。"}},
+  {name:"📋 AGENTS.md",sub:"操作手冊",desc:"行為規則、工作流程、\n可用 Tool 清單。\n→ 龍蝦的「神經節指令」",color:"#3882F6",
+    detail:{plain:"AGENTS.md 是 Agent 的 SOP — 什麼情況下做什麼、可以用哪些工具、不能做什麼。",
+      why:"沒有 SOP 的 Agent 就像沒有規章的員工 — 可能亂來。",
+      biz:"可以設定：「處理超過 100 萬的訂單必須通知主管」等業務規則。",clevel:"治理 = 風控。AGENTS.md 是 AI 風險管理的第一道防線。"}},
+  {name:"🧠 MEMORY.md",sub:"長期記憶",desc:"重要偏好、學到的經驗。\n每日記憶 → memory/日期.md\n→ 龍蝦的「肌肉記憶」",color:"#F59E0B",
+    detail:{plain:"MEMORY.md 讓 Agent 記住長期重要的事。每天的互動重點自動存成日記。",
+      why:"不記憶的 Agent 每天都像新人 — 效率極低。",
+      biz:"Agent 記住「上次客戶說要延後出貨」→ 下次主動追蹤。",clevel:"記憶 = 經驗累積 = AI 越用越聰明的關鍵。"}},
+  {name:"📦 TOOLS.md",sub:"環境設定",desc:"哪些 Tool 可用、哪些 Skill\n已安裝、環境參數。\n→ 龍蝦的「棲息地適應」",color:"#EC4899",
+    detail:{plain:"TOOLS.md 列出這個 Agent 的「裝備清單」— 可以用什麼工具、安裝了哪些技能。",
+      why:"不同環境需要不同裝備 — 開發環境 vs 生產環境的工具應該不同。",
+      biz:"財務 Agent 只能用「讀 Excel」不能用「執行指令」— 最小權限原則。",clevel:"工具權限管理 = 資安防護的基礎。"}}
+];
+
+const leftPanels = [
+  {title:"📡 觸鬚 = 通訊頻道",color:"#06B6D4",
+    desc:"龍蝦靠觸鬚感知世界，Agent 靠頻道接收指令",
+    items:"WhatsApp · Slack · Telegram\nDiscord · Teams · Line · Web Chat",
+    highlight:"→ 使用者在哪，Agent 就在哪",
+    detail:{plain:"Agent 可以同時出現在多個通訊平台。員工在 Slack 問、客戶在 WhatsApp 問 — 同一個 Agent 都能回。",
+      why:"企業不只用一個通訊工具。Agent 必須「全通路」才能真正服務所有人。",
+      biz:"客服 Agent 同時在 Line、WhatsApp、官網 — 24/7 不遺漏。",clevel:"多頻道 = 觸及率 × 回應速度 = 客戶滿意度。"}},
+  {title:"🧠 外借大腦 = LLM",color:"#FACC15",
+    desc:"龍蝦沒有集中大腦 — Agent 也沒有！\n智慧來自外部 API 呼叫",
+    items:"Claude (Anthropic)\nGPT-4o (OpenAI)\nGemini / 本地模型 (vLLM)",
+    highlight:"→ 可隨時更換「大腦」！",
+    detail:{plain:"AI Agent 本身不含語言模型。每次需要「思考」時，才去呼叫外部的 LLM API。就像龍蝦靠分散式神經節而非大腦。",
+      why:"不綁定單一 AI 供應商 — 今天用 Claude，明天可換 GPT 或本地模型。",
+      biz:"敏感資料用地端模型、一般任務用雲端 — 混合策略最佳。",clevel:"模型可替換 = 零供應商鎖定風險。每年可重新議價。"}}
+];
+
+const rightPanels = [
+  {title:"🥚 繁殖 = 多 Agent 協作",color:"#EC4899",
+    desc:"龍蝦能大量繁殖，Agent 也能！",
+    items:"🔍 調研員 — 搜集資訊\n✍️ 撰稿員 — 寫作產出\n📊 分析員 — 資料分析",
+    highlight:"→ 各司其職，完成後回報",
+    detail:{plain:"主 Agent 遇到複雜任務時，可以「分裂」出多個子 Agent，各自負責一部分，完成後彙報主 Agent。",
+      why:"複雜任務靠一個 Agent 太慢。多 Agent 並行 = 效率倍增。",
+      biz:"「幫我做季度報告」→ 一個查資料、一個做圖表、一個寫文字，5 分鐘搞定。",clevel:"多 Agent = 企業流程自動化的核心能力。ROI 最高的 AI 投資。"}},
+  {title:"🫁 消化系統 = RAG",color:"#10B981",
+    desc:"把外部知識「消化」成可用資訊",
+    items:"1. 收到問題\n2. 從知識庫「檢索」相關文件\n3. 餵給 LLM 生成精準回答",
+    highlight:"→ 不是背書，是「現查現答」",
+    detail:{plain:"RAG (Retrieval-Augmented Generation) 讓 Agent 在回答前，先從企業知識庫找到相關文件，再結合 LLM 生成答案。",
+      why:"LLM 訓練資料有截止日期，也不含企業內部知識。RAG 填補這個缺口。",
+      biz:"「公司差旅報銷規定是什麼？」→ 從 HR 手冊即時檢索，不用問同事。",clevel:"RAG = 企業知識資產變現。每個員工都有即時顧問。"}}
+];
+
+const bottomSections = [
+  {title:"🦀 鉗子 = Tools（器官）",color:"#EF4444",
+    desc:"決定 Agent「能不能」做某件事 — 沒有鉗子就抓不了東西",
+    items:[
+      {name:"exec / bash",d:"執行系統指令"},{name:"read / write",d:"讀寫檔案"},
+      {name:"web_search",d:"搜尋網路"},{name:"web_fetch",d:"讀取網頁"},
+      {name:"browser",d:"操作瀏覽器"},{name:"cron",d:"排程自動執行"},
+      {name:"memory",d:"搜尋記憶"},{name:"spawn",d:"分裂子 Agent"}
+    ],
+    detail:{plain:"Tools 是 Agent 的「器官」— 有什麼器官就能做什麼事。沒有瀏覽器工具就不能上網，沒有檔案工具就不能讀寫。",
+      why:"安全第一 — 只給 Agent 需要的工具，不多給。最小權限原則。",
+      biz:"客服 Agent 只需要搜尋知識庫，不需要執行系統指令。權限越小越安全。",clevel:"工具管控 = 資安防護的第一層。一個被控制住的 Agent 不會造成傷害。"}},
+  {title:"🦿 腿 = Skills（教科書）",color:"#8B5CF6",
+    desc:"教 Agent「怎麼」組合 Tools 完成任務 — SKILL.md 定義每個技能",
+    items:[
+      {name:"📧 Email",d:"讀信、分類、草擬"},{name:"📅 行事曆",d:"查詢/建立行程"},
+      {name:"📊 資料分析",d:"CSV、生成圖表"},{name:"🔧 DevOps",d:"部署、監控、告警"},
+      {name:"📝 撰寫",d:"文章、社群貼文"},{name:"💰 財務",d:"發票、報表整理"},
+      {name:"🔍 研究",d:"蒐集資料、競品"},{name:"🛒 電商",d:"訂單、庫存查詢"}
+    ],
+    detail:{plain:"Skills 是 Agent 的「教科書」— Tool 是器官，Skill 教 Agent 怎麼組合器官完成任務。一個 SKILL.md 檔案 = 一本教科書。",
+      why:"有工具沒技能 = 有手不會用。Skill 才是讓 Agent 真正實用的關鍵。",
+      biz:"企業可以為自己的業務流程撰寫客製 Skill — 讓 Agent 懂公司的 SOP。",clevel:"Skills 是企業 AI 的核心智慧資產，可以累積、複用、分享。"}},
+  {title:"🏪 ClawHub = 技能市集",color:"#F59E0B",
+    desc:"13,700+ 社群技能，一鍵安裝",
+    items:[
+      {name:"✅ 免費公開",d:"開源社群"},{name:"✅ 向量搜尋",d:"語意匹配"},
+      {name:"✅ 版本管理",d:"semver"},{name:"⚠️ 安全審查",d:"12-20% 有風險"}
+    ],
+    detail:{plain:"ClawHub 就像 App Store — 社群開發的 13,700+ 技能可以一鍵安裝到你的 Agent 上。",
+      why:"不用什麼都自己寫。站在社群的肩膀上，快速擴充 Agent 能力。",
+      biz:"需要一個能「管理 Jira 工單」的 Agent？上 ClawHub 搜一下就有。",clevel:"生態系 = 護城河。選擇生態最大的框架，未來技能最多。但安全審查不可忽略。"}}
+];
+
+const prompts = [
+  {title:"System Prompt\n系統提示詞",desc:"Agent 的「出廠設定」\nSOUL.md + AGENTS.md\n每次對話自動注入",color:"#DC2626"},
+  {title:"User Prompt\n使用者提示詞",desc:"你打的每一句話\n越具體 → 結果越精準\n「幫我整理」vs「幫我把…」",color:"#06B6D4"},
+  {title:"Few-shot 範例",desc:"給 Agent 看幾個範例\n「像這樣做：A→B」\n有範例學得快 10 倍",color:"#10B981"},
+  {title:"Chain-of-Thought\n思維鏈",desc:"要求 Agent 一步步想\n「先分析→再決策→最後執行」\n減少幻覺，提升準確度",color:"#8B5CF6"},
+  {title:"Tool Prompt\n工具調用提示",desc:"Agent 自動判斷何時\n該調用哪個 Tool\n「需要搜尋 → web_search」",color:"#EF4444"}
+];
+
+// === RENDER ===
+// Left panels
+const leftEl = document.getElementById('leftPanel');
+leftPanels.forEach((p,i) => {
+  const card = document.createElement('div');
+  card.className = 'organ-card';
+  card.style.borderColor = p.color;
+  card.onclick = () => openDetail(p.title, p.color, p.detail);
+  card.innerHTML = `
+    <div class="organ-title" style="color:${p.color}">${p.title}</div>
+    <div class="organ-desc">${p.desc}</div>
+    <div class="organ-desc" style="color:var(--white);margin-top:6px;font-size:8px">${p.items.replace(/\n/g,'<br>')}</div>
+    <div class="organ-highlight" style="color:${p.color}">${p.highlight}</div>
+  `;
+  leftEl.appendChild(card);
+});
+
+// SP Grid
+const spEl = document.getElementById('spGrid');
+spComponents.forEach(sp => {
+  const card = document.createElement('div');
+  card.className = 'sp-card';
+  card.style.borderColor = sp.color;
+  card.onclick = () => openDetail(sp.name, sp.color, sp.detail);
+  card.innerHTML = `
+    <div class="sp-name" style="color:var(--white)">${sp.name}</div>
+    <div class="sp-sub" style="color:${sp.color}">${sp.sub}</div>
+    <div class="sp-desc">${sp.desc.replace(/\n/g,'<br>')}</div>
+  `;
+  spEl.appendChild(card);
+});
+
+// Right panels
+const rightEl = document.getElementById('rightPanel');
+rightPanels.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'organ-card';
+  card.style.borderColor = p.color;
+  card.onclick = () => openDetail(p.title, p.color, p.detail);
+  card.innerHTML = `
+    <div class="organ-title" style="color:${p.color}">${p.title}</div>
+    <div class="organ-desc">${p.desc}</div>
+    <div class="organ-desc" style="color:var(--white);margin-top:6px;font-size:8px">${p.items.replace(/\n/g,'<br>')}</div>
+    <div class="organ-highlight" style="color:${p.color}">${p.highlight}</div>
+  `;
+  rightEl.appendChild(card);
+});
+
+// Bottom sections
+const botEl = document.getElementById('bottomGrid');
+bottomSections.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'section-card';
+  card.style.borderColor = s.color;
+  card.onclick = () => openDetail(s.title, s.color, s.detail);
+  const itemsHTML = s.items.map(it => `
+    <div class="item-chip">
+      <div class="name">${it.name}</div>
+      <div class="desc">${it.d}</div>
+    </div>
+  `).join('');
+  card.innerHTML = `
+    <div class="section-title" style="color:${s.color}">${s.title}</div>
+    <div class="section-desc">${s.desc}</div>
+    <div class="item-grid">${itemsHTML}</div>
+  `;
+  botEl.appendChild(card);
+});
+
+// Prompt cards
+const promptEl = document.getElementById('promptCards');
+prompts.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'prompt-card';
+  card.style.borderColor = p.color;
+  card.innerHTML = `
+    <div class="pt" style="color:${p.color}">${p.title.replace(/\n/g,'<br>')}</div>
+    <div class="pd">${p.desc.replace(/\n/g,'<br>')}</div>
+  `;
+  promptEl.appendChild(card);
+});
+
+// === MODAL ===
+function openDetail(title, color, detail) {
+  document.getElementById('ch2_modalBody').innerHTML = `
+    <h2 style="color:${color}">${title}</h2>
+    <h3 style="color:${color}">🗣️ 白話解釋</h3>
+    <p>${detail.plain}</p>
+    <h3 style="color:${color}">📌 為什麼重要</h3>
+    <p>${detail.why}</p>
+    <h3 style="color:${color}">🏢 企業應用</h3>
+    <p>${detail.biz}</p>
+    <h3 style="color:${color}">👔 C-Level 決策要點</h3>
+    <p style="color:${color};font-weight:700">${detail.clevel}</p>
+  `;
+  document.getElementById('ch2_modalOverlay').classList.add('show');
+}
+function closeModal(){document.getElementById('ch2_modalOverlay').classList.remove('show')}
+document.getElementById('ch2_modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+})();
+</script>
+
+<!-- CH3 SCRIPT -->
+<script>
+(function() {
+// === DATA ===
+const layers = [
+  {
+    name:"L6｜應用整合層 Application & Agent UX", color:"#8B5CF6", osi:"L7 應用層",
+    items:[
+      {title:"AI Chat UI", desc:"企業級對話介面\nWeb / Mobile / Embed",
+        detail:{
+          why:"企業員工與 AI 互動的第一接觸點，直接決定使用體驗與採用率。",
+          tech:["前端框架：React / Vue + WebSocket 即時串流","多租戶白標：企業品牌化介面","SSO 整合：SAML / OIDC 單一登入","對話歷史：加密儲存、可審計"],
+          risk:"未做好權限隔離會導致跨部門資料洩漏",
+          tags:["React","WebSocket","SSO","Multi-tenant"]
+        }},
+      {title:"API Gateway", desc:"統一入口、Rate Limit\nAPI Key 管理、版本控制",
+        detail:{
+          why:"所有 AI 服務的統一入口，控制流量、驗證身份、管理版本。",
+          tech:["Kong / AWS API Gateway / Apigee","Rate Limiting：Token Bucket + 滑動視窗","API Key 生命週期管理與自動輪換","版本路由：v1/v2 漸進式切換"],
+          risk:"API Gateway 是單一故障點(SPOF)，需做高可用部署",
+          tags:["Kong","Rate Limit","OAuth 2.0","Versioning"]
+        }},
+      {title:"Agent 調度", desc:"OpenClaw / LangGraph\n多 Agent 協作、任務分派",
+        detail:{
+          why:"複雜任務需要多個 AI Agent 協作完成，調度層負責分派、協調與容錯。",
+          tech:["OpenClaw：SOUL.md 定義人格、AGENTS.md 定義子 Agent","LangGraph：狀態機驅動的工作流程","任務分派：Round-Robin / 能力匹配 / 優先順序","失敗處理：重試、Fallback、Human Escalation"],
+          risk:"Agent 間循環調用可能導致 Token 爆炸與無限迴圈",
+          tags:["OpenClaw","LangGraph","Multi-Agent","Dispatch"]
+        }},
+      {title:"MCP 協定層", desc:"模型↔工具統一介面\n10,000+ MCP Servers",
+        detail:{
+          why:"Anthropic 推出的 Model Context Protocol 標準化 AI 與外部工具的通訊。",
+          tech:["統一介面：Tool / Resource / Prompt 三大基礎元件","10,000+ 開源 MCP Servers","Linux Foundation Agentic AI 基金會管理","安全沙箱：每個 Tool 獨立執行環境"],
+          risk:"第三方 MCP Server 的安全性需要嚴格審核",
+          tags:["MCP","Anthropic","Linux Foundation","Tool Protocol"]
+        }}
+    ]
+  },
+  {
+    name:"L5｜AI 平台層 AI / ML Platform", color:"#3882F6", osi:"L6 表現層",
+    items:[
+      {title:"LLM Gateway", desc:"模型路由、Fallback\nToken 預算、成本控制",
+        detail:{
+          why:"企業可能使用多個 LLM（GPT-4, Claude, Gemini），需要統一路由與成本控制。",
+          tech:["智慧路由：按任務複雜度選模型","Fallback 鏈：主模型逾時→備用模型","Token 預算：部門/專案/使用者層級配額","成本追蹤：每次請求計費、每月報表"],
+          risk:"過度依賴單一供應商會有 Vendor Lock-in 風險",
+          tags:["LiteLLM","OpenRouter","Token Budget","Cost Control"]
+        }},
+      {title:"Prompt 管理", desc:"版本控制、A/B Test\nSystem Prompt Registry",
+        detail:{
+          why:"Prompt 是 AI 系統的「程式碼」，需要與軟體開發同等級的版本控制。",
+          tech:["Prompt Registry：集中管理所有 System Prompts","版本控制：Git-like 變更追蹤","A/B 測試：衡量不同 Prompt 的效果","模板系統：變數注入、動態組裝"],
+          risk:"未受控的 Prompt 修改可能導致 AI 行為不可預測",
+          tags:["Prompt Engineering","Version Control","A/B Test","Registry"]
+        }},
+      {title:"RAG Engine", desc:"向量檢索 + 重排序\nChunk 策略、知識更新",
+        detail:{
+          why:"RAG (Retrieval-Augmented Generation) 讓 AI 能查閱企業專屬知識庫。",
+          tech:["向量檢索：Cosine Similarity Top-K","重排序：Cross-Encoder 精排","Chunk 策略：語意切分、滑動視窗","知識更新：增量索引、版本快照"],
+          risk:"Chunk 策略不當會導致答案缺少關鍵上下文",
+          tags:["RAG","Vector Search","Reranking","Chunking"]
+        }},
+      {title:"MLOps / 模型倉庫", desc:"模型版本、評估、部署\nCI/CD for ML Pipeline",
+        detail:{
+          why:"AI 模型需要持續評估、更新與部署，MLOps 實現模型生命週期管理。",
+          tech:["模型註冊：版本、來源、效能指標","自動評估：Benchmark Suite 定期測試","CI/CD：模型訓練→評估→部署自動化","A/B 部署：Canary 部署、藍綠切換"],
+          risk:"模型漂移(Model Drift)未偵測會導致效能逐漸降低",
+          tags:["MLflow","Kubeflow","Model Registry","CI/CD"]
+        }}
+    ]
+  },
+  {
+    name:"L4｜資料平台層 Data Platform", color:"#10B981", osi:"L5 會話層",
+    items:[
+      {title:"資料中台", desc:"統一資料標準\n資產目錄、品質監控",
+        detail:{
+          why:"AI 的品質取決於資料品質。資料中台提供統一標準與治理。",
+          tech:["資料資產目錄：自動發現、標籤、血緣追蹤","品質監控：完整性、一致性、時效性檢查","主資料管理(MDM)：統一客戶/產品主檔","資料契約(Data Contract)：生產者與消費者的 SLA"],
+          risk:"資料孤島未打通會導致 AI 訓練資料不完整",
+          tags:["Data Catalog","Data Quality","MDM","Data Contract"]
+        }},
+      {title:"向量資料庫", desc:"Pinecone / Weaviate\n語意搜尋、Embedding",
+        detail:{
+          why:"向量 DB 是 RAG 的核心，儲存文件的語意向量表示。",
+          tech:["Pinecone：全託管、高效能","Weaviate：開源、支援混合搜尋","Embedding 模型：text-embedding-3-large","混合檢索：向量 + 關鍵字 BM25"],
+          risk:"Embedding 模型更換需要全量重新索引",
+          tags:["Pinecone","Weaviate","Embedding","Hybrid Search"]
+        }},
+      {title:"資料湖 / 倉", desc:"結構化 + 非結構化\nDelta Lake / Iceberg",
+        detail:{
+          why:"統一儲存企業所有資料，供 AI 訓練、分析與檢索使用。",
+          tech:["Delta Lake / Apache Iceberg：ACID 事務","Schema Evolution：結構變更不中斷","Time Travel：任意時間點資料回溯","開放格式：Parquet / ORC 避免 Lock-in"],
+          risk:"非結構化資料(PDF, 圖片)的治理難度更高",
+          tags:["Delta Lake","Iceberg","Data Lakehouse","Parquet"]
+        }},
+      {title:"ETL / 串流", desc:"即時同步、CDC\nKafka / Flink",
+        detail:{
+          why:"資料需要即時從源系統流入 AI 平台，ETL/串流是資料管線。",
+          tech:["Kafka：高吞吐事件串流","Flink：即時計算與視窗聚合","CDC (Change Data Capture)：資料庫異動即時同步","dbt：SQL-based 資料轉換"],
+          risk:"串流延遲會導致 RAG 回答的知識不即時",
+          tags:["Kafka","Flink","CDC","dbt"]
+        }}
+    ]
+  },
+  {
+    name:"L3｜網路安全層 Network & Transport Security", color:"#06B6D4", osi:"L4 傳輸層",
+    items:[
+      {title:"Zero Trust 架構", desc:"永不信任、持續驗證\nmTLS 服務間加密",
+        detail:{
+          why:"傳統「城堡護城河」模型已不足，AI 時代需要 Zero Trust。",
+          tech:["原則：永不信任、持續驗證、最小權限","mTLS：服務間雙向 TLS 加密","身份感知代理(Identity-Aware Proxy)","持續驗證：每次請求重新驗證授權"],
+          risk:"Zero Trust 部署複雜度高，需分階段推進",
+          tags:["Zero Trust","mTLS","BeyondCorp","ZTNA"]
+        }},
+      {title:"WAF / DDoS", desc:"Web 應用防火牆\nL7 攻擊防禦",
+        detail:{
+          why:"AI 服務暴露在網路上，需要防禦 Web 攻擊與 DDoS。",
+          tech:["WAF：SQL Injection / XSS / CSRF 防護","DDoS 緩解：Cloudflare / AWS Shield","L7 防護：AI-specific 攻擊模式偵測","Bot 管理：區分合法 API 與惡意爬蟲"],
+          risk:"AI API 的 Prompt Injection 是 WAF 新挑戰",
+          tags:["WAF","DDoS","Cloudflare","Bot Detection"]
+        }},
+      {title:"API 安全", desc:"OAuth 2.0 / OIDC\nJWT Token 驗證",
+        detail:{
+          why:"AI API 是企業最敏感的端點之一，需嚴格的認證授權。",
+          tech:["OAuth 2.0 + PKCE：安全授權流程","JWT：短壽命 Token + Refresh 機制","API Rate Limiting：防止 Token 濫用","CORS / CSP：跨域安全策略"],
+          risk:"JWT Token 洩漏可導致 AI 服務被未授權存取",
+          tags:["OAuth 2.0","OIDC","JWT","API Security"]
+        }},
+      {title:"網路分段", desc:"VPC / Subnet 隔離\n微分段 + Service Mesh",
+        detail:{
+          why:"將不同安全等級的系統隔離在獨立網段，限制橫向移動。",
+          tech:["VPC / Subnet：雲端網路隔離","微分段：Workload 級別的存取控制","Service Mesh：Istio / Linkerd 流量管理","Network Policy：K8s Pod 間通訊規則"],
+          risk:"AI 訓練叢集與推論服務應在不同安全域",
+          tags:["VPC","Service Mesh","Istio","Network Policy"]
+        }}
+    ]
+  },
+  {
+    name:"L2｜身份與存取層 IAM & Access Control", color:"#F59E0B", osi:"L3 網路層",
+    items:[
+      {title:"IAM / SSO", desc:"集中身份管理\nSAML / OIDC 整合",
+        detail:{
+          why:"集中管理所有人員與系統的身份，是安全架構的基石。",
+          tech:["Okta / Azure AD / Keycloak","SAML 2.0：企業 SSO 整合","OIDC：現代化身份協定","MFA：多因子驗證強制啟用"],
+          risk:"身份提供者(IdP)是最關鍵的元件，需極高可用",
+          tags:["Okta","Azure AD","SAML","MFA"]
+        }},
+      {title:"RBAC / ABAC", desc:"角色 + 屬性權限控制\n最小權限原則",
+        detail:{
+          why:"精細的權限控制確保每個 AI 操作都在授權範圍內。",
+          tech:["RBAC：角色型存取控制","ABAC：屬性型(時間、地點、裝置)","Policy Engine：OPA / Cedar","AI 特有：模型存取、Prompt 讀寫、知識庫分權"],
+          risk:"AI Agent 的權限邊界比人類使用者更難定義",
+          tags:["RBAC","ABAC","OPA","Least Privilege"]
+        }},
+      {title:"密鑰管理", desc:"HSM / Vault\nAPI Key 輪換、加密",
+        detail:{
+          why:"AI 系統涉及大量 API Key 與加密金鑰，需安全集中管理。",
+          tech:["HashiCorp Vault / AWS KMS","HSM：硬體安全模組保護根金鑰","自動輪換：API Key 定期更新","加密：AES-256 靜態加密、TLS 傳輸加密"],
+          risk:"LLM API Key 若洩漏，可能產生巨額費用",
+          tags:["Vault","KMS","HSM","Key Rotation"]
+        }},
+      {title:"稽核日誌", desc:"全操作留痕\n不可竄改的 Audit Trail",
+        detail:{
+          why:"所有 AI 操作必須留痕，滿足合規與事後追查需求。",
+          tech:["全量日誌：Who / What / When / Where","不可竄改：WORM 儲存 / 區塊鏈雜湊","即時串流：Kafka → SIEM","合規報表：自動產生稽核報告"],
+          risk:"日誌量極大需做好留存策略(Hot/Warm/Cold)",
+          tags:["Audit Trail","SIEM","WORM","Compliance"]
+        }}
+    ]
+  },
+  {
+    name:"L1｜基礎設施層 Infrastructure", color:"#EC4899", osi:"L1-L2 實體/資料鏈路層",
+    items:[
+      {title:"雲端 / 混合雲", desc:"AWS / Azure / GCP\n多雲策略、地端備援",
+        detail:{
+          why:"AI 運算需要彈性的雲端資源，混合雲確保資料主權與韌性。",
+          tech:["多雲策略：避免單一雲商鎖定","地端 GPU 叢集：敏感資料不出企業","Terraform / Pulumi：基礎架構即程式碼","FinOps：雲端成本優化"],
+          risk:"跨雲網路延遲影響 AI 推論效能",
+          tags:["Multi-Cloud","Hybrid","Terraform","FinOps"]
+        }},
+      {title:"GPU 叢集", desc:"AI 推論 / 訓練\nNVIDIA A100/H100",
+        detail:{
+          why:"LLM 推論與微調需要高效能 GPU 算力。",
+          tech:["NVIDIA A100/H100 GPU","vLLM / TensorRT-LLM：推論加速","GPU 共享：MIG / Time-slicing","叢集管理：SLURM / Ray"],
+          risk:"GPU 供應短缺，需提前規劃容量",
+          tags:["NVIDIA","vLLM","GPU Cluster","TensorRT"]
+        }},
+      {title:"容器編排", desc:"K8s / Docker\n自動擴縮、高可用",
+        detail:{
+          why:"AI 微服務需要容器化部署，K8s 提供自動擴縮與高可用。",
+          tech:["Kubernetes：工業級容器編排","HPA/VPA：CPU/GPU 自動擴縮","Helm Charts：標準化部署模板","GitOps：ArgoCD 自動同步"],
+          risk:"K8s 本身的安全加固(Pod Security, Network Policy)不可忽略",
+          tags:["Kubernetes","Docker","Helm","ArgoCD"]
+        }},
+      {title:"備份 / DR", desc:"異地備援、RTO/RPO\n災難復原演練",
+        detail:{
+          why:"AI 系統的高可用性需要完善的備份與災難復原計畫。",
+          tech:["RPO < 1hr / RTO < 4hr 企業級標準","異地備援：跨 Region 資料同步","向量 DB 快照：定期備份 Embeddings","DR 演練：每季一次實際切換測試"],
+          risk:"向量資料庫的備援策略常被忽略",
+          tags:["Backup","DR","RTO/RPO","Cross-Region"]
+        }}
+    ]
+  }
+];
+
+const concerns = [
+  {
+    title:"🛡️ 資安防護", subtitle:"Cybersecurity", color:"#DC2626", bg:"#1A1215",
+    items:["Prompt Injection 偵測","Output 過濾 / 內容安全","模型存取權限控管","DLP 資料外洩防護","SIEM / SOC 整合監控","紅隊演練 / 滲透測試"],
+    detail:{
+      why:"AI 系統面臨全新的攻擊面 — Prompt Injection、模型竊取、資料毒化等傳統資安未涵蓋的威脅。",
+      sections:[
+        {h:"AI 特有威脅",items:["Prompt Injection (Direct / Indirect)","Jailbreak 越獄攻擊","Model Inversion 模型反推","Data Poisoning 訓練資料毒化","Model Extraction 模型竊取"]},
+        {h:"防禦措施",items:["Input/Output 雙向過濾","Canary Token 偵測","AI Red Team 定期演練","供應鏈安全：MCP Server 審核","Guardrails：NeMo / Lakera"]},
+        {h:"合規要求",items:["SOC 2 Type II 持續合規","ISO 27001 資訊安全管理","PCI-DSS (若涉及支付)","定期滲透測試報告"]}
+      ]
+    }
+  },
+  {
+    title:"🔒 個資保護", subtitle:"Privacy & PII", color:"#F59E0B", bg:"#1E1810",
+    items:["PII 自動偵測 + 遮罩","資料分級分類","同意權管理 (Consent)","資料在地化 (Residency)","被遺忘權實作","差分隱私 / 聯邦學習"],
+    detail:{
+      why:"AI 處理大量個人資料，一旦洩漏不僅違規還損害信任。PII 保護是 AI 治理的核心。",
+      sections:[
+        {h:"PII 防護技術",items:["NER-based PII 偵測 (Presidio / 自訓模型)","動態遮罩：依角色顯示不同程度","假名化(Pseudonymization)","差分隱私：添加數學雜訊保護個體"]},
+        {h:"資料治理",items:["4 級分類：公開→內部→機密→最高機密","資料地圖：PII 位於哪些系統","保留期限：自動刪除過期資料","跨境傳輸：SCC / BCR 合規"]},
+        {h:"法規遵循",items:["台灣個資法","GDPR (若涉及歐盟)","CCPA (若涉及加州)","被遺忘權實作：全鏈路刪除"]}
+      ]
+    }
+  },
+  {
+    title:"🏛️ AI 治理", subtitle:"AI Governance", color:"#8B5CF6", bg:"#15121E",
+    items:["模型評估 & 偏見檢測","可解釋性 (XAI)","Human-in-the-Loop","幻覺偵測 & 事實查核","EU AI Act / 負責任 AI","模型卡 & 風險評級"],
+    detail:{
+      why:"AI 決策的公正性、透明度和問責制是企業信任 AI 的前提。",
+      sections:[
+        {h:"模型評估",items:["Benchmark Suite：準確率、延遲、成本","偏見檢測：跨族群/性別公平性","幻覺率追蹤：事實查核自動化","模型卡(Model Card)：記錄能力與限制"]},
+        {h:"負責任 AI",items:["Human-in-the-Loop：關鍵決策需人類審核","可解釋性(XAI)：SHAP / LIME / Attention","AI 倫理委員會：跨部門治理小組","風險評級：依 EU AI Act 分級"]},
+        {h:"法規框架",items:["EU AI Act：高風險 AI 系統合規","NIST AI RMF：AI 風險管理框架","IEEE 7000：倫理 AI 設計標準","企業內部 AI 使用政策"]}
+      ]
+    }
+  },
+  {
+    title:"📊 可觀測性", subtitle:"Observability", color:"#06B6D4", bg:"#0F1A20",
+    items:["Logs / Metrics / Traces","LLM Token 用量追蹤","成本儀表板","Agent 執行軌跡","異常偵測 & 告警","SLA / SLO 監控"],
+    detail:{
+      why:"AI 系統的黑箱特性使可觀測性比傳統系統更加重要。",
+      sections:[
+        {h:"三大支柱",items:["Logs：結構化日誌 + 全文搜索","Metrics：延遲、吞吐、錯誤率","Traces：OpenTelemetry 分散式追蹤","AI 特有：Prompt/Response 對照"]},
+        {h:"AI 專屬監控",items:["Token 用量追蹤（按模型/部門/專案）","成本儀表板：即時花費與預算警示","Agent 執行軌跡：決策樹視覺化","模型效能衰退偵測"]},
+        {h:"運維工具",items:["Grafana / Datadog / New Relic","LangSmith / LangFuse (LLM 專用)","PagerDuty：異常告警通知","SLA/SLO 監控：99.9% 可用性追蹤"]}
+      ]
+    }
+  }
+];
+
+const principles = [
+  {title:"🎯 核心原則",desc:"Zero Trust + Defense in Depth\n永不信任、縱深防禦、最小權限",color:"#DC2626"},
+  {title:"🔄 AI 特有風險",desc:"Prompt Injection · 幻覺 · 資料毒化\n模型偏見 · Token 濫用 · 供應鏈攻擊",color:"#8B5CF6"},
+  {title:"📋 合規框架",desc:"ISO 27001 · SOC 2 · GDPR\nEU AI Act · NIST AI RMF · 個資法",color:"#F59E0B"},
+  {title:"⚡ 架構決策",desc:"模型可替換（MCP）· 資料可攜\n基礎架構即程式碼 · 一切可稽核",color:"#06B6D4"}
+];
+
+// === RENDER ===
+const layersEl = document.getElementById('ch3_archLayers');
+layers.forEach((layer, i) => {
+  const card = document.createElement('div');
+  card.className = 'layer-card';
+  card.style.borderColor = layer.color;
+
+  let subsHTML = layer.items.map((item, j) => `
+    <div class="sub-card" onclick="event.stopPropagation();openSubDetail(${i},${j})">
+      <div class="sub-title">${item.title}</div>
+      <div class="sub-desc">${item.desc.replace(/\n/g,'<br>')}</div>
+    </div>
+  `).join('');
+
+  card.innerHTML = `
+    <div class="layer-name" style="color:${layer.color}">${layer.name} <span style="font-size:8px;color:var(--gray-md);font-weight:400">(↔ ${layer.osi})</span></div>
+    <div class="sub-cards">${subsHTML}</div>
+  `;
+  layersEl.appendChild(card);
+
+  if (i < layers.length - 1) {
+    const arrow = document.createElement('div');
+    arrow.className = 'arrow-between';
+    arrow.innerHTML = '<svg width="16" height="10" viewBox="0 0 16 10"><polygon points="8,0 16,10 0,10" fill="#334055"/></svg>';
+    layersEl.appendChild(arrow);
+  }
+});
+
+const concernsEl = document.getElementById('ch3_concerns');
+concerns.forEach((c, i) => {
+  const card = document.createElement('div');
+  card.className = 'concern-card';
+  card.style.background = c.bg;
+  card.style.borderColor = c.color;
+  card.onclick = () => openConcernDetail(i);
+  card.innerHTML = `
+    <div class="concern-title" style="color:${c.color}">${c.title}</div>
+    <div class="concern-subtitle mono">${c.subtitle}</div>
+    <div class="concern-items">${c.items.map(it => `<span>• ${it}</span>`).join('')}</div>
+  `;
+  concernsEl.appendChild(card);
+});
+
+const principlesEl = document.getElementById('ch3_principles');
+principles.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'principle-card';
+  card.style.borderColor = p.color;
+  card.innerHTML = `
+    <div class="principle-title" style="color:${p.color}">${p.title}</div>
+    <div class="principle-desc">${p.desc.replace(/\n/g,'<br>')}</div>
+  `;
+  principlesEl.appendChild(card);
+});
+
+// === MODAL ===
+function openSubDetail(li, si) {
+  const layer = layers[li];
+  const item = layer.items[si];
+  const d = item.detail;
+  const tagsHTML = d.tags.map(t => `<span class="tag" style="background:${layer.color}22;color:${layer.color};border:1px solid ${layer.color}44">${t}</span>`).join('');
+
+  document.getElementById('ch3_modalBody').innerHTML = `
+    <h2 style="color:${layer.color}">${item.title}</h2>
+    <p style="color:var(--gray-md);font-size:10px;margin-bottom:12px">${layer.name}</p>
+    <h3 style="color:${layer.color}">📌 為什麼重要</h3>
+    <p>${d.why}</p>
+    <h3 style="color:${layer.color}">🔧 技術細節</h3>
+    <ul>${d.tech.map(t => `<li>${t}</li>`).join('')}</ul>
+    <h3 style="color:${layer.color}">⚠️ 風險提醒</h3>
+    <p style="color:var(--orange)">${d.risk}</p>
+    <h3 style="color:${layer.color}">🏷️ 關鍵技術</h3>
+    <div style="margin-top:6px">${tagsHTML}</div>
+  `;
+  showModal();
+}
+
+function openConcernDetail(ci) {
+  const c = concerns[ci];
+  const d = c.detail;
+  const sectionsHTML = d.sections.map(s => `
+    <h3 style="color:${c.color}">${s.h}</h3>
+    <ul>${s.items.map(it => `<li>${it}</li>`).join('')}</ul>
+  `).join('');
+
+  document.getElementById('ch3_modalBody').innerHTML = `
+    <h2 style="color:${c.color}">${c.title}</h2>
+    <p style="color:var(--gray-md);font-size:10px;margin-bottom:12px">${c.subtitle}</p>
+    <h3 style="color:${c.color}">📌 為什麼重要</h3>
+    <p>${d.why}</p>
+    ${sectionsHTML}
+  `;
+  showModal();
+}
+
+function showModal() {
+  document.getElementById('ch3_modalOverlay').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('ch3_modalOverlay').classList.remove('show');
+}
+document.getElementById('ch3_modalOverlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// OSI highlight
+document.querySelectorAll('.osi-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const osi = item.dataset.osi;
+    const idx = Math.min(7 - parseInt(osi), 5);
+    const cards = document.querySelectorAll('.layer-card');
+    if (cards[idx]) {
+      cards[idx].scrollIntoView({behavior:'smooth', block:'center'});
+      cards[idx].style.boxShadow = '0 0 30px rgba(56,130,246,0.3)';
+      setTimeout(() => cards[idx].style.boxShadow = '', 1500);
+    }
+  });
+});
+})();
+</script>
+
+<!-- GLOBAL TTS -->
+<script>
+const ttsScripts = {
+  home: [
+    {text:"歡迎來到 AI Agent 從入門到企業級三部曲。專為企業高階主管設計的 AI 素養培訓教材。",el:"#view-home .hero"},
+    {text:"三個章節帶您從看懂 AI、理解 AI，到有信心投資 AI。整個體驗約 30 分鐘。",el:"#view-home .hero"},
+    {text:"故事弧採用 WOW、AHA、GO 三幕劇結構。第一幕想要 AI，第二幕理解 AI，第三幕敢投資 AI。",el:"#view-home .arc"},
+    {text:"第一章：AI Agent 怎麼工作？8 步驟動畫流程圖，30 秒搞懂全流程。",el:"#view-home .card-1"},
+    {text:"第二章：AI Agent 裡面有什麼？用龍蝦比喻，一次搞懂所有核心技術。",el:"#view-home .card-2"},
+    {text:"第三章：企業級 AI 怎麼建？六層架構加四大橫切面，CTO 的完整藍圖。",el:"#view-home .card-3"},
+    {text:"點擊任意章節卡片即可開始。建議按 1、2、3 順序完整走一遍。",el:"#view-home .bottom"}
+  ],
+  ch1: [
+    {text:"歡迎來到 AI Agent 運作流程動畫。帶您走過完整 8 個步驟。",el:"#ch1 .hdr"},
+    {text:"第一步，使用者發送訊息。在 WhatsApp 打幫我查上季營收報表。",el:"#ch1 #n0",step:0},
+    {text:"第二步，觸鬚接收。WhatsApp Channel 路由到 OpenClaw Gateway。",el:"#ch1 #n1",step:1},
+    {text:"第三步，龍蝦的殼組裝 System Prompt。載入靈魂、身份、偏好、規則、記憶、工具清單。",el:"#ch1 #n2",step:2},
+    {text:"第四步，送往外借大腦。透過 API 送到大語言模型。龍蝦沒有大腦，智慧來自外部。",el:"#ch1 #n8",step:3},
+    {text:"第五步，大語言模型回傳指令。Tools 執行、Skills 指導、RAG 檢索，三者協作。",el:"#ch1 #n3",step:4},
+    {text:"第六步，繁殖分派子 Agent。任務複雜時分裂出子 Agent，各司其職。",el:"#ch1 #n6",step:5},
+    {text:"第七步，記憶更新。重要資訊存入記憶，回饋進 System Prompt。",el:"#ch1 #n7",step:6},
+    {text:"第八步，結果回覆使用者。最終答案送回 WhatsApp。流程完成！",el:"#ch1 #n9",step:7}
+  ],
+  ch2: [
+    {text:"歡迎來到 AI Agent 龍蝦解剖學。用龍蝦搞懂所有核心技術。",el:"#ch2 .hdr"},
+    {text:"左邊，觸鬚等於通訊頻道，外借大腦等於 LLM，可隨時更換。",el:"#ch2 #leftPanel"},
+    {text:"中間是龍蝦的殼，等於 System Prompt。六個核心設定檔組成 Agent 的 DNA。",el:"#ch2 .body-shell"},
+    {text:"SOUL 人格、IDENTITY 身份、USER 偏好、AGENTS 規則、MEMORY 記憶、TOOLS 環境。",el:"#ch2 #spGrid"},
+    {text:"右邊上方繁殖等於多 Agent 協作，下方消化系統等於 RAG，現查現答。",el:"#ch2 #rightPanel"},
+    {text:"底部三區塊。鉗子等於 Tools，腿等於 Skills，ClawHub 是技能市集。",el:"#ch2 #bottomGrid"},
+    {text:"提示詞五大類型。System Prompt、User Prompt、Few-shot、思維鏈、Tool Prompt。",el:"#ch2 .prompt-strip"},
+    {text:"以上是 AI Agent 完整解剖。點擊卡片查看白話解釋與企業應用。",el:"#ch2 .hdr"}
+  ],
+  ch3: [
+    {text:"歡迎來到企業 AI 完整系統架構圖。六大架構層搭配四大橫切面。",el:"#ch3 .header"},
+    {text:"左邊 OSI 七層模型對照。架構層由下而上對應實體層到應用層。",el:"#ch3 .osi-bar"},
+    {text:"L1 基礎設施層。雲端混合雲、GPU 叢集、容器編排、備份與災難復原。",el:null,ch3idx:5},
+    {text:"L2 身份與存取層。IAM 登入、角色權限、密鑰管理、稽核日誌。",el:null,ch3idx:4},
+    {text:"L3 網路安全層。Zero Trust、WAF、API 安全、網路分段。",el:null,ch3idx:3},
+    {text:"L4 資料平台層。資料中台、向量資料庫、資料湖倉、ETL 串流。",el:null,ch3idx:2},
+    {text:"L5 AI 平台層。LLM Gateway、Prompt 管理、RAG 引擎、MLOps。",el:null,ch3idx:1},
+    {text:"L6 應用整合層。Chat UI、API Gateway、Agent 調度、MCP 協定。",el:null,ch3idx:0},
+    {text:"右邊四大橫切面。資安防護、個資保護、AI 治理、可觀測性。",el:"#ch3 #ch3_concerns"},
+    {text:"底部四大架構原則。Zero Trust、AI 風險、合規框架、架構決策。",el:"#ch3 #ch3_principles"},
+    {text:"以上是企業 AI 系統架構全景。點擊卡片查看技術細節。",el:"#ch3 .header"}
+  ]
+};
+
+let gttsPlaying=false, gttsI=0, gttsPaused=false, gttsFV=null;
+function gttsFindV(){
+  const v=speechSynthesis.getVoices();
+  const p=[v=>v.lang.includes('zh-TW')&&/female|美|雅|慧|小|mei/i.test(v.name),v=>v.lang.includes('zh-TW'),v=>v.lang.includes('zh')&&/female|美|雅|慧|小/i.test(v.name),v=>v.lang.includes('zh')];
+  for(const fn of p){const f=v.find(fn);if(f)return f;}return null;
+}
+speechSynthesis.onvoiceschanged=()=>{gttsFV=gttsFindV();};gttsFV=gttsFindV();
+
+function gttsSpeak(text,cb){
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.lang='zh-TW';
+  u.rate=parseFloat(document.getElementById('gttsSpeed').value);u.pitch=1.1;
+  if(gttsFV)u.voice=gttsFV;u.onend=cb;u.onerror=cb;speechSynthesis.speak(u);
+}
+function gttsPlaySeg(){
+  const script=ttsScripts[currentView];
+  if(!script||gttsI>=script.length){gttsStop();document.getElementById('gttsStatus').textContent='導覽完成 ✓';return;}
+  const seg=script[gttsI];
+  document.getElementById('gttsProgress').style.width=((gttsI+1)/script.length*100).toFixed(0)+'%';
+  document.getElementById('gttsStatus').textContent=(gttsI+1)+'/'+script.length;
+  // Clear old highlights
+  document.querySelectorAll('.tts-highlight').forEach(e=>e.classList.remove('tts-highlight'));
+  // Find element to highlight
+  let el=seg.el?document.querySelector(seg.el):null;
+  if(seg.ch3idx!==undefined){const c=document.querySelectorAll('#ch3 .layer-card');el=c[seg.ch3idx]||null;}
+  // For ch1, trigger animation step
+  if(currentView==='ch1' && seg.step!==undefined && typeof window.ch1Show==='function'){window.ch1Show(seg.step);}
+  if(el){el.classList.add('tts-highlight');el.scrollIntoView({behavior:'smooth',block:'center'});}
+  gttsSpeak(seg.text,()=>{if(!gttsPlaying)return;gttsI++;setTimeout(gttsPlaySeg,400);});
+}
+function gttsToggle(){
+  const btn=document.getElementById('gttsToggle');
+  if(!gttsPlaying){gttsPlaying=true;gttsPaused=false;btn.textContent='⏸ 暫停導覽';btn.style.background='#ef4444';gttsPlaySeg();}
+  else if(!gttsPaused){gttsPaused=true;speechSynthesis.pause();btn.textContent='▶️ 繼續導覽';btn.style.background='#10b981';}
+  else{gttsPaused=false;speechSynthesis.resume();btn.textContent='⏸ 暫停導覽';btn.style.background='#ef4444';}
+}
+function gttsStop(){
+  gttsPlaying=false;gttsPaused=false;speechSynthesis.cancel();
+  const btn=document.getElementById('gttsToggle');btn.textContent='🎙️ 開始語音導覽';btn.style.background='#8b5cf6';
+  document.querySelectorAll('.tts-highlight').forEach(e=>e.classList.remove('tts-highlight'));
+  gttsI=0;document.getElementById('gttsProgress').style.width='0%';
+  document.getElementById('gttsStatus').textContent='準備就緒';
+}
+function gttsSkip(){if(!gttsPlaying)return;speechSynthesis.cancel();gttsI++;gttsPlaySeg();}
+function gttsChangeSpeed(){if(gttsPlaying&&!gttsPaused){speechSynthesis.cancel();gttsPlaySeg();}}
+</script>
+
+</body>
+</html>
