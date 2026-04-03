@@ -31,7 +31,7 @@
         .hub-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 12px 32px rgba(10,22,40,0.10);
-            border-color: var(--teal);
+            border-color: var(--navy);
         }
         .hub-card-thumb {
             height: 140px;
@@ -39,7 +39,7 @@
             align-items: center;
             justify-content: center;
             font-size: 3.5rem;
-            background: linear-gradient(135deg, #f0f4ff 0%, #e8f5f2 100%);
+            background: #f4f6f9;
         }
         .hub-card-body {
             padding: 20px 22px 24px;
@@ -53,14 +53,14 @@
             font-weight: 600;
             letter-spacing: 0.06em;
             padding: 3px 10px;
-            border-radius: 20px;
+            border-radius: 2px;
             margin-bottom: 10px;
-            background: rgba(0,212,170,0.10);
-            color: #00897b;
+            background: rgba(0,51,102,0.08);
+            color: var(--navy);
         }
-        .hub-card-tag.tag-arch { background: rgba(63,81,181,0.10); color: #3f51b5; }
-        .hub-card-tag.tag-anim { background: rgba(255,87,34,0.10); color: #e64a19; }
-        .hub-card-tag.tag-deep { background: rgba(103,58,183,0.10); color: #5e35b1; }
+        .hub-card-tag.tag-arch { background: rgba(0,51,102,0.08); color: var(--navy); }
+        .hub-card-tag.tag-anim { background: rgba(0,51,102,0.08); color: var(--navy); }
+        .hub-card-tag.tag-deep { background: rgba(184,150,12,0.12); color: #7a6500; }
 
         .hub-card h3 {
             font-size: 1rem;
@@ -90,15 +90,15 @@
             gap: 6px;
             font-size: 0.85rem;
             font-weight: 600;
-            color: var(--teal);
+            color: var(--navy);
             text-decoration: none;
             transition: gap 0.2s;
         }
         .hub-card-cta:hover { gap: 10px; color: var(--navy-dark); }
 
         .hub-funnel-banner {
-            background: linear-gradient(135deg, var(--navy-dark) 0%, #1a3a6b 100%);
-            border-radius: 20px;
+            background: var(--navy-dark);
+            border-radius: 4px;
             padding: 56px 48px;
             text-align: center;
             margin-top: 72px;
@@ -215,7 +215,7 @@
                         <span class="hub-card-tag tag-deep">完整系列</span>
                         <h3>AI Agent 從入門到企業級 — 完整版</h3>
                         <div class="hub-card-meta">
-                            <span>📖 深度長文</span>
+                            <span>深度長文</span>
                             <span>·</span>
                             <span>企業決策者 / 技術主管</span>
                         </div>
@@ -231,7 +231,7 @@
                         <span class="hub-card-tag">入門系列</span>
                         <h3>AI Agent 從入門到企業級 — 三部曲</h3>
                         <div class="hub-card-meta">
-                            <span>🚀 快速入門</span>
+                            <span>快速入門</span>
                             <span>·</span>
                             <span>非技術主管 / 業務主管</span>
                         </div>
@@ -247,7 +247,7 @@
                         <span class="hub-card-tag tag-arch">架構藍圖</span>
                         <h3>AI Agent 企業智能化技術架構藍圖</h3>
                         <div class="hub-card-meta">
-                            <span>🗺️ 架構圖解</span>
+                            <span>架構圖解</span>
                             <span>·</span>
                             <span>IT 主管 / 技術架構師</span>
                         </div>
@@ -279,7 +279,7 @@
                         <span class="hub-card-tag tag-anim">動畫教學</span>
                         <h3>AI Agent 運作流程動畫 — 龍蝦如何動起來</h3>
                         <div class="hub-card-meta">
-                            <span>🎬 動畫互動</span>
+                            <span>動畫互動</span>
                             <span>·</span>
                             <span>所有人適用</span>
                         </div>
@@ -295,7 +295,7 @@
                         <span class="hub-card-tag tag-anim">深度解析</span>
                         <h3>AI Agent 龍蝦解剖學 — 一次搞懂 OpenClaw</h3>
                         <div class="hub-card-meta">
-                            <span>🔍 互動解剖</span>
+                            <span>互動解剖</span>
                             <span>·</span>
                             <span>技術人員 / 產品經理</span>
                         </div>
@@ -324,17 +324,17 @@
             <!-- 三步驟說明 -->
             <div style="display:flex;gap:32px;margin-top:56px;flex-wrap:wrap;justify-content:center;">
                 <div style="flex:1;min-width:200px;max-width:280px;text-align:center;">
-                    <div style="width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">1</div>
+                    <div style="width:48px;height:48px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">1</div>
                     <h4 style="color:var(--navy-dark);margin:0 0 8px;">閱讀資源</h4>
                     <p style="font-size:0.85rem;color:#64748b;margin:0;">建立 AI 基礎認知，了解 Agent 架構與企業導入挑戰</p>
                 </div>
                 <div style="flex:1;min-width:200px;max-width:280px;text-align:center;">
-                    <div style="width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">2</div>
+                    <div style="width:48px;height:48px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">2</div>
                     <h4 style="color:var(--navy-dark);margin:0 0 8px;">完成診斷</h4>
                     <p style="font-size:0.85rem;color:#64748b;margin:0;">15 分鐘免費問卷，評估企業 AI 成熟度與優先導入場景</p>
                 </div>
                 <div style="flex:1;min-width:200px;max-width:280px;text-align:center;">
-                    <div style="width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">3</div>
+                    <div style="width:48px;height:48px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">3</div>
                     <h4 style="color:var(--navy-dark);margin:0 0 8px;">預約諮詢</h4>
                     <p style="font-size:0.85rem;color:#64748b;margin:0;">與顧問討論診斷結果，制定專屬的 AI 導入路徑</p>
                 </div>
