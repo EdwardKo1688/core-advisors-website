@@ -23,11 +23,22 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="index.html">首頁</a></li>
                 <li><a href="about.html">關於我們</a></li>
-                <li><a href="services.html">顧問服務</a></li>
-                <li><a href="solutions.html">解決方案</a></li>
-                <li><a href="tools.html">工具方案</a></li>
-                <li><a href="navigator.html">AI 導入診斷</a></li>
-                <li><a href="bluesheet.html">商機診斷</a></li>
+                <li class="nav-dropdown">
+                    <a href="services.html" class="nav-dropdown-toggle">服務範疇</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html">顧問服務</a></li>
+                        <li><a href="solutions.html">解決方案</a></li>
+                        <li><a href="tools.html">工具方案</a></li>
+                    </ul>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="navigator.html" class="nav-dropdown-toggle">診斷工具</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="navigator.html">AI 導入診斷</a></li>
+                        <li><a href="bluesheet.html">商機診斷</a></li>
+                        <li><a href="ic-diagnostic.html">IC 人才診斷</a></li>
+                    </ul>
+                </li>
                 <li><a href="resources.html">資源觀點</a></li>
                 <li><a href="booking.html" class="btn btn-nav">預約諮詢</a></li>
             </ul>
@@ -42,7 +53,7 @@
                 企業 AI 就緒度診斷 · 免費使用
             </div>
             <h1>AI 導入，<span class="gradient-text">從診斷開始</span></h1>
-            <p class="hero-desc">企業 AI 導入失敗，少有因為工具選錯，多數是因為<a href="services.html">場景未驗證、路徑未規劃、組織未準備</a>。</p>
+            <p class="hero-desc">企業 AI 導入失敗，少有因為工具選錯，多數是因為場景未驗證、路徑未規劃、組織未準備。</p>
             <p class="hero-sub">核心顧問提供結構化診斷，釐清 AI 成熟度與優先導入場景；依階段提供診斷規劃、POC 驗證，或長期常駐顧問支援。</p>
             <div class="hero-highlight">
                 <p>由上而下定策略 · 由下而上找場景</p>
@@ -55,26 +66,26 @@
         </div>
     </section>
 
+    <!-- 客戶信任列 -->
+    <section class="client-bar">
+        <div class="container">
+            <p class="client-bar-label">服務企業</p>
+            <div class="client-bar-list">
+                <span>富昇物流</span>
+                <span class="sep">|</span>
+                <span>TABC 台灣建築中心</span>
+                <span class="sep">|</span>
+                <span>銳俤科技</span>
+                <span class="sep">|</span>
+                <span>芯科大</span>
+            </div>
+        </div>
+    </section>
+
     <!-- ========================================
          AI 全球趨勢洞察 — 2026 前瞻戰略區塊
          ======================================== -->
     <section class="ai-trends-section" id="ai-trends">
-      <!-- 語音導覽浮動控制列 -->
-      <div class="trends-voice-bar" id="trendsVoiceBar">
-        <button class="tv-btn tv-play" id="tvPlay" onclick="tvToggle()">🎙️ 開始語音導覽</button>
-        <button class="tv-btn tv-skip" onclick="tvSkip()" title="下一段">⏭</button>
-        <div class="tv-progress-wrap">
-          <div class="tv-progress" id="tvProgress"></div>
-        </div>
-        <span class="tv-status" id="tvStatus">準備就緒</span>
-        <select class="tv-speed" id="tvSpeed" onchange="tvSpeedChange()">
-          <option value="0.85">0.85x</option>
-          <option value="1" selected>1x</option>
-          <option value="1.15">1.15x</option>
-          <option value="1.3">1.3x</option>
-        </select>
-      </div>
-
       <div class="trends-container">
         <!-- 區塊標題 -->
         <div class="trends-header" data-anim="fadeUp">
@@ -333,47 +344,22 @@
         </div>
     </section>
 
-    <!-- 痛點區塊 -->
-    <section class="pain-points" id="services">
+    <!-- 問題診斷 + 導入路徑（合併區塊） -->
+    <section class="comparison" id="services">
         <div class="container">
-            <h2 class="section-title" data-cms="index.pain-title">多數企業不是沒有 AI 工具，而是缺少正確的導入方式</h2>
-            <p class="section-desc">缺的不是工具，而是明確的起點、場景排序，以及有人幫忙把事情推進去。</p>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num">01</div>
-                    <h3>找對起點</h3>
-                    <p>從企業現況出發，找出最值得優先導入的場景，不是從工具功能開始。</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">02</div>
-                    <h3>先驗證再投入</h3>
-                    <p>以概念驗證（POC）確認可行性與效益，再決定是否擴大，降低決策風險。</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">03</div>
-                    <h3>推動落地</h3>
-                    <p>從試用走向流程嵌入，從單點成功走向制度化，讓 AI 成為企業能力。</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 比較區塊 -->
-    <section class="comparison">
-        <div class="container">
-            <h2 class="section-title">為什麼很多 AI 專案開始了，卻沒有真正落地？</h2>
-            <p class="section-desc">問題通常不在工具本身，而在導入順序與推進方式。</p>
+            <h2 class="section-title" data-cms="index.pain-title">為什麼多數 AI 專案，無法真正落地？</h2>
+            <p class="section-desc">問題不在工具選錯，而在導入順序與推進方式。</p>
             <div class="comparison-grid">
                 <div class="compare-card compare-bad">
                     <div class="compare-header">
                         <span class="compare-icon">&#9432;</span>
-                        <span>市場常見做法</span>
+                        <span>常見盲點</span>
                     </div>
                     <ul>
                         <li>先選工具，再找應用場景</li>
-                        <li>先做展示型驗證，無法進入實際流程</li>
+                        <li>展示型驗證無法進入實際流程</li>
                         <li>顧問、工具商、內部團隊各講各的</li>
-                        <li>沒有治理與持續擴散機制</li>
+                        <li>缺乏治理框架，無法持續擴散</li>
                     </ul>
                 </div>
                 <div class="compare-card compare-good">
@@ -384,7 +370,7 @@
                     <ul>
                         <li>先診斷現況，再判斷導入起點</li>
                         <li>先排場景優先順序，再做小規模驗證</li>
-                        <li>由同一個窗口整合導入路徑</li>
+                        <li>由同一窗口整合策略、工具與執行</li>
                         <li>從單點成功走向制度化推進</li>
                     </ul>
                 </div>
@@ -395,11 +381,11 @@
     <!-- 導入路徑 -->
     <section class="process" id="process">
         <div class="container">
-            <h2 class="section-title">一條更務實的 AI 導入路徑</h2>
-            <p class="section-desc">AI 導入診斷，是協助企業判斷應該從哪一階段開始的入口。</p>
+            <h2 class="section-title">三步務實導入路徑</h2>
+            <p class="section-desc">從診斷開始，逐步驗證與擴大，確保每一步都可量化成效。</p>
             <div class="process-steps">
                 <div class="process-card active">
-                    <div class="process-tag"><span class="tag-label">第一步</span> &larr; 診斷入口</div>
+                    <div class="process-tag"><span class="tag-label">第一步</span> &larr; 從這裡開始</div>
                     <h3>AI 導入診斷與場景規劃</h3>
                     <p>盤點企業現況、流程痛點、可用資料與優先場景，釐清從哪裡開始最合理。</p>
                 </div>
@@ -411,7 +397,7 @@
                 <div class="process-card">
                     <div class="process-tag"><span class="tag-label">第三步</span></div>
                     <h3>治理設計與規模化推進</h3>
-                    <p>把成功經驗從單點擴展到部門與組織層級，建立角色分工、使用規範與持續優化方式。</p>
+                    <p>把成功經驗從單點擴展至部門與組織層級，建立角色分工、使用規範與持續優化機制。</p>
                 </div>
             </div>
             <div class="process-actions">
@@ -553,7 +539,7 @@
             <p>先做 AI 導入診斷，了解企業現況與建議起點；或直接預約顧問諮詢，討論最適合的合作方式。</p>
             <div class="cta-actions">
                 <a href="navigator.html" class="btn btn-primary btn-full-mobile">先做 AI 導入診斷 <span class="arrow">&rarr;</span></a>
-                <a href="navigator.html" class="btn btn-outline-light btn-full-mobile">預約顧問諮詢</a>
+                <a href="booking.html" class="btn btn-outline-light btn-full-mobile">預約顧問諮詢</a>
             </div>
         </div>
     </section>
@@ -612,7 +598,7 @@
     <script src="api-config.js"></script>
     <script src="cms-loader.js"></script>
 
-    <!-- AI 趨勢區塊：動畫 + 數字計數器 + 語音導覽 -->
+    <!-- AI 趨勢區塊：動畫 + 數字計數器 -->
     <script>
     (function(){
       /* ── Scroll Animations ── */
@@ -642,202 +628,6 @@
       }, { threshold: 0.5 });
       document.querySelectorAll('.td-number[data-count]').forEach(el => counterObs.observe(el));
 
-      /* ── 改良版語音導覽 (Web Speech API) ── */
-      /*
-       * 改善策略：
-       * 1. 優先選擇高品質本地語音（非 remote/network 語音）
-       * 2. 降低語速 (rate 0.92)、調整音調 (pitch 1.05)
-       * 3. 在句子間加入自然停頓
-       * 4. 將長段落拆分為短句，避免合成引擎吞字
-       * 5. 使用 SSML-like 的文本前處理：在標點後加空白
-       */
-
-      const tvScripts = [
-        // 0: 開場
-        { text: "歡迎來到，AI 全球趨勢前瞻。", el: ".trends-header" },
-        { text: "接下來，我將為您解讀 2026 年 3 月，最新的 AI 產業動態，以及對企業經理人的戰略啟示。", el: ".trends-header" },
-        // 1-2: 數據
-        { text: "首先看四組關鍵數據。", el: ".trends-dashboard" },
-        { text: "NVIDIA 預估 2025 到 2027 年，AI 晶片累計營收，將達到一兆美元。Gartner 預測，2026 年底，40% 的企業應用將嵌入 AI Agent。AI Agent 市場規模，預計 2030 年突破 520 億美元。目前已有 57% 的企業，在生產環境中運行 AI Agent。", el: ".trends-dashboard" },
-        // 3-6: 黃仁勳
-        { text: "接下來是科技巨頭的最新佈局。", el: ".trends-leaders" },
-        { text: "黃仁勳在 GTC 2026 主題演講中宣布，推論的拐點，已經到來。AI 運算重心，正從模型訓練，轉向即時推論。", el: ".leader-nvidia" },
-        { text: "他發佈了下一代 GPU 平台，Vera Rubin。訓練同等規模的模型，只需四分之一的 GPU，推論速度提升十倍，成本降至十分之一。", el: ".leader-nvidia" },
-        { text: "更重要的是，他宣告 Physical AI 時代來臨。機器人、自駕系統、工業軟體，將成為 AI 下一個兆元市場。", el: ".leader-nvidia" },
-        // 7-9: Musk
-        { text: "另一邊，Elon Musk 的動作更為激進。", el: ".leader-xai" },
-        { text: "他坦承 xAI 從一開始就沒有建對，宣布從底層重新設計，目標年底追平 OpenAI 和 Google。同時推出 Digital Optimus 計畫，用 Grok 大語言模型，驅動 AI Agent 操控電腦。", el: ".leader-xai" },
-        { text: "此外，xAI 大舉招募華爾街金融專家，訓練 Grok 理解專業金融模型。xAI 也與美國國防部簽約，Grok 正式進入機密系統。", el: ".leader-xai" },
-        // 10-13: 趨勢
-        { text: "基於以上動態，我們歸納出四大關鍵趨勢。", el: ".trends-timeline" },
-        { text: "趨勢一：AI Agent，正從聊天機器人，進化為自主工作流的數位裝配線。多個 Agent 協作，完成端到端的業務流程。", el: ".tt-grid .tt-card:nth-child(1)" },
-        { text: "趨勢二：治理先行。領先企業導入有界自主權架構，定義 Agent 的操作邊界，和人工介入的觸發條件。", el: ".tt-grid .tt-card:nth-child(2)" },
-        { text: "趨勢三：人機混合團隊。到 2028 年，38% 的組織，將有 AI Agent 作為正式團隊成員。", el: ".tt-grid .tt-card:nth-child(3)" },
-        // 14-18: 行動清單
-        { text: "最後，是給台灣經理人的五項行動建議。", el: ".trends-strategy" },
-        { text: "第一，立即啟動 AI Agent 試點。選一個痛點明確的流程，90 天內完成概念驗證。", el: ".ts-grid .ts-item:nth-child(1)" },
-        { text: "第二，關注推論基礎設施的演進。新平台帶來的十倍成本降幅，將重新定義 AI 的投資回報率。", el: ".ts-grid .ts-item:nth-child(2)" },
-        { text: "第三，建立 AI 治理制度。第四，培養 AI 原生管理層。第五，開始評估 Physical AI 的佈局窗口。", el: ".ts-grid .ts-item:nth-child(3)" },
-        // 19: 結尾
-        { text: "以上就是 2026 年 3 月的 AI 全球趨勢前瞻。如果您想了解如何將這些趨勢，轉化為企業具體行動，歡迎使用我們的免費 AI 導入診斷。", el: ".trends-cta" },
-      ];
-
-      let tvPlaying = false, tvIdx = 0, tvPaused = false, tvVoice = null;
-
-      /* 語音選擇 — 改良版 */
-      function tvFindVoice() {
-        const voices = speechSynthesis.getVoices();
-        // 優先排序：macOS 高品質中文語音 > 其他中文女聲 > 任何中文
-        const prefs = [
-          // Apple 高品質語音
-          v => v.lang.includes('zh-TW') && /Meijia|美佳/.test(v.name),
-          v => v.lang.includes('zh-TW') && /premium|enhanced/i.test(v.name),
-          v => v.lang.includes('zh') && /Ting-Ting|婷婷/.test(v.name),
-          // Google / Microsoft 高品質
-          v => v.lang.includes('zh-TW') && /Google|Microsoft/i.test(v.name),
-          v => v.lang.includes('zh-TW') && /female|女/i.test(v.name),
-          // 任何 zh-TW
-          v => v.lang === 'zh-TW',
-          v => v.lang.startsWith('zh-TW'),
-          // 回退：任何中文
-          v => v.lang.includes('zh'),
-        ];
-        for (const fn of prefs) {
-          const found = voices.find(fn);
-          if (found) return found;
-        }
-        return null;
-      }
-
-      function tvInitVoices() {
-        tvVoice = tvFindVoice();
-      }
-      speechSynthesis.onvoiceschanged = tvInitVoices;
-      tvInitVoices();
-
-      /* 改良版文本前處理 — 提升咬字清晰度 */
-      function tvPreprocessText(text) {
-        // 在逗號、句號後加微停頓（用空白模擬）
-        let t = text;
-        // 確保標點後有空格讓引擎自然斷句
-        t = t.replace(/，/g, '，  ');
-        t = t.replace(/。/g, '。  ');
-        t = t.replace(/；/g, '；  ');
-        t = t.replace(/：/g, '：  ');
-        // 英文詞彙前後加空白確保正確發音
-        t = t.replace(/([a-zA-Z0-9]+)/g, ' $1 ');
-        t = t.replace(/\s+/g, ' ').trim();
-        return t;
-      }
-
-      function tvSpeak(text, cb) {
-        speechSynthesis.cancel();
-        const processed = tvPreprocessText(text);
-        const u = new SpeechSynthesisUtterance(processed);
-        u.lang = 'zh-TW';
-        // 核心改善：降低語速、微調音調
-        const speedVal = parseFloat(document.getElementById('tvSpeed').value);
-        u.rate = speedVal * 0.92; // 比選擇值再慢 8%
-        u.pitch = 1.05;           // 微升音調，更清晰
-        u.volume = 1.0;
-        if (tvVoice) u.voice = tvVoice;
-        u.onend = () => { if(cb) cb(); };
-        u.onerror = () => { if(cb) cb(); };
-
-        // Chrome bug 修復：長文本會中斷
-        // 每 14 秒重新觸發 resume 避免卡死
-        const keepAlive = setInterval(() => {
-          if (!speechSynthesis.speaking) { clearInterval(keepAlive); return; }
-          speechSynthesis.pause();
-          speechSynthesis.resume();
-        }, 14000);
-        u.onend = () => { clearInterval(keepAlive); if(cb) cb(); };
-        u.onerror = () => { clearInterval(keepAlive); if(cb) cb(); };
-
-        speechSynthesis.speak(u);
-      }
-
-      function tvPlaySeg() {
-        if (!tvPlaying || tvIdx >= tvScripts.length) {
-          tvStop();
-          document.getElementById('tvStatus').textContent = '導覽完成 ✓';
-          return;
-        }
-        const seg = tvScripts[tvIdx];
-        const total = tvScripts.length;
-        document.getElementById('tvProgress').style.width = ((tvIdx + 1) / total * 100).toFixed(0) + '%';
-        document.getElementById('tvStatus').textContent = (tvIdx + 1) + '/' + total;
-
-        // 清除舊高亮
-        document.querySelectorAll('.tv-highlight').forEach(e => e.classList.remove('tv-highlight'));
-
-        // 高亮目標元素
-        if (seg.el) {
-          const el = document.querySelector(seg.el);
-          if (el) {
-            el.classList.add('tv-highlight');
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-        }
-
-        tvSpeak(seg.text, () => {
-          if (!tvPlaying) return;
-          tvIdx++;
-          setTimeout(tvPlaySeg, 600); // 段落間停頓
-        });
-      }
-
-      window.tvToggle = function() {
-        const btn = document.getElementById('tvPlay');
-        if (!tvPlaying) {
-          tvPlaying = true;
-          tvPaused = false;
-          tvIdx = 0;
-          btn.textContent = '⏸ 暫停導覽';
-          btn.classList.add('playing');
-          btn.classList.remove('paused');
-          tvPlaySeg();
-        } else if (!tvPaused) {
-          tvPaused = true;
-          speechSynthesis.pause();
-          btn.textContent = '▶️ 繼續導覽';
-          btn.classList.remove('playing');
-          btn.classList.add('paused');
-        } else {
-          tvPaused = false;
-          speechSynthesis.resume();
-          btn.textContent = '⏸ 暫停導覽';
-          btn.classList.add('playing');
-          btn.classList.remove('paused');
-        }
-      };
-
-      window.tvStop = function() {
-        tvPlaying = false;
-        tvPaused = false;
-        speechSynthesis.cancel();
-        const btn = document.getElementById('tvPlay');
-        btn.textContent = '🎙️ 開始語音導覽';
-        btn.classList.remove('playing', 'paused');
-        document.querySelectorAll('.tv-highlight').forEach(e => e.classList.remove('tv-highlight'));
-        tvIdx = 0;
-        document.getElementById('tvProgress').style.width = '0%';
-        document.getElementById('tvStatus').textContent = '準備就緒';
-      };
-
-      window.tvSkip = function() {
-        if (!tvPlaying) return;
-        speechSynthesis.cancel();
-        tvIdx++;
-        tvPlaySeg();
-      };
-
-      window.tvSpeedChange = function() {
-        if (tvPlaying && !tvPaused) {
-          speechSynthesis.cancel();
-          tvPlaySeg();
-        }
-      };
     })();
     </script>
 </body>
