@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 學習資源庫 | 核心顧問有限公司</title>
+    <meta name="description" content="AI Agent 架構解析、企業導入視覺化教材、技術藍圖，免費開放閱覽。">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&family=Noto+Serif+TC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ── Resource Hub 專屬樣式 ── */
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            margin-top: 48px;
+        }
+        @media (max-width: 900px) { .hub-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .hub-grid { grid-template-columns: 1fr; } }
+
+        .hub-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .hub-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(10,22,40,0.10);
+            border-color: var(--teal);
+        }
+        .hub-card-thumb {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f5f2 100%);
+        }
+        .hub-card-body {
+            padding: 20px 22px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .hub-card-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            background: rgba(0,212,170,0.10);
+            color: #00897b;
+        }
+        .hub-card-tag.tag-arch { background: rgba(63,81,181,0.10); color: #3f51b5; }
+        .hub-card-tag.tag-anim { background: rgba(255,87,34,0.10); color: #e64a19; }
+        .hub-card-tag.tag-deep { background: rgba(103,58,183,0.10); color: #5e35b1; }
+
+        .hub-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--navy-dark);
+            margin: 0 0 8px;
+            line-height: 1.4;
+        }
+        .hub-card p {
+            font-size: 0.85rem;
+            color: var(--gray-500, #64748b);
+            line-height: 1.6;
+            margin: 0 0 16px;
+            flex: 1;
+        }
+        .hub-card-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.78rem;
+            color: #94a3b8;
+            margin-bottom: 16px;
+        }
+        .hub-card-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--teal);
+            text-decoration: none;
+            transition: gap 0.2s;
+        }
+        .hub-card-cta:hover { gap: 10px; color: var(--navy-dark); }
+
+        .hub-funnel-banner {
+            background: linear-gradient(135deg, var(--navy-dark) 0%, #1a3a6b 100%);
+            border-radius: 20px;
+            padding: 56px 48px;
+            text-align: center;
+            margin-top: 72px;
+            color: #fff;
+        }
+        .hub-funnel-banner h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0 0 12px;
+        }
+        .hub-funnel-banner p {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin: 0 0 32px;
+        }
+        .hub-funnel-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hub-stats {
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+            margin: 48px 0 0;
+            flex-wrap: wrap;
+        }
+        .hub-stat {
+            text-align: center;
+        }
+        .hub-stat-num {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--navy-dark);
+            line-height: 1;
+        }
+        .hub-stat-label {
+            font-size: 0.85rem;
+            color: var(--gray-500, #64748b);
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 導航列 -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">C</span>
+                <span class="logo-text">核心顧問</span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="開啟選單">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li><a href="services.html">顧問服務</a></li>
+                <li><a href="solutions.html">解決方案</a></li>
+                <li><a href="tools.html">工具方案</a></li>
+                <li><a href="navigator.html">AI 導入診斷</a></li>
+                <li><a href="bluesheet.html">商機診斷</a></li>
+                <li><a href="resources.html">資源觀點</a></li>
+                <li><a href="booking.html" class="btn btn-nav">預約諮詢</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                免費開放 · 無需登入
+            </div>
+            <h1>AI 導入<span class="gradient-text">學習資源庫</span></h1>
+            <p class="hero-desc">從 AI Agent 運作原理、企業導入架構到技術藍圖，以視覺化方式幫助決策者與技術團隊建立共同語言。</p>
+            <div class="hero-actions">
+                <a href="#resources" class="btn btn-primary">瀏覽資源 <span class="arrow">&rarr;</span></a>
+                <a href="navigator.html" class="btn btn-outline">免費 AI 診斷</a>
+            </div>
+
+            <div class="hub-stats">
+                <div class="hub-stat">
+                    <div class="hub-stat-num">6</div>
+                    <div class="hub-stat-label">視覺化教材</div>
+                </div>
+                <div class="hub-stat">
+                    <div class="hub-stat-num">免費</div>
+                    <div class="hub-stat-label">完全開放</div>
+                </div>
+                <div class="hub-stat">
+                    <div class="hub-stat-num">3</div>
+                    <div class="hub-stat-label">主題系列</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 資源卡片 -->
+    <section class="section" id="resources" style="background:#fff; padding: 80px 0;">
+        <div class="container">
+            <h2 class="section-title">精選視覺化教材</h2>
+            <p class="section-desc">每份教材均以互動式 HTML 呈現，適合自學、簡報或團隊教育訓練使用。</p>
+
+            <div class="hub-grid">
+
+                <!-- 1. 三部曲完整版 -->
+                <div class="hub-card">
+                    <div class="hub-card-thumb">🤖</div>
+                    <div class="hub-card-body">
+                        <span class="hub-card-tag tag-deep">完整系列</span>
+                        <h3>AI Agent 從入門到企業級 — 完整版</h3>
+                        <div class="hub-card-meta">
+                            <span>📖 深度長文</span>
+                            <span>·</span>
+                            <span>企業決策者 / 技術主管</span>
+                        </div>
+                        <p>涵蓋 Agent 基礎概念、工具調用機制、多 Agent 協作架構，到企業級部署與治理考量，一份文件建立完整認知。</p>
+                        <a href="AI_Agent_三部曲_完整版.html" class="hub-card-cta" target="_blank">開始閱讀 →</a>
+                    </div>
+                </div>
+
+                <!-- 2. 三部曲簡版 -->
+                <div class="hub-card">
+                    <div class="hub-card-thumb">📚</div>
+                    <div class="hub-card-body">
+                        <span class="hub-card-tag">入門系列</span>
+                        <h3>AI Agent 從入門到企業級 — 三部曲</h3>
+                        <div class="hub-card-meta">
+                            <span>🚀 快速入門</span>
+                            <span>·</span>
+                            <span>非技術主管 / 業務主管</span>
+                        </div>
+                        <p>三個章節循序漸進：什麼是 Agent？Agent 如何做決策？企業如何部署 Agent？適合 30 分鐘快速建立概念。</p>
+                        <a href="AI_Agent_三部曲.html" class="hub-card-cta" target="_blank">開始閱讀 →</a>
+                    </div>
+                </div>
+
+                <!-- 3. 技術架構藍圖 -->
+                <div class="hub-card">
+                    <div class="hub-card-thumb">🏗️</div>
+                    <div class="hub-card-body">
+                        <span class="hub-card-tag tag-arch">架構藍圖</span>
+                        <h3>AI Agent 企業智能化技術架構藍圖</h3>
+                        <div class="hub-card-meta">
+                            <span>🗺️ 架構圖解</span>
+                            <span>·</span>
+                            <span>IT 主管 / 技術架構師</span>
+                        </div>
+                        <p>從基礎設施層、模型服務層、Agent 編排層到應用層，完整呈現企業 AI 系統的技術堆疊與各層職責。</p>
+                        <a href="AI_Agent_技術架構藍圖.html" class="hub-card-cta" target="_blank">查看藍圖 →</a>
+                    </div>
+                </div>
+
+                <!-- 4. 企業AI系統架構圖 -->
+                <div class="hub-card">
+                    <div class="hub-card-thumb">🏢</div>
+                    <div class="hub-card-body">
+                        <span class="hub-card-tag tag-arch">架構藍圖</span>
+                        <h3>企業 AI 完整系統架構圖</h3>
+                        <div class="hub-card-meta">
+                            <span>📊 互動圖解</span>
+                            <span>·</span>
+                            <span>CIO / CTO / 技術決策者</span>
+                        </div>
+                        <p>從基礎設施到 Agent 調度層的完整企業 AI 系統架構，包含資料管道、向量資料庫、模型管理與安全治理。</p>
+                        <a href="企業AI系統架構圖.html" class="hub-card-cta" target="_blank">查看架構 →</a>
+                    </div>
+                </div>
+
+                <!-- 5. 龍蝦動畫流程圖 -->
+                <div class="hub-card">
+                    <div class="hub-card-thumb">🦞</div>
+                    <div class="hub-card-body">
+                        <span class="hub-card-tag tag-anim">動畫教學</span>
+                        <h3>AI Agent 運作流程動畫 — 龍蝦如何動起來</h3>
+                        <div class="hub-card-meta">
+                            <span>🎬 動畫互動</span>
+                            <span>·</span>
+                            <span>所有人適用</span>
+                        </div>
+                        <p>以「龍蝦」比喻 AI Agent 的感知—思考—行動迴圈，透過動畫步驟讓抽象的 Agent 運作機制一眼看懂。</p>
+                        <a href="AI_Agent_龍蝦動畫流程圖.html" class="hub-card-cta" target="_blank">觀看動畫 →</a>
+                    </div>
+                </div>
+
+                <!-- 6. 龍蝦解剖學 -->
+                <div class="hub-card">
+                    <div class="hub-card-thumb">🔬</div>
+                    <div class="hub-card-body">
+                        <span class="hub-card-tag tag-anim">深度解析</span>
+                        <h3>AI Agent 龍蝦解剖學 — 一次搞懂 OpenClaw</h3>
+                        <div class="hub-card-meta">
+                            <span>🔍 互動解剖</span>
+                            <span>·</span>
+                            <span>技術人員 / 產品經理</span>
+                        </div>
+                        <p>解剖 OpenClaw 框架的各個組成部件：感知模組、記憶系統、規劃引擎與工具執行器，深入了解企業級 Agent 的內部機制。</p>
+                        <a href="AI_Agent_龍蝦解剖學.html" class="hub-card-cta" target="_blank">開始解剖 →</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 漏斗 CTA 橫幅 -->
+    <section class="section" style="background: #f8f9fa; padding: 80px 0;">
+        <div class="container">
+            <div class="hub-funnel-banner">
+                <div style="font-size:2rem;margin-bottom:16px;">💡</div>
+                <h2>看完資源，下一步是什麼？</h2>
+                <p>理解 AI Agent 的運作原理只是開始。真正的挑戰在於：你的企業現在適合導入哪一種 AI？從哪裡開始？</p>
+                <div class="hub-funnel-actions">
+                    <a href="navigator.html" class="btn btn-primary">免費 AI 導入診斷 <span class="arrow">&rarr;</span></a>
+                    <a href="booking.html" class="btn btn-outline-light">預約顧問諮詢</a>
+                </div>
+            </div>
+
+            <!-- 三步驟說明 -->
+            <div style="display:flex;gap:32px;margin-top:56px;flex-wrap:wrap;justify-content:center;">
+                <div style="flex:1;min-width:200px;max-width:280px;text-align:center;">
+                    <div style="width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">1</div>
+                    <h4 style="color:var(--navy-dark);margin:0 0 8px;">閱讀資源</h4>
+                    <p style="font-size:0.85rem;color:#64748b;margin:0;">建立 AI 基礎認知，了解 Agent 架構與企業導入挑戰</p>
+                </div>
+                <div style="flex:1;min-width:200px;max-width:280px;text-align:center;">
+                    <div style="width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">2</div>
+                    <h4 style="color:var(--navy-dark);margin:0 0 8px;">完成診斷</h4>
+                    <p style="font-size:0.85rem;color:#64748b;margin:0;">15 分鐘免費問卷，評估企業 AI 成熟度與優先導入場景</p>
+                </div>
+                <div style="flex:1;min-width:200px;max-width:280px;text-align:center;">
+                    <div style="width:48px;height:48px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">3</div>
+                    <h4 style="color:var(--navy-dark);margin:0 0 8px;">預約諮詢</h4>
+                    <p style="font-size:0.85rem;color:#64748b;margin:0;">與顧問討論診斷結果，制定專屬的 AI 導入路徑</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="contact">
+        <div class="container">
+            <h2>準備好開始了嗎？</h2>
+            <p>免費診斷 + 顧問建議報告，協助你找到最適合的 AI 導入起點。</p>
+            <div class="cta-actions">
+                <a href="navigator.html" class="btn btn-primary btn-full-mobile">開始免費診斷 <span class="arrow">&rarr;</span></a>
+                <a href="resources.html" class="btn btn-outline-light btn-full-mobile">更多資源觀點</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon">C</span>
+                        <span class="logo-text">核心顧問</span>
+                    </a>
+                    <p>協助企業完成 AI 導入診斷、場景規劃、概念驗證（POC）與治理設計，讓 AI 真正進入流程，而不只停留在單點工具使用。</p>
+                    <a href="navigator.html" class="footer-cta">先做免費 AI 診斷 <span class="arrow">&rarr;</span></a>
+                </div>
+                <div class="footer-col">
+                    <h4>服務</h4>
+                    <ul>
+                        <li><a href="about.html">關於我們</a></li>
+                        <li><a href="services.html">顧問服務</a></li>
+                        <li><a href="solutions.html">解決方案</a></li>
+                        <li><a href="tools.html">工具方案</a></li>
+                        <li><a href="navigator.html">AI 導入診斷</a></li>
+                        <li><a href="bluesheet.html">商機診斷</a></li>
+                        <li><a href="ic-diagnostic.html">IC 人才診斷</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>資源</h4>
+                    <ul>
+                        <li><a href="resources.html">資源觀點</a></li>
+                        <li><a href="resources-hub.html">AI 學習資源庫</a></li>
+                        <li><a href="resources.html">常見問題</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>聯絡</h4>
+                    <ul>
+                        <li><a href="mailto:edward@intelliconai.com">edward@intelliconai.com</a></li>
+                        <li><a href="tel:0978183983">0978-183-983</a></li>
+                        <li><a href="https://www.linkedin.com/company/intellicon-ai" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                        <li><a href="https://line.me/R/ti/p/@344mflnu" target="_blank" rel="noopener noreferrer">Line OA: @344mflnu</a></li>
+                        <li><a href="booking.html" class="btn btn-nav">預約諮詢</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 核心顧問有限公司 Core Consultant Ltd. 版權所有 | <a href="admin.html">管理員</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
