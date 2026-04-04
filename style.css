@@ -1052,68 +1052,58 @@ h1, h2, h3, h4 {
     line-height: 1.8;
 }
 
-/* === Testimonials === */
-.testimonials {
-    padding: 100px 0;
+/* === Service Record === */
+.service-record {
+    padding: 80px 0;
     background: var(--gray-50);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 }
 
-.testimonials-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 700px;
-    margin: 0 auto;
+.record-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
 }
 
-.testimonial-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 32px;
+.record-item {
+    text-align: center;
+    padding: 32px 24px;
+    border-right: 1px solid var(--border);
 }
 
-.testimonial-text {
-    font-size: 1rem;
-    color: var(--text-body);
-    line-height: 1.9;
-    margin-bottom: 20px;
-    font-style: italic;
-    border-left: 3px solid var(--navy);
-    padding-left: 20px;
+.record-item:last-child {
+    border-right: none;
 }
 
-.testimonial-author {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.record-number {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
 }
 
-.author-avatar {
-    width: 40px;
-    height: 40px;
-    background: var(--navy);
-    color: var(--white);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.82rem;
-    font-weight: 600;
-    flex-shrink: 0;
-    font-family: var(--font-body);
-}
-
-.testimonial-author strong {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--text-dark);
-    font-family: var(--font-body);
-}
-
-.testimonial-author span {
-    font-size: 0.8rem;
+.record-unit {
+    font-size: 1.4rem;
+    font-weight: 400;
     color: var(--text-light);
+}
+
+.record-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+}
+
+.record-desc {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    line-height: 1.6;
 }
 
 /* === CTA === */
@@ -2264,6 +2254,22 @@ h1, h2, h3, h4 {
 
     .hero-actions {
         flex-direction: column;
+    }
+
+    .record-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .record-item {
+        border-bottom: 1px solid var(--border);
+    }
+
+    .record-item:nth-child(even) {
+        border-right: none;
+    }
+
+    .record-item:nth-last-child(-n+2) {
+        border-bottom: none;
     }
 
     .hero-actions .btn {
