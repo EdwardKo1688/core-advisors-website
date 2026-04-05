@@ -2068,6 +2068,112 @@ h1, h2, h3, h4 {
     margin-bottom: 12px;
 }
 
+/* === Founder Certs === */
+.founder-certs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+.cert-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--navy);
+    background: rgba(0,51,102,0.06);
+    border: 1px solid rgba(0,51,102,0.2);
+    padding: 4px 12px;
+    border-radius: 2px;
+    letter-spacing: 0.02em;
+}
+
+/* === Career Timeline === */
+.timeline-section {
+    padding: 100px 0;
+    background: var(--navy-dark);
+}
+.timeline-section .section-title {
+    color: var(--white);
+}
+.timeline-section .section-desc {
+    color: rgba(255,255,255,0.65);
+}
+.timeline {
+    max-width: 760px;
+    margin: 56px auto 0;
+    position: relative;
+}
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 120px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255,255,255,0.15);
+}
+.timeline-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 0 32px;
+    margin-bottom: 48px;
+    position: relative;
+}
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 116px;
+    top: 6px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.5);
+}
+.timeline-item-current::before {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(184,150,12,0.2);
+}
+.timeline-period {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    padding-top: 4px;
+    text-align: right;
+    padding-right: 20px;
+}
+.timeline-content {
+    padding-left: 20px;
+}
+.timeline-role {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 2px;
+}
+.timeline-company {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+    letter-spacing: 0.03em;
+}
+.timeline-content p {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.75;
+}
+@media (max-width: 600px) {
+    .timeline::before { left: 0; }
+    .timeline-item { grid-template-columns: 1fr; gap: 4px; padding-left: 20px; }
+    .timeline-item::before { left: -4px; }
+    .timeline-period { text-align: left; padding-right: 0; }
+    .timeline-content { padding-left: 0; }
+}
+
 /* === Industry Section === */
 .industry-section {
     padding: 80px 0;
