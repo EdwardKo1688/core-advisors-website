@@ -47,6 +47,7 @@ const ICD = (() => {
             state.uploadTemplates = await templatesRes.json();
         } catch (e) {
             console.error('Failed to load config:', e);
+            state.configError = true;
         }
 
         // Check hash for direct navigation
@@ -520,12 +521,24 @@ const ICD = (() => {
     }
 
     // --- Submit & Calculate ---
-    function submitDiagnostic() {
-        const config = state.scoringConfig;
-        if (!config) {
-            showToast('設定載入失敗，請重新整理頁面');
-            return;
+    async function submitDiagnostic() {
+        // 若 config 未載入，嘗試重新 fetch 一次
+        if (!state.scoringConfig) {
+            try {
+                const [configRes, rulesRes] = await Promise.all([
+                    fetch('ic-diagnostic-data/scoring-config.json'),
+                    fetch('ic-diagnostic-data/diagnostic-rules.json')
+                ]);
+                state.scoringConfig = await configRes.json();
+                state.diagnosticRules = await rulesRes.json();
+                state.configError = false;
+            } catch (e) {
+                console.error('Config retry failed:', e);
+                showToast('設定載入失敗，請確認網路連線後重新整理頁面');
+                return;
+            }
         }
+        const config = state.scoringConfig;
 
         // 委派給 ICDService.Recommendation.computeFullResult（整合 Scorer + RuleEngine）
         const svc = (typeof ICDService !== 'undefined') ? ICDService : null;
