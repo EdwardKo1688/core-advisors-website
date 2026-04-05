@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顧問案例 | 核心顧問有限公司</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&family=Noto+Serif+TC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ── Case Study Page Styles ── */
+        .cs-hero {
+            background: var(--navy-dark);
+            color: var(--white);
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+        .cs-hero-tag {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(184,150,12,0.4);
+            padding: 5px 14px;
+            border-radius: 2px;
+            margin-bottom: 24px;
+        }
+        .cs-hero h1 {
+            font-family: 'Noto Serif TC', serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+        .cs-hero p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* ── Filter Tabs ── */
+        .cs-filter {
+            background: var(--warm-gray);
+            border-bottom: 1px solid var(--border);
+            padding: 0;
+            position: sticky;
+            top: 64px;
+            z-index: 90;
+        }
+        .cs-filter-inner {
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .cs-filter-btn {
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 16px 24px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .cs-filter-btn.active,
+        .cs-filter-btn:hover {
+            color: var(--navy);
+            border-bottom-color: var(--gold);
+        }
+
+        /* ── Case Cards Grid ── */
+        .cs-grid {
+            padding: 80px 0;
+        }
+        .cs-grid-inner {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 32px;
+        }
+        .cs-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-top: 3px solid var(--navy);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .cs-card:hover {
+            box-shadow: 0 8px 32px rgba(0,51,102,0.1);
+            transform: translateY(-2px);
+        }
+        .cs-card-header {
+            padding: 28px 28px 0;
+        }
+        .cs-card-industry {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+        .cs-card-title {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--navy-dark);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .cs-card-desc {
+            font-size: 0.9rem;
+            color: var(--text-body);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .cs-card-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0 28px;
+        }
+        .cs-card-body {
+            padding: 20px 28px 28px;
+        }
+        .cs-section-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+        .cs-section-text {
+            font-size: 0.9rem;
+            color: var(--text-body);
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+        .cs-result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+        .cs-result-item {
+            background: var(--warm-gray);
+            border-radius: 3px;
+            padding: 12px 14px;
+        }
+        .cs-result-number {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+        }
+        .cs-result-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 3px;
+        }
+        .cs-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .cs-tag {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--slate);
+            background: var(--warm-gray);
+            border: 1px solid var(--border);
+            padding: 3px 10px;
+            border-radius: 2px;
+        }
+
+        /* ── Full Case Study Section ── */
+        .cs-full {
+            background: var(--warm-gray);
+            padding: 80px 0;
+        }
+        .cs-full-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .cs-full-header {
+            margin-bottom: 48px;
+        }
+        .cs-full-header h2 {
+            font-family: 'Noto Serif TC', serif;
+            font-size: clamp(1.6rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--navy-dark);
+            margin-bottom: 12px;
+        }
+        .cs-full-header p {
+            font-size: 0.95rem;
+            color: var(--text-body);
+            line-height: 1.8;
+        }
+        .cs-care {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-bottom: 32px;
+            overflow: hidden;
+        }
+        .cs-care-header {
+            background: var(--navy-dark);
+            color: var(--white);
+            padding: 20px 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .cs-care-letter {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--gold);
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .cs-care-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .cs-care-subtitle {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 2px;
+        }
+        .cs-care-body {
+            padding: 24px 32px;
+        }
+        .cs-care-body p {
+            font-size: 0.95rem;
+            color: var(--text-body);
+            line-height: 1.85;
+        }
+        .cs-care-body ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        .cs-care-body ul li {
+            font-size: 0.92rem;
+            color: var(--text-body);
+            line-height: 1.8;
+            margin-bottom: 6px;
+        }
+        .cs-care-body ul li::marker {
+            color: var(--gold);
+        }
+        .cs-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .cs-metric {
+            background: var(--warm-gray);
+            border-radius: 3px;
+            padding: 16px;
+            text-align: center;
+        }
+        .cs-metric-num {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        .cs-metric-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+        .cs-full-nav {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+        .cs-full-nav-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-body);
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+        .cs-full-nav-btn.active,
+        .cs-full-nav-btn:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+            background: rgba(0,51,102,0.04);
+        }
+        .cs-full-case {
+            display: none;
+        }
+        .cs-full-case.active {
+            display: block;
+        }
+        .cs-full-case-title {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--navy-dark);
+            margin-bottom: 8px;
+        }
+        .cs-full-case-meta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        .cs-full-case-meta span {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .cs-full-case-meta strong {
+            color: var(--text-body);
+        }
+
+        /* ── CTA Section ── */
+        .cs-cta {
+            background: var(--navy-dark);
+            color: var(--white);
+            padding: 80px 0;
+            text-align: center;
+        }
+        .cs-cta h2 {
+            font-family: 'Noto Serif TC', serif;
+            font-size: clamp(1.6rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+        .cs-cta p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 520px;
+            margin: 0 auto 36px;
+            line-height: 1.8;
+        }
+        .cs-cta-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .cs-grid-inner {
+                grid-template-columns: 1fr;
+            }
+            .cs-result-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .cs-metrics {
+                grid-template-columns: 1fr 1fr;
+            }
+            .cs-care-body {
+                padding: 20px 20px;
+            }
+            .cs-care-header {
+                padding: 16px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 導航列 -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <svg class="logo-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="16" cy="16" r="6" fill="currentColor"/></svg>
+                <span class="logo-text">核心顧問</span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="開啟選單">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="about.html">關於我們</a></li>
+                <li class="nav-dropdown">
+                    <a href="services.html" class="nav-dropdown-toggle">服務範疇</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="services.html">顧問服務</a></li>
+                        <li><a href="solutions.html">解決方案</a></li>
+                        <li><a href="tools.html">工具方案</a></li>
+                    </ul>
+                </li>
+                <li class="nav-dropdown">
+                    <a href="navigator.html" class="nav-dropdown-toggle">診斷工具</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="navigator.html">AI 導入診斷</a></li>
+                        <li><a href="bluesheet.html">商機診斷</a></li>
+                        <li><a href="ic-diagnostic.html">IC 人才診斷</a></li>
+                    </ul>
+                </li>
+                <li><a href="resources.html">資源觀點</a></li>
+                <li><a href="booking.html" class="btn btn-nav">預約諮詢</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="cs-hero">
+        <div class="container">
+            <div class="cs-hero-tag">顧問實績</div>
+            <h1>真實案例，可量化成效</h1>
+            <p>以下案例均已去識別化。呈現核心顧問在不同產業的導入方法、行動步驟，與可驗證的業務成效。</p>
+        </div>
+    </section>
+
+    <!-- 摘要卡片 Grid -->
+    <section class="cs-grid">
+        <div class="container">
+            <div class="cs-grid-inner">
+
+                <!-- Case 1：物流電商業 -->
+                <div class="cs-card">
+                    <div class="cs-card-header">
+                        <div class="cs-card-industry">物流 / 電商</div>
+                        <h3 class="cs-card-title">AI 戰情看板導入，讓管理層首次「看到」真實數據</h3>
+                        <p class="cs-card-desc">某物流業者為電商平台提供倉配服務，管理報表仰賴人工整合，決策延遲、績效盲區明顯。</p>
+                    </div>
+                    <div class="cs-card-divider"></div>
+                    <div class="cs-card-body">
+                        <div class="cs-section-label">核心行動</div>
+                        <p class="cs-section-text">8 構面 100 項指標盤點 → AI 戰情看板 MVP → Quick Win 報告（第 8 週）</p>
+                        <div class="cs-result-grid">
+                            <div class="cs-result-item">
+                                <div class="cs-result-number">8 週</div>
+                                <div class="cs-result-label">MVP 看板上線</div>
+                            </div>
+                            <div class="cs-result-item">
+                                <div class="cs-result-number">100 項</div>
+                                <div class="cs-result-label">管理指標盤點</div>
+                            </div>
+                        </div>
+                        <div class="cs-card-tags">
+                            <span class="cs-tag">AI 戰情看板</span>
+                            <span class="cs-tag">Quick Win</span>
+                            <span class="cs-tag">績效管理</span>
+                            <span class="cs-tag">物流 KPI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 2：政府財團法人 -->
+                <div class="cs-card">
+                    <div class="cs-card-header">
+                        <div class="cs-card-industry">政府 / 財團法人</div>
+                        <h3 class="cs-card-title">認證審查 AI 化，縮短標章申請等待週期</h3>
+                        <p class="cs-card-desc">某財團法人負責管理多類建築標章認證，審查人力有限，申請資料缺件率高，回函效率低。</p>
+                    </div>
+                    <div class="cs-card-divider"></div>
+                    <div class="cs-card-body">
+                        <div class="cs-section-label">核心行動</div>
+                        <p class="cs-section-text">現況流程盤點 → 缺件自動偵測 AI → 員工 AI 素養培訓 → Human-in-the-loop 設計</p>
+                        <div class="cs-result-grid">
+                            <div class="cs-result-item">
+                                <div class="cs-result-number">13 類</div>
+                                <div class="cs-result-label">標章認證流程覆蓋</div>
+                            </div>
+                            <div class="cs-result-item">
+                                <div class="cs-result-number">3 層</div>
+                                <div class="cs-result-label">AI 素養培訓架構</div>
+                            </div>
+                        </div>
+                        <div class="cs-card-tags">
+                            <span class="cs-tag">流程 AI 化</span>
+                            <span class="cs-tag">Human-in-the-loop</span>
+                            <span class="cs-tag">公部門</span>
+                            <span class="cs-tag">AI 素養</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 3：科技 SaaS -->
+                <div class="cs-card">
+                    <div class="cs-card-header">
+                        <div class="cs-card-industry">科技 / SaaS</div>
+                        <h3 class="cs-card-title">Claude Code 導入教練，開發效率提升並建立 AI 平台商模</h3>
+                        <p class="cs-card-desc">某 TMS/xIoT SaaS 新創，技術力強但 AI 開發工具導入缺乏結構化方法，產品迭代速度受限。</p>
+                    </div>
+                    <div class="cs-card-divider"></div>
+                    <div class="cs-card-body">
+                        <div class="cs-section-label">核心行動</div>
+                        <p class="cs-section-text">Claude Code 工作流設計 → SDD/OpenSpec 規範建立 → AI 平台商模路線圖</p>
+                        <div class="cs-result-grid">
+                            <div class="cs-result-item">
+                                <div class="cs-result-number">SDD</div>
+                                <div class="cs-result-label">規格驅動開發導入</div>
+                            </div>
+                            <div class="cs-result-item">
+                                <div class="cs-result-number">AI 平台</div>
+                                <div class="cs-result-label">Rimo AI 商模規劃</div>
+                            </div>
+                        </div>
+                        <div class="cs-card-tags">
+                            <span class="cs-tag">Claude Code</span>
+                            <span class="cs-tag">AI Agent</span>
+                            <span class="cs-tag">SaaS 商模</span>
+                            <span class="cs-tag">開發效率</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 4：IC 通路培訓 -->
+                <div class="cs-card">
+                    <div class="cs-card-header">
+                        <div class="cs-card-industry">IC 通路 / 知識培訓</div>
+                        <h3 class="cs-card-title">IC 通路培訓體系 AI 化，從課程設計到學員互動全面升級</h3>
+                        <p class="cs-card-desc">某 IC 通路商旗下培訓品牌，培訓內容龐雜、課程更新耗時，學員互動工具落後。</p>
+                    </div>
+                    <div class="cs-card-divider"></div>
+                    <div class="cs-card-body">
+                        <div class="cs-section-label">核心行動</div>
+                        <p class="cs-section-text">培訓需求盤點 → AI 輔助課程生成 → 智慧問答知識庫 → AI 化培訓路線圖</p>
+                        <div class="cs-result-grid">
+                            <div class="cs-result-item">
+                                <div class="cs-result-number">AI 化</div>
+                                <div class="cs-result-label">課程內容生成</div>
+                            </div>
+                            <div class="cs-result-item">
+                                <div class="cs-result-number">RAG</div>
+                                <div class="cs-result-label">技術文件問答庫</div>
+                            </div>
+                        </div>
+                        <div class="cs-card-tags">
+                            <span class="cs-tag">知識庫</span>
+                            <span class="cs-tag">RAG</span>
+                            <span class="cs-tag">培訓 AI 化</span>
+                            <span class="cs-tag">IC 通路</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 完整 CARE 案例 -->
+    <section class="cs-full">
+        <div class="container">
+            <div class="cs-full-inner">
+                <div class="cs-full-header">
+                    <h2>完整案例解析</h2>
+                    <p>CARE 格式（Context → Action → Result → Extension）完整呈現顧問介入邏輯與成效驗證。</p>
+                </div>
+
+                <!-- 案例切換按鈕 -->
+                <div class="cs-full-nav">
+                    <button class="cs-full-nav-btn active" onclick="showCase('case-logistics')">物流電商</button>
+                    <button class="cs-full-nav-btn" onclick="showCase('case-gov')">政府財團法人</button>
+                    <button class="cs-full-nav-btn" onclick="showCase('case-saas')">科技 SaaS</button>
+                    <button class="cs-full-nav-btn" onclick="showCase('case-ic')">IC 通路培訓</button>
+                </div>
+
+                <!-- Case 1：物流電商 -->
+                <div class="cs-full-case active" id="case-logistics">
+                    <h3 class="cs-full-case-title">AI 戰情看板導入，讓管理層首次「看到」真實數據</h3>
+                    <div class="cs-full-case-meta">
+                        <span>產業：<strong>物流 / 電商</strong></span>
+                        <span>規模：<strong>中型企業（200–500 人）</strong></span>
+                        <span>服務模式：<strong>常駐顧問（3 個月起）</strong></span>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">C</div>
+                            <div>
+                                <div class="cs-care-title">Context — 情境與挑戰</div>
+                                <div class="cs-care-subtitle">顧問介入前的企業現況</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <p>該企業為電商平台提供倉配一條龍服務，日均處理訂單量超過萬筆。管理報表仰賴各部門每週人工整理 Excel，彙總後再由主管逐一解讀，從數據產生到決策形成平均延遲 3–5 天。</p>
+                            <p>核心痛點包括：</p>
+                            <ul>
+                                <li>倉儲效率、車輛 OTD（準時送達率）等關鍵指標無即時追蹤</li>
+                                <li>績效歸因困難，異常出現後才能事後追查</li>
+                                <li>管理層對「AI 能做什麼」有期待，但無法確定從哪個場景切入最有價值</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">A</div>
+                            <div>
+                                <div class="cs-care-title">Action — 顧問行動步驟</div>
+                                <div class="cs-care-subtitle">介入方法與執行序列</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <p>顧問採三段式導入，以「先求有，再求好」為原則：</p>
+                            <ul>
+                                <li><strong>W1–2 現況診斷：</strong>與 IT、倉管、車隊主管進行深度訪談，盤點現有數據源（ERP、TMS、GPS）與可用性，產出 AI 導入適合場景清單</li>
+                                <li><strong>W3–4 指標體系設計：</strong>依麥肯錫 MECE 原則建立 8 構面 100 項 KPI 體系，按「重要性 × 可取得性」排序，鎖定 Phase 1 的 20 項核心指標</li>
+                                <li><strong>W5–8 看板 MVP 上線：</strong>協助 IT 完成數據串接，以 BI 工具建立即時戰情看板，管理層可自助查詢每日核心指標；同步進行第一份 Quick Win 報告（導入前 vs. 後的對比）</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">R</div>
+                            <div>
+                                <div class="cs-care-title">Result — 可量化成效</div>
+                                <div class="cs-care-subtitle">第 8 週 Quick Win 報告摘要</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <div class="cs-metrics">
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">8 週</div>
+                                    <div class="cs-metric-label">從零到 MVP 看板上線</div>
+                                </div>
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">100 項</div>
+                                    <div class="cs-metric-label">管理指標系統性盤點</div>
+                                </div>
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">3–5 天</div>
+                                    <div class="cs-metric-label">決策延遲縮短至即時</div>
+                                </div>
+                            </div>
+                            <p>管理層在第 8 週會議首次基於即時數據進行決策討論；IT 主管表示，看板讓跨部門對話從「說感覺」轉為「看數字」。</p>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">E</div>
+                            <div>
+                                <div class="cs-care-title">Extension — 後續延伸</div>
+                                <div class="cs-care-subtitle">Phase 2 規劃方向</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <p>基於 Phase 1 的信任基礎，Phase 2 規劃納入預測性分析（OTD 預測、異常預警）與 AI 排程輔助，預計在 M4–8 實施。企業已核准 Phase 2 預算，進入長期常駐顧問合作模式。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 2：政府財團法人 -->
+                <div class="cs-full-case" id="case-gov">
+                    <h3 class="cs-full-case-title">認證審查 AI 化，縮短標章申請等待週期</h3>
+                    <div class="cs-full-case-meta">
+                        <span>產業：<strong>政府 / 財團法人</strong></span>
+                        <span>規模：<strong>小型機構（50–100 人）</strong></span>
+                        <span>服務模式：<strong>陪跑顧問（6 個月）</strong></span>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">C</div>
+                            <div>
+                                <div class="cs-care-title">Context — 情境與挑戰</div>
+                                <div class="cs-care-subtitle">顧問介入前的機構現況</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <p>該機構負責管理多類建築相關標章認證（含綠建築、智慧建築等），每年受理申請數量持續成長，但審查人力無法同步擴編。申請資料缺件率約 40%，導致大量退件往返，審查人員耗費 60% 以上的時間在行政確認而非專業審查。</p>
+                            <p>公部門文化特殊性：</p>
+                            <ul>
+                                <li>法規決定流程，AI 只能輔助不能替代最終判斷</li>
+                                <li>資深審查人員對 AI 工具有疑慮，需要漸進式信任建立</li>
+                                <li>預算與採購流程較私部門更長，需提前規劃</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">A</div>
+                            <div>
+                                <div class="cs-care-title">Action — 顧問行動步驟</div>
+                                <div class="cs-care-subtitle">公部門節奏的導入設計</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <ul>
+                                <li><strong>M1 現況盤點：</strong>訪談審查人員與申請人，繪製 13 類標章的現行流程圖，標記人工耗時節點與高缺件類型</li>
+                                <li><strong>M2–3 AI 輔助工具設計：</strong>設計缺件自動偵測機制（文件類型核對、必填欄位檢查），Human-in-the-loop 架構確保審查員保有最終決策權</li>
+                                <li><strong>M4–5 員工 AI 素養培訓：</strong>分三層（基礎認知 / 工具操作 / 進階應用）設計培訓課程，先從最有意願的部門試行，建立內部 Champion</li>
+                                <li><strong>M6 成效驗證：</strong>統計缺件率與退件往返次數，製作導入前後對比報告，向主管機關報告成效</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">R</div>
+                            <div>
+                                <div class="cs-care-title">Result — 可量化成效</div>
+                                <div class="cs-care-subtitle">6 個月陪跑結束後報告</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <div class="cs-metrics">
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">13 類</div>
+                                    <div class="cs-metric-label">標章流程全覆蓋盤點</div>
+                                </div>
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">3 層</div>
+                                    <div class="cs-metric-label">AI 素養培訓架構建立</div>
+                                </div>
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">40%</div>
+                                    <div class="cs-metric-label">缺件率（導入前基準）</div>
+                                </div>
+                            </div>
+                            <p>AI 輔助缺件偵測在試行部門上線後，審查員反映行政確認時間明顯下降；機構主管決定擴大至所有標章類型並納入年度預算。</p>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">E</div>
+                            <div>
+                                <div class="cs-care-title">Extension — 後續延伸</div>
+                                <div class="cs-care-subtitle">方法論可複製性</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <p>本案建立的「公部門 AI 導入三原則」（法規優先、Human-in-the-loop、漸進信任）已成為核心顧問服務其他政府機構的標準方法論，可直接複製至類似認證或審查型機構。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 3：科技 SaaS -->
+                <div class="cs-full-case" id="case-saas">
+                    <h3 class="cs-full-case-title">Claude Code 導入教練，開發效率提升並建立 AI 平台商模</h3>
+                    <div class="cs-full-case-meta">
+                        <span>產業：<strong>科技 / SaaS / xIoT</strong></span>
+                        <span>規模：<strong>新創（10–50 人）</strong></span>
+                        <span>服務模式：<strong>技術顧問教練（持續）</strong></span>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">C</div>
+                            <div>
+                                <div class="cs-care-title">Context — 情境與挑戰</div>
+                                <div class="cs-care-subtitle">顧問介入前的企業現況</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <p>該企業提供運輸管理系統（TMS）與車聯網（xIoT）平台服務，技術團隊有一定 AI 基礎，但 AI 輔助開發工具（如 Claude Code）的導入缺乏結構化規範，各工程師使用方式不一致，導致 AI 生成代碼品質參差，code review 成本反而上升。</p>
+                            <p>同時，公司希望從單純 SaaS 工具提供商，轉型為 AI 平台服務商（自有 AI 平台品牌 Rimo），商模轉型缺乏清晰路線圖。</p>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">A</div>
+                            <div>
+                                <div class="cs-care-title">Action — 顧問行動步驟</div>
+                                <div class="cs-care-subtitle">技術賦能 + 商模策略雙軌並行</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <ul>
+                                <li><strong>技術軌 — Claude Code 工作流標準化：</strong>引入 SDD（規格驅動開發）方法，每個功能開發前先寫 OpenSpec 規格文件，AI 依規格生成代碼，降低模糊性；建立 Code Review Checklist 與 AI 生成代碼的品質閘門</li>
+                                <li><strong>技術軌 — AI Agent 架構設計：</strong>協助設計 Rimo AI Platform 的 Agent 架構（RAG + 多模型 + 權限控管），確保企業級安全需求與彈性擴展性</li>
+                                <li><strong>商模軌 — SaaS → 平台轉型路線圖：</strong>分析 TMS 數據資產的核心價值，設計「工具 → 平台 → 生態」三階段商模轉型計畫，並評估 xIoT 車聯網數據作為差異化競爭資產的可行性</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">R</div>
+                            <div>
+                                <div class="cs-care-title">Result — 可量化成效</div>
+                                <div class="cs-care-subtitle">3 個月教練期成效</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <div class="cs-metrics">
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">SDD</div>
+                                    <div class="cs-metric-label">規格驅動開發全團隊導入</div>
+                                </div>
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">AI 平台</div>
+                                    <div class="cs-metric-label">Rimo 架構規格完成</div>
+                                </div>
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">3 階段</div>
+                                    <div class="cs-metric-label">商模轉型路線圖完成</div>
+                                </div>
+                            </div>
+                            <p>工程師反映 Claude Code 在有 SDD 規格文件的情況下，生成代碼的可用率顯著提升；CTO 表示商模路線圖讓董事會討論從「方向模糊」變為「三個具體里程碑」。</p>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">E</div>
+                            <div>
+                                <div class="cs-care-title">Extension — 後續延伸</div>
+                                <div class="cs-care-subtitle">技術賦能的複利效應</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <p>SDD + Claude Code 的工作流已成為該公司的標準開發規範，新加入的工程師可快速上手。Rimo AI Platform 的 MVP 規格已完成，正進入開發階段。顧問持續以月顧問模式協助商模驗證與關鍵技術決策。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case 4：IC 通路培訓 -->
+                <div class="cs-full-case" id="case-ic">
+                    <h3 class="cs-full-case-title">IC 通路培訓體系 AI 化，從課程設計到學員互動全面升級</h3>
+                    <div class="cs-full-case-meta">
+                        <span>產業：<strong>IC 通路 / 知識培訓</strong></span>
+                        <span>規模：<strong>中型企業（100–300 人）</strong></span>
+                        <span>服務模式：<strong>診斷規劃 + AI 化方案設計</strong></span>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">C</div>
+                            <div>
+                                <div class="cs-care-title">Context — 情境與挑戰</div>
+                                <div class="cs-care-subtitle">顧問介入前的企業現況</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <p>某 IC 通路商旗下設有培訓品牌，專門提供半導體產業人才培訓服務。隨著 AI 晶片、車用 IC 等新議題快速演進，課程內容更新週期跟不上市場需求，技術文件整理耗費大量人力，學員在課後常需等待數天才能得到技術問題的回覆。</p>
+                            <ul>
+                                <li>課程更新：一門課從需求確認到上線平均需要 3 個月</li>
+                                <li>知識管理：技術文件散落各處，講師查找資料效率低</li>
+                                <li>學員互動：課後問答依賴人工，無法即時回應</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">A</div>
+                            <div>
+                                <div class="cs-care-title">Action — 顧問行動步驟</div>
+                                <div class="cs-care-subtitle">培訓產業 AI 化路線圖</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <ul>
+                                <li><strong>培訓需求盤點：</strong>與課程開發、講師、業務三方訪談，繪製完整培訓生命週期，標記 AI 可介入的 5 個高價值節點</li>
+                                <li><strong>AI 輔助課程生成：</strong>設計 Prompt 工程框架，讓課程開發人員以 AI 輔助完成講義草稿、案例生成、測驗題設計，縮短內容開發週期</li>
+                                <li><strong>智慧問答知識庫（RAG）：</strong>設計以 RAG（檢索增強生成）架構為基礎的技術文件問答系統，讓學員可即時查詢課程相關技術問題，講師不需手動回覆重複問題</li>
+                                <li><strong>培訓 AI 化路線圖：</strong>產出 12 個月的分階段 AI 化計畫，含技術選型建議、預算規劃、KPI 設定</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">R</div>
+                            <div>
+                                <div class="cs-care-title">Result — 可量化成效</div>
+                                <div class="cs-care-subtitle">診斷規劃交付成果</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <div class="cs-metrics">
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">5 個</div>
+                                    <div class="cs-metric-label">高價值 AI 介入節點識別</div>
+                                </div>
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">RAG</div>
+                                    <div class="cs-metric-label">技術文件問答庫架構設計</div>
+                                </div>
+                                <div class="cs-metric">
+                                    <div class="cs-metric-num">12 個月</div>
+                                    <div class="cs-metric-label">分階段 AI 化路線圖</div>
+                                </div>
+                            </div>
+                            <p>培訓主管表示，路線圖讓原本模糊的「想導入 AI」變成有明確里程碑和預算依據的計畫；課程開發團隊在試用 Prompt 框架後，反映第一份 AI 輔助講義草稿的可用度超出預期。</p>
+                        </div>
+                    </div>
+
+                    <div class="cs-care">
+                        <div class="cs-care-header">
+                            <div class="cs-care-letter">E</div>
+                            <div>
+                                <div class="cs-care-title">Extension — 後續延伸</div>
+                                <div class="cs-care-subtitle">培訓產業 AI 化的可複製性</div>
+                            </div>
+                        </div>
+                        <div class="cs-care-body">
+                            <p>本案的培訓 AI 化框架（課程生成 + RAG 問答 + 學習路徑個人化）適用於任何有大量技術文件的培訓機構，已被核心顧問納入「知識密集型企業 AI 化」服務方案，後續可複製至其他產業的企業內訓或外部培訓業者。</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cs-cta">
+        <div class="container">
+            <h2>您的企業，下一個案例</h2>
+            <p>先做 AI 導入診斷，了解企業成熟度與最適合的切入場景。免費、無推銷。</p>
+            <div class="cs-cta-actions">
+                <a href="navigator.html" class="btn btn-primary">免費 AI 診斷</a>
+                <a href="booking.html" class="btn btn-outline-light">預約顧問諮詢</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <svg class="logo-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="16" cy="16" r="6" fill="currentColor"/></svg>
+                        <span class="logo-text">核心顧問</span>
+                    </a>
+                    <p>協助企業完成 AI 導入診斷、場景規劃、概念驗證（POC）與治理設計，確保 AI 投資轉化為可量化的業務成效，而不只停留在單點工具使用。</p>
+                    <a href="navigator.html" class="footer-cta">先做免費 AI 診斷 →</a>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>服務</h4>
+                        <ul>
+                            <li><a href="about.html">關於我們</a></li>
+                            <li><a href="services.html">顧問服務</a></li>
+                            <li><a href="solutions.html">解決方案</a></li>
+                            <li><a href="tools.html">工具方案</a></li>
+                            <li><a href="navigator.html">AI 導入診斷</a></li>
+                            <li><a href="bluesheet.html">商機診斷</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>資源</h4>
+                        <ul>
+                            <li><a href="resources.html">資源觀點</a></li>
+                            <li><a href="resources.html">觀點文章</a></li>
+                            <li><a href="resources.html">常見問題</a></li>
+                            <li><a href="case-study.html">顧問案例</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>聯絡</h4>
+                        <ul>
+                            <li><a href="mailto:edward@intelliconai.com">edward@intelliconai.com</a></li>
+                            <li><a href="tel:0978183983">0978-183-983</a></li>
+                            <li><a href="https://www.linkedin.com/company/intellicon-ai" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                            <li><a href="https://line.me/R/ti/p/@344mflnu" target="_blank" rel="noopener noreferrer">Line OA: @344mflnu</a></li>
+                            <li><a href="booking.html" class="btn btn-nav">預約諮詢</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 核心顧問有限公司 Core Consultant Ltd. 版權所有 | <a href="admin.html">管理員</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="api-config.js"></script>
+    <script>
+    function showCase(id) {
+        document.querySelectorAll('.cs-full-case').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.cs-full-nav-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+    </script>
+</body>
+</html>
