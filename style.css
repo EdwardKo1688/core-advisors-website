@@ -1149,6 +1149,95 @@ h1, h2, h3, h4 {
 .cta-inline .cta-text p { text-align: left; margin: 0 0 0; max-width: none; }
 .cta-inline .cta-buttons { display: flex; gap: 16px; flex-shrink: 0; flex-wrap: wrap; }
 
+/* === Article Cards (resources.html) === */
+.articles-section {
+    padding: 80px 0;
+    background: #f8f9fb;
+}
+.articles-section .section-title {
+    margin-bottom: 12px;
+}
+.articles-section .section-subtitle {
+    color: var(--slate);
+    font-size: 1rem;
+    margin-bottom: 48px;
+    max-width: 520px;
+}
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+.article-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 32px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.article-card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+}
+.article-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--navy);
+    background: var(--teal-dim);
+    padding: 3px 10px;
+    border-radius: 3px;
+    margin-bottom: 16px;
+    width: fit-content;
+}
+.article-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--navy-dark);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+.article-card p {
+    font-size: 0.9rem;
+    color: var(--slate);
+    line-height: 1.75;
+    flex: 1;
+    margin-bottom: 24px;
+}
+.article-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 16px;
+    margin-top: auto;
+}
+.article-read-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--navy);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+}
+.article-read-link:hover { color: var(--gold); }
+
+@media (max-width: 900px) {
+    .articles-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+    .articles-grid { grid-template-columns: 1fr; }
+    .articles-section { padding: 56px 0; }
+}
+
 /* === Footer === */
 .footer {
     background: var(--gray-50);
